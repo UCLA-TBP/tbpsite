@@ -243,7 +243,7 @@ class PeerTeaching(models.Model):
         (ACAD_OUTREACH, 'Academic Outreach Committee'),
         (EMCC, 'EMCC (Engineering Minds Cultivating Creativity)'),
     )
-    requirement_choice = models.CharField(max_length=1, choices=REQUIREMENT_CHOICES, default='0')
+    requirement_choice = models.CharField(max_length=1, choices=REQUIREMENT_CHOICES, default='1')
     tutoring = models.OneToOneField('tutoring.Tutoring', blank=True, null=True)
     academic_outreach_complete = models.BooleanField(default=False)
     emcc_complete = models.BooleanField(default=False)

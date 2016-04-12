@@ -18,7 +18,8 @@ GROUPS = {
     #           'Member Coordinators', 'Vice President', 'Senior Advisors', 'Alumna Advisor', 'Secretary', 'Treasurer', 'Tutoring Chairs', 'Education Outreach', 'Corporate Relations', 'Publicity Chairs', 'Project Chairs', 'Historian', 'Alumna Advisor'}, 
     'Main': {'Education Outreach', 'Academic Outreach', 'Secretary', 'Senior Advisors', 'Alumna Advisor', 'Vice President', 'Community Service',
              'Member Coordinators'}, 
-    'Tutoring': {'Tutoring Chairs', 'Vice President', 'Senior Advisors', 'Secretary'}
+    'Tutoring': {'Tutoring Chairs', 'Vice President', 'Senior Advisors', 'Secretary'},
+    'Publicity': {'Publicity Chairs'}
 } 
 
 SUPERPOS = {"Webmaster", "President"}
@@ -64,9 +65,11 @@ def assignPermissions():
     g1 = Group.objects.get(name="Event")
     g2 = Group.objects.get(name="Main")
     g3 = Group.objects.get(name="Tutoring")
+    g4 = Group.objects.get(name="Publicity")
     g1.save()
     g2.save()
     g3.save()
+    g4.save()
     print "---- Additional Permissions ----"
     for p in SUPERCOOLPEOPLE:
         foo = p.split(" ")
