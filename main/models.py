@@ -415,6 +415,7 @@ class Candidate(Member):
         #Event Requirements
         ev_reqs = [] #Format = ['Category', (listOfEvents, pointTotal, categoryPointsNeeded)]
         electiveSum = 0
+        electiveReqs = []
         for cat in (Requirement.CATEGORY_CHOICES): #cat[0] = number representation, cat[1] = word rep
             # possibleReqs = []
             catReqs = []
@@ -459,14 +460,18 @@ class Candidate(Member):
             #     tutoring_req_inst.event_hours = points_per_hour*h
             #     catReqs.append(tutoring_req_inst)
             #     pointSum += tutoring_req_inst.event_hours
-            if pointSum > Requirement.POINTS_NEEDED[cat[1]]:
-                electiveSum += pointSum-Requirement.POINTS_NEEDED[cat[1]]
-                pointSum = Requirement.POINTS_NEEDED[cat[1]]
-            
+           
             
 
-            ev_reqs.append((cat[1], (catReqs, pointSum, Requirement.POINTS_NEEDED[cat[1]])))
-        ev_reqs.append(('Elective', (None, electiveSum, Requirement.POINTS_NEEDED['Elective'])))
+            if cat[1] != "Elective":
+                if pointSum > Requirement.POINTS_NEEDED[cat[1]]:
+                    electiveSum += pointSum-Requirement.POINTS_NEEDED[cat[1]]
+                    pointSum = Requirement.POINTS_NEEDED[cat[1]]
+                ev_reqs.append((cat[1], (catReqs, pointSum, Requirement.POINTS_NEEDED[cat[1]])))
+            else:
+                electiveSum += pointSum
+                electiveReqs = catReqs
+        ev_reqs.append(('Elective', (electiveReqs, electiveSum, Requirement.POINTS_NEEDED['Elective'])))
         return ev_reqs
 
     def generate_req_report(self):
@@ -643,10 +648,12 @@ class Requirement(models.Model):
     SOCIAL = '0'
     SERVICE = '1'
     CHAPTER = '2'
+    ELECTIVE = '3'
     CATEGORY_CHOICES = (
         (SOCIAL, 'Social'),
         (SERVICE, 'Service'), 
         (CHAPTER, 'Chapter'),
+        (ELECTIVE, 'Elective'),
     )
     POINTS_NEEDED = {'Social':2, 'Service': 4, 'Chapter':2, 'Elective': 3}
     name = models.CharField(max_length=40)
@@ -665,4 +672,5 @@ class Requirement(models.Model):
             SOCIAL: '0',
             SERVICE: '1',
             CHAPTER: '2',
+            ELECTIVE: '3',
         }[requirement_choice]

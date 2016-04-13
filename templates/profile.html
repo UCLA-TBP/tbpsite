@@ -85,7 +85,8 @@
               <div class="panel-group" id="catAccordion">
               {% for ev_req in ev_reqs %}
                 {% with category=ev_req.0 req_data=ev_req.1 %}
-                  {% if category != 'Elective' %}
+                  {% if category != 'EElective' %}<!-- this should always be true. left in for legacy code -->
+
 
 					  {% if req_data.1 >= req_data.2 %}
 						<div class="panel panel-success">
