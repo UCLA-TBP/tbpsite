@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+from __future__ import division, print_function
 import sys
+import random, math, copy
 
 sys.path.insert(0, '..')
 
@@ -29,12 +31,12 @@ allTutors = []
 for t in Tutoring.current.all():
     allTutors.append(t)
     allTutors.append(t)
-    if t.frozen:
-        tutoringHours[( int(t.day_1), int(t.hour_1) + TUTORING_START )].append(t)
-        tutoringHours[( int(t.day_2), int(t.hour_2) + TUTORING_START )].append(t)
-    else:
-        tutoringObjs.append(t)
-
+    if not t.hidden:
+        if t.frozen:
+            tutoringHours[( int(t.day_1), int(t.hour_1) + TUTORING_START )].append(t)
+            tutoringHours[( int(t.day_2), int(t.hour_2) + TUTORING_START )].append(t)
+        else:
+            tutoringObjs.append(t)
 
 def tutoring_hours_status(enforce=False):
     min_satisfied = True
@@ -42,20 +44,22 @@ def tutoring_hours_status(enforce=False):
     total_assigned_hours = 0
     for slot in sorted(tutoringHours):
         assignees = tutoringHours[slot]
+        printStr = ""
         for c in TUTORING_DAY_CHOICES:
             if int(c[0]) == slot[0]:
-                print c[1], 'at',
+                printStr += c[1] + " at "
                 break
         time = slot[1] % 12
         if not time:
             time = 12
-        print time, 'AM' if slot[1] < 12 else 'PM', ': ',
-        print ', '.join(map(repr, assignees))
+        printStr += str(time) + ('AM' if slot[1] < 12 else 'PM') + ': '
+        printStr += ', '.join(map(str, assignees))
+        print(printStr)
 
         total_assigned_hours += len(assignees)
 
         if len(assignees) < ENFORCED_MIN_TUTORS_PER_HOUR:
-            print "*** The time slot above does not satisfy the minimum %d tutors per hour" % ENFORCED_MIN_TUTORS_PER_HOUR
+            print ("*** The time slot above does not satisfy the minimum %d tutors per hour" % ENFORCED_MIN_TUTORS_PER_HOUR)
             min_satisfied = False
 
         if len(assignees) > MAX_TUTORS_PER_HOUR:
@@ -64,15 +68,15 @@ def tutoring_hours_status(enforce=False):
             #    print "*** The time slot above does not satisfy the minimum %d tutors per hour" % ENFORCED_MIN_TUTORS_PER_HOUR
             #    minSatisfied = False
 
-    print 'There are', len(Tutoring.current.all()), 'tutoring objects'
-    print 'Total %d tutoring hours per week' % total_assigned_hours
+    print ('There are', len(Tutoring.current.all()), 'tutoring objects')
+    print ('Total %d tutoring hours per week' % total_assigned_hours)
 
     if enforce:
         all_assigned = total_assigned_hours / len(Tutoring.current.all()) == 2
 
-        print 'Minimum satisfied:', min_satisfied
-        print 'Maximum satisfied:', max_satisfied
-        print 'Everyone assigned:', all_assigned
+        print ('Minimum satisfied:', min_satisfied)
+        print ('Maximum satisfied:', max_satisfied)
+        print ('Everyone assigned:', all_assigned)
 
         if not all_assigned:
             tutors = []
@@ -86,14 +90,97 @@ def tutoring_hours_status(enforce=False):
                 for assignee in assignees:
                     tutors.remove(assignee)
 
-            print tutors
+            print (tutors)
 
         assert min_satisfied and max_satisfied and all_assigned
 
 
+def average(x):
+    return sum(x)/len(x)
+
+
+# class to hold times in a nice format
+class TutoringTimes:
+    def __init__(self, tutors, dayRange=(0, 5), hourRange=(10,17)):
+        self.tutorTimes = {tutor: random.randint(0, len(tutor.preferences(two_hour=True)) - 1) for tutor in tutors}
+        self.dayRange = dayRange
+        self.hourRange = hourRange
+
+    def __str__(self):
+        intervals = self.intervals()
+        print(intervals)
+        for time, tutors in intervals.iteritems:
+            intervals[time] = map(str, tutors)
+        return str(intervals)
+
+    def intervals(self):
+        intervals = {(day, hour) : [] for hour in range(*self.hourRange) for day in range(*self.dayRange)}
+        for tutor, selection in self.tutorTimes.iteritems():
+            day, hours = tutor.preferences(two_hour=True)[selection]
+            for hour in hours:
+                intervals[(day, hour)].append(tutor)
+
+        return intervals
+
+    def cost(self):
+        intervalsCovered = sum(map(
+            lambda x: average(map(
+                lambda y: sorted(y[1])[-1] - sorted(y[1])[0], x.preferences(two_hour=True)
+            )), self.tutorTimes.keys()
+        ))
+
+        intervals = self.intervals()
+        idealPerInterval = intervalsCovered / len(intervals)
+
+        cost = 0
+
+        for _, selection in self.tutorTimes.iteritems():
+            # covers cost of selecting 2nd or 3rd tutoring choices
+            cost += 40 * (selection**2)
+
+        for _, tutors in intervals.iteritems():
+            # covers cost of having too full or too empty tutoring times
+            cost += 10 * (len(tutors) - idealPerInterval) ** 4
+            if len(tutors) == 0:
+                cost += 100000
+            elif len(tutors) == 1:
+                cost += 10000
+
+        return cost
+
+    def changeRandomTutor(self):
+        selectedTutor = self.tutorTimes.keys()[random.randint(0, len(self.tutorTimes) - 1)]
+        self.tutorTimes[selectedTutor] = random.randint(0, len(selectedTutor.preferences(two_hour=True)) - 1)
+
+# function that will generate optimized schedule
+def annealingoptimize(tutoringTimes, T=100000, cool=0.95, step=1):
+    while T > 0.1:
+        # Create a new list with one of the values changed
+        tutoringTimesNew = copy.deepcopy(tutoringTimes)
+        tutoringTimesNew.changeRandomTutor()
+
+
+        # Calculate the current cost and the new cost
+        ea = tutoringTimes.cost()
+        eb = tutoringTimesNew.cost()
+        p = pow(math.e, (-eb - ea) / T)
+
+        # Is it better, or does it make the probability
+        # cutoff?
+        if eb < ea or random.random() < p:
+            tutoringTimes = tutoringTimesNew
+
+        # Decrease the temperature
+        T = T * cool
+    return tutoringTimes
+
+"""
+# all stuff here is old code that I left here just in case
+
 def assign_if_necessary():
     global tutoringObjs
     global tutoringHours
+
 
     # Assign if necessary
     for assignCount in range(ENFORCED_MIN_TUTORS_PER_HOUR, MIN_TUTORS_PER_HOUR + 1):
@@ -122,9 +209,8 @@ def assign_if_necessary():
                             tutoringObjs.remove(t)
                             tutoringHours[(day, slot)].append(t)
                             tutoringHours[(day, slot + 1)].append(t)
-
-
 assign_if_necessary()
+
 
 # Try filling min iterating through first, second, third prefs if BOTH hours unsatisfied
 for pref in range(3):
@@ -203,11 +289,13 @@ for timeSlot, assignees in tutoringHours.iteritems():
 
                         tutoringHours[(pref[0], pref[1][0])].append(t)
                         tutoringHours[(pref[0], pref[1][1])].append(t)
+"""
+
+tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,17))
+tutoringHours = annealingoptimize(tutoringTimes).intervals()
 
 # Enforce min and max per hour
 tutoring_hours_status(enforce=False)
-
-print tutoringObjs
 
 # Validate assigned hours with preferences
 for time, assignees in tutoringHours.items():
@@ -221,8 +309,9 @@ for time, assignees in tutoringHours.items():
             assert (time in assignee.preferences(two_hour=False) or
                     time in [(t[0], t[1] + 1) for t in assignee.preferences(two_hour=False)])
 
+
 # Commit
-for time, assignees in tutoringHours.items():
+for time, assignees in sorted(tutoringHours.iteritems()):
     for assignee in assignees:
         if allTutors.count(assignee) == 2:
             allTutors.remove(assignee)

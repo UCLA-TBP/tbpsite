@@ -443,14 +443,14 @@ class Candidate(Member):
                 else:
                     pointSum += 1
 
+            
             #Professor Interview detection    
             if cat[0] == Requirement.CHAPTER and self.professor_interview:
                 prof_ints = Requirement.objects.filter(name="Professor Interview")
                 catReqs.append(prof_ints[0])
-                pointSum += prof_ints[0].event_hours
+                pointSum += 1 
 
-            #TODO: Tutoring detection
-            
+
             # if cat[0] == Requirement.SERVICE and self.peer_teaching and self.peer_teaching.tutoring and self.peer_teaching.get_req_choice() != "Tutoring":
             #     h = sum(week.hours for week in self.peer_teaching.tutoring.get_weeks())
             #     points_per_hour = 2
@@ -510,7 +510,7 @@ class Candidate(Member):
             ('Initiation Fee', self.initiation_fee),
             ('Engineering Futures', self.engineering_futures),
             # ('Social', self.social_complete()),
-            ('Resume', self.resume()),
+            # ('Resume', self.resume()),
             # ('TBP event', self.tbp_event_complete()),
             ('Candidate Sorting', self.candidate_sorting),
         )
@@ -583,7 +583,7 @@ class ActiveMember(Member):
         # (CBR, 'Cardboard Boat Race Committee'),
         (ACAD_OUTREACH, 'Academic Outreach'),
     )
-    requirement_choice = models.CharField(max_length=1, choices=REQUIREMENT_CHOICES, default='0')
+    requirement_choice = models.CharField(max_length=1, choices=REQUIREMENT_CHOICES, default='1')
     requirement_complete = models.BooleanField(default=False)
 
     class Meta(Member.Meta):

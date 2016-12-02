@@ -23,7 +23,7 @@ class UserForm(ModelForm):
             self._errors['current_password'] = self.error_class(["Incorrect password."])
 
         if username != self.instance.get_username() and User.objects.filter(username=username).count():
-            self._errors['username'] = self.error_class(["Username has already been taken."])
+            self._errors['username'] = self.error_class(["Username has already been taken. If you made this account, try logging in."])
 
         if new_password != confirm_password:
             self._errors['confirm_password'] = self.error_class(["Passwords do not match."])

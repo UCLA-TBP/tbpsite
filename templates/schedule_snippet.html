@@ -51,10 +51,10 @@
           <th>Thursday</th>
           <th>Friday</th>
         </tr>
-        {% for item in tutors %}
+        {% for time in tutors %}
           <tr>
-            <td>{{ item.0 }}</td>
-            {% for tutors in item.1 %}
+            <td>{{ time.0 }}</td>
+            {% for tutors in time.1 %}
               <td>
                 {% for tutor in tutors %}
                   <p id="{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" class="{{ tutor.get_class_ids }}" data-title="{{ tutor }}{% if tutor.get_organization_display %} {{ tutor.get_organization_display }}{% endif %}" data-content="{{ tutor.get_day_1_display }} {{ tutor.get_hour_1_display }}, {{ tutor.get_day_2_display }} {{ tutor.get_hour_2_display }}<br>{{ tutor.display_classes }}" data-trigger="hover" data-html="true" data-placement="left">{{ tutor }}</p>

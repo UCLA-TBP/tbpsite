@@ -133,8 +133,14 @@ class OfficerAdmin(admin.ModelAdmin):
     filter_horizontal = ('profile',)
 
 class PeerAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'requirement_choice', 'academic_outreach_complete', 'tutoring')
-    list_editable = ('requirement_choice', 'academic_outreach_complete')
+    list_display = ('profile', 'requirement_choice', 'academic_outreach_complete', 'emcc_complete') 
+    list_editable = ('requirement_choice', 'academic_outreach_complete', 'emcc_complete')
+    readonly_fields = ('tutoring_complete')
+
+    def tutoring_complete(self, instance):
+        return instance.tutoring.complete()
+    
+    tutoring_complete.short_description = "Tutoring Completion"
 
 class RequirementAdmin(admin.ModelAdmin):
     list_display = ('name', 'requirement_choice', 'event_hours', 'term')

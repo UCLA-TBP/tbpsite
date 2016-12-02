@@ -30,20 +30,19 @@ def get_faculty_by_dept():
     faculty_by_dept['Advisors'] = [
         ('William R. Goodin', 'CA E', "'75 (Chief Advisor)", ''),
         ('Ann Karagozian', 'CA E', "'78 (Faculty Advisor)", ''),
-        ('Deborah Duan', 'CA E', "'11 (Alumni Advisor)", ''),
         ('Stephanie Yang', 'CA E', "'07 (Alumni Advisor)", ''),
         ('Stacey Ross', 'CA K', "'06 (District 16 Director)", ''),
         ('Neal Bussett', 'CA X', "'09 (District 16 Director)", ''),
-        ('Scott Eckersall', 'CA I', "'96 (District 16 Director)", ''),
         ('Sam Rokni', 'CA C', "'05 (District 16 Director)", ''),
         ('Hani Freudenberger', 'CA E', "'07 (Alumni Advisor)", ''),
         ('Caitlin Gomez', 'CA E', "'06 (Alumni Advisor)", ''),
         ('Ronald Hickling', 'CA E', "'80 (Alumni Advisor)", ''),
         ('Marshall Lew', 'CA E', "'71 (Alumni Advisor)", ''),
-        ('Christine Tran', 'CA E', "'11 (Alumni Advisor)", '')
+        ('Christine Tran', 'CA E', "'11 (Alumni Advisor)", ''),
+        ('Yvonne Chen', 'CA G', "'04 (Faculty Advisor)", ''),
+        ('Frank Kuo', 'CA E', "'07 (Alumni Advisor)", '')
     ]
-    return [(dept, faculty_by_dept[dept]) for dept in sorted(faculty_by_dept)]
-
+    return [(dept, sorted(faculty_by_dept[dept], key=lambda x: x[0].rsplit(None, 1)[-1])) for dept in sorted(faculty_by_dept)]
 
 def get_officers():
     position_re = re.compile(r'Club Liaison (\([^)]*\))')

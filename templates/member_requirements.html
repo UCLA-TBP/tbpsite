@@ -11,7 +11,7 @@
         {% if member_form %}
           {% include "form_snippet.html" with form=member_form %}
           <div class="form-group">
-            <p class="help-block">Fill out the tutoring preferences below if you're signing up for tutoring.</p>
+            <p class="help-block">Fill out the tutoring preferences below if you're signing up for tutoring.  If you do not sign up for tutoring, these fields are ignored.  </p>
           </div>
           {% include "form_snippet.html" with form=tutoring_preferences_form %}
           <div class="form-actions">

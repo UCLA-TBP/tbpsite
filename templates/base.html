@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}UCLA Tau Beta Pi{% endblock %}</title>
+    <title>{% block title %}Tau Beta Pi | UCLA{% endblock %}</title>
     <!-- Bootstrap -->
     <link href="/static/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet">
@@ -20,7 +20,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'web.views.home' %}"><strong>UCLA Tau Beta Pi</strong></a>
+          <a class="navbar-brand" href="{% url 'web.views.home' %}"><strong>Tau Beta Pi | UCLA</strong></a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse" style="min-width:230px">
           <ul class="nav navbar-nav">
@@ -55,10 +55,14 @@
             <a href="{% url 'web.views.candidates' %}" class="dropdown-toggle">Candidates</a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'web.views.requirements' %}">Requirements</a></li>
-              <li><a href="{% url 'main.views.houses' %}">Houses</a></li>
+			  <!-- <li><a href="{% url 'main.views.houses' %}">Houses</a></li> -->
               <!-- <li><a href="{{ eligibility_list }}">Eligibility List</a></li> -->
 			  <!-- <li><a href="../media/files/Eligibility List for Sp14.pdf">Eligibility List</a></li> -->
-			  <li><a href="../media/files/TBPCandidatePacketS16.pdf">Candidate Packet</a></li>
+			  <li><a href="../media/files/TBPCandidatePacket_F16.pdf">Candidate Packet</a></li>
+			  <li><a href="../media/files/TBPCandidateOrientation_F16.pptx">Orientation Presentation</a></li>
+	      {% if user.is_authenticated %}		  
+	      <li><a href="../media/files/eventsF16.pdf">Fall Events</a></li>
+	      {% endif %}
             </ul>
             </li>
             <li class="dropdown">
@@ -113,7 +117,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            UCLA Tau Beta Pi | 
+            Tau Beta Pi at UCLA | 
             <a href="{% url 'web.views.home' %}">Home</a> | 
             <a href="{% url 'web.views.officers' %}">Contact</a>
           </div>

@@ -75,6 +75,8 @@ def login(request):
         form = LoginForm()
     return render(request, "login.html", {'form': form})
 
+def display_tutoring():
+    return Settings.object.display_tutoring()
 
 def logout(request):
     auth.logout(request)
