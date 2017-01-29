@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo ~/tbpsite/manage.py updateschedule
+sudo /home/tbpofficer/tbpsite/manage.py updateschedule > /dev/null

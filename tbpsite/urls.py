@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 admin.autodiscover()
 
@@ -77,3 +78,7 @@ urlpatterns += patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
+urlpatterns += patterns('',
+    url(r'^rg_signup/$', RedirectView.as_view(url='https://goo.gl/forms/QJDTetubbD8vMGNc2')),
+    url(r'^rg_event/$', RedirectView.as_view(url='https://www.facebook.com/events/225337421258770/')),
+)

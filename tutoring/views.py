@@ -63,14 +63,16 @@ def schedule(request):
     :return:
     """
     term = Settings.objects.term()
+    display_tutoring = Settings.objects.display_tutoring()
     try:
-        return render(request, 'schedule.html', {'schedule': 'cached_schedule_snippet.html', 'term': term})
+        return render(request, 'schedule.html', {'schedule': 'cached_schedule_snippet.html', 'term': term, 'display': request.user.is_staff or display_tutoring})
     except TemplateDoesNotExist:
         pass
 
+
     return render(request, 'schedule.html', {'schedule': 'schedule_snippet.html', 'term': term, 'classes': get_classes(),
                                              'tutors': get_tutors(),
-                                             'display': request.user.is_staff or Settings.objects.display_tutoring()})
+                                             'display': request.user.is_staff or display_tutoring})
 
 
 @login_required()

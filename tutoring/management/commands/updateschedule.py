@@ -14,7 +14,6 @@ class Command(NoArgsCommand):
     def handle_noargs(self, *args, **kwargs):
         term = Settings.objects.term()
         t = Template(open(os.path.join(BASE_DIR, 'templates', 'schedule_snippet.html')).read())
-        c = Context({'term': term, 'classes': get_classes(), 'tutors': get_tutors(), 'display': True})
-        print(get_tutors())
+        c = Context({'term': term, 'classes': get_classes(), 'tutors': get_tutors(), 'display': Settings.objects.display_tutoring()})
         open(os.path.join(BASE_DIR, 'cached_templates', 'cached_schedule_snippet.html'), 'w').write(t.render(c))
         cache.clear()

@@ -101,7 +101,7 @@ def average(x):
 
 # class to hold times in a nice format
 class TutoringTimes:
-    def __init__(self, tutors, dayRange=(0, 5), hourRange=(10,17)):
+    def __init__(self, tutors, dayRange=(0, 5), hourRange=(10,16)):
         self.tutorTimes = {tutor: random.randint(0, len(tutor.preferences(two_hour=True)) - 1) for tutor in tutors}
         self.dayRange = dayRange
         self.hourRange = hourRange
@@ -182,9 +182,124 @@ def best_annealing_optimize(tutoringTimes, generation_times=10, T=100000, cool=0
             best_tutoringTimes = new_tutoringTimes
     return best_tutoringTimes
 
+"""
+# all stuff here is old code that I left here just in case
 
-tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,17))
-print(tutoringTimes.intervals())
+def assign_if_necessary():
+    global tutoringObjs
+    global tutoringHours
+
+
+    # Assign if necessary
+    for assignCount in range(ENFORCED_MIN_TUTORS_PER_HOUR, MIN_TUTORS_PER_HOUR + 1):
+        hours_assigned = True
+        while hours_assigned:
+            hours_assigned = False
+
+            # Each day
+            for day in range(5):
+                # Each even 2-hour slot
+                for slot in range(TUTORING_START, TUTORING_END, 2):
+                    tutor_count = 0
+                    tutor_objs = []
+
+                    for t in tutoringObjs:
+                        for p in t.preferences(two_hour=False):
+                            if p[0] == day and p[1] == slot:
+                                tutor_count += 1
+                                tutor_objs.append(t)
+                                break
+
+                    # Assign if we need to
+                    if tutor_count and tutor_count + len(tutoringHours[(day, slot)]) <= assignCount:
+                        hours_assigned = True
+                        for t in tutor_objs:
+                            tutoringObjs.remove(t)
+                            tutoringHours[(day, slot)].append(t)
+                            tutoringHours[(day, slot + 1)].append(t)
+assign_if_necessary()
+
+
+# Try filling min iterating through first, second, third prefs if BOTH hours unsatisfied
+for pref in range(3):
+    tutoringObjsCopy = tutoringObjs[:]
+    for t in tutoringObjsCopy:
+        day, slot = t.preferences(two_hour=False)[pref]
+        if len(tutoringHours[(day, slot)]) < MIN_TUTORS_PER_HOUR \
+                and len(tutoringHours[(day, slot + 1)]) < MIN_TUTORS_PER_HOUR:
+            tutoringObjs.remove(t)
+
+            tutoringHours[(day, slot)].append(t)
+            tutoringHours[(day, slot + 1)].append(t)
+
+assign_if_necessary()
+
+# Try filling min iterating through first, second, third prefs if ANY hours unsatisfied
+for pref in range(3):
+    tutoringObjsCopy = tutoringObjs[:]
+    for t in tutoringObjsCopy:
+        day, slot = t.preferences(two_hour=False)[pref]
+        if len(tutoringHours[(day, slot)]) < MIN_TUTORS_PER_HOUR \
+                or len(tutoringHours[(day, slot + 1)]) < MIN_TUTORS_PER_HOUR:
+            tutoringObjs.remove(t)
+
+            tutoringHours[(day, slot)].append(t)
+            tutoringHours[(day, slot + 1)].append(t)
+
+assign_if_necessary()
+
+# Try assigning everyone else iterating through first, second, third prefs
+for pref in range(3):
+    tutoringObjsCopy = tutoringObjs[:]
+    for t in tutoringObjsCopy:
+        day, slot = t.preferences(two_hour=False)[pref]
+        if len(tutoringHours[(day, slot)]) < MAX_TUTORS_PER_HOUR \
+                and len(tutoringHours[(day, slot + 1)]) < MAX_TUTORS_PER_HOUR:
+            tutoringObjs.remove(t)
+
+            tutoringHours[(day, slot)].append(t)
+            tutoringHours[(day, slot + 1)].append(t)
+
+# Last try, see if we can pull someone from another slot to fill MIN_TUTORS_PER_HOUR per slot
+for timeSlot, assignees in tutoringHours.iteritems():
+    # Slot unsatisfied
+    if len(assignees) < MIN_TUTORS_PER_HOUR:
+        for iterTimeSlot, iterAssignees in tutoringHours.iteritems():
+            day, hour = iterTimeSlot
+            # More tutors here than necessary
+            if len(assignees) > MIN_TUTORS_PER_HOUR:
+                # Find someone we can move
+                for assignee in iterAssignees:
+                    if assignee.frozen:
+                        continue
+
+                    # Is this slot in tutor's preferences?
+                    reassignable = False
+                    for pref in assignee.preferences(two_hour=True):
+                        if timeSlot == (pref[0], pref[1][0]) \
+                                or timeSlot == (pref[0], pref[1][1]):
+                            reassignable = True
+                            break
+
+                    if not reassignable:
+                        continue
+
+                    # Second hour for this tutor is the hour before
+                    if hour > TUTORING_START and assignee in tutoringHours[(day, hour - 1)]:
+                        secondSlot = tutoringHours[(day, hour - 1)]
+                    else:
+                        secondSlot = tutoringHours[(day, hour + 1)]
+
+                    # Second hour is also happy
+                    if len(secondSlot) > MIN_TUTORS_PER_HOUR:
+                        secondSlot.remove(t)
+                        iterAssignees.remove(t)
+
+                        tutoringHours[(pref[0], pref[1][0])].append(t)
+                        tutoringHours[(pref[0], pref[1][1])].append(t)
+"""
+
+tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,16))
 tutoringHours = best_annealing_optimize(tutoringTimes).intervals()
 
 # Enforce min and max per hour
