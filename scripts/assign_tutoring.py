@@ -25,12 +25,32 @@ for d in TUTORING_DAY_CHOICES:
     for h in TUTORING_HOUR_CHOICES:
         tutoringHours[( int(d[0]), int(h[0]) + TUTORING_START )] = []
 
+
+ignore_existing_schedule = False
 # Add all 'frozen' tutors to schedule
 tutoringObjs = []
 allTutors = []
 for t in Tutoring.current.all():
     allTutors.append(t)
     allTutors.append(t)
+
+    if not ignore_existing_schedule and not (t.day_2 == u'0' and t.hour_2 == u'0'):
+        # a schedule already exists
+        first = True
+        inp = ''
+        while first or inp not in ('y', 'yes', 'n', 'no'):
+            inp = raw_input('There already is a schedule.  Do you want to override it? (y/n):').lower()
+
+            if inp in ('n', 'no'):
+                print('Exiting as requested')
+                exit(0) 
+            else:
+                print('OK, your fault if you screw up')
+                ignore_existing_schedule = True
+
+            first = False
+            
+
     if not t.hidden:
         if t.frozen:
             tutoringHours[( int(t.day_1), int(t.hour_1) + TUTORING_START )].append(t)
@@ -201,7 +221,6 @@ for time, assignees in tutoringHours.items():
         else:
             assert (time in assignee.preferences(two_hour=False) or
                     time in [(t[0], t[1] + 1) for t in assignee.preferences(two_hour=False)])
-
 
 # Commit
 for time, assignees in sorted(tutoringHours.iteritems()):
