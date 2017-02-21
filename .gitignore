@@ -1,8 +1,6 @@
-/*/migrations/*
 *.*~
 
 *.py[cod]
-*/migrations/
 .*~
 
 # C extensions
