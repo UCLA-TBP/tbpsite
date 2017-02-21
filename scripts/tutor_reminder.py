@@ -45,7 +45,7 @@ for week in weeks:
 
 long_bad_tutors = {}
 for tutor, hours in tutor_hours.items():
-    if hours < minimum_hours: 
+    if hours <= minimum_hours: 
         long_bad_tutors[tutor] = expected_hours - hours
 
 for tutor_week_hours in c_week.objects.all():
@@ -64,7 +64,7 @@ for tutor, hours in week_tutor_hours.items():
 
 last_name = lambda x: x.user.last_name
 
-bad_tutors = sorted(list(tutors_0_hr | tutors_1_hr), key = last_name)
+bad_tutors = sorted(list(tutors_0_hr | tutors_1_hr | set(long_bad_tutors.keys())), key = last_name)
 tutors_0_hr = sorted(list(tutors_0_hr), key = last_name)
 tutors_1_hr = sorted(list(tutors_1_hr), key = last_name)
     
@@ -72,7 +72,7 @@ from_addr = 'tutoring@tbp.seas.ucla.edu'
 #to_addrs = ['tutoring@tbp.seas.ucla.edu']
 to_addrs = []
 #cc = ['webmaster@tbp.seas.ucla.edu', 'officers@tbp.seas.ucla.edu']
-cc = ['webmaster@tbp.seas.ucla.edu', 'markhsitai@gmail.com']
+cc = ['tutoring@tbp.seas.ucla.edu', 'mark@marktai.com']
 #bcc = bad_tutors
 bcc = []
 
@@ -82,6 +82,8 @@ message_text = \
 """Hi Tutors,
 
 The following is a list of people who have missed tutoring hours. If you are on this list, you must contact the tutoring chairs (tutoring@tbp.seas.ucla.edu) to make up your hours. 
+
+If your tutoring hours have fallen on a holiday and you are on this list, let us know so we can adjust your hours correctly.  
 
 Please take a look at the schedule (https://tbp.seas.ucla.edu/schedule/), pick a make-up time slot to attend and send an email back to us with your choice.
 
@@ -114,6 +116,9 @@ recipients = to_addrs + cc + bcc
 server = smtplib.SMTP('tbp.seas.ucla.edu')
 server.login(from_addr, settings.EMAIL_PASSWORD)
 #server.set_debuglevel(1)
-server.sendmail(from_addr, recipients, message)
+#server.sendmail(from_addr, recipients, message)
+
+print("sending to %s" % repr(bad_tutors))
+print(message)
 server.quit()
 
