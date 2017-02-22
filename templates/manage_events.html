@@ -16,7 +16,7 @@
                   <option value="{{ a }}">{{ a }}</option>
                   {% endfor %}
                 </select>
-                <button type="submit" class="btn btn-primary" name="submit">Change Action</button>
+                <button type="submit" class="btn btn-warning" name="submit">Change Action</button>
             </form>
         </div>
     </div>
@@ -31,7 +31,7 @@
 	  {% if create_event_form %}
           {% include "form_snippet.html" with form=create_event_form %}
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-warning">Submit</button>
           </div>
 	  {% else %}
 	  <h4>Event created successfully!</h4>

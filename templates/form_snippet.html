@@ -7,7 +7,8 @@
       {% if field.errors %}<span class="help-block">{{ field.errors }}</span>{% endif %}
       {% if field.field.widget.input_type %}
         {% if field.field.widget.input_type == 'file' %}
-          <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" {% if field.value %}value="{{ field.value }}" {% endif %}name="{{ field.html_name }}"{% if not field.value and field.field.required %} required{% endif %}>
+          <input type="{{ field.field.widget.input_type }}" name="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}" {% if field.value %}value="{{ field.value }}" {% endif %}name="{{ field.html_name }}"{% if not field.value and field.field.required %} required{% endif %}>
+	  <label for="{{ field.field.widget.input_type }}" class="btn-upload">Choose a file</label>
         {% elif field.field.widget|classname:"DateInput" %}
           <input type="date" class="form-control" id="{{ field.id_for_label }}" {% if field.value %}value="{{ field.value|date:'Y-m-d' }}" {% endif %}name="{{ field.html_name }}"{% if not field.value and field.field.required %} required{% endif %}>
         {% else %}

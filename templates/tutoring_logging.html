@@ -54,7 +54,7 @@
                 </ul>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg" name="sign_out">Sign out of Tutoring</button>
+                    <button type="submit" class="btn btn-warning btn-lg" name="sign_out">Sign out of Tutoring</button>
                 </div>
             </form>
         {% else %}
@@ -62,7 +62,7 @@
             <form role="form" method="post">
                 {% csrf_token %}
                 <div class="form group">
-                    <button type="submit" class="btn btn-primary btn-lg" name="sign_in">Sign in to Tutoring</button>
+                    <button type="submit" class="btn btn-warning btn-lg" name="sign_in">Sign in to Tutoring</button>
                 </div>
             </form>
         {% endif %}
