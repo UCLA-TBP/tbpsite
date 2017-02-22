@@ -7,7 +7,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from constants import MAJOR_CHOICES, DEPT_CHOICES, resume_word_fs, resume_pdf_fs, community_service_fs, \
-    professor_interview_fs
+    professor_interview_fs, test_upload_fs
 
 from points import *
 
@@ -192,6 +192,8 @@ class Profile(models.Model):
                                   blank=True, null=True, default=None, verbose_name="Resume (PDF)")
     resume_word = models.FileField(upload_to=upload_to_path, storage=resume_word_fs,
                                    blank=True, null=True, default=None, verbose_name="Resume (word)")
+    test_upload = models.FileField(upload_to = upload_to_path, storage=test_upload_fs,
+                                   blank=True, null=True, default=None, verbose_name="Test Upload")
 
     classes = models.ManyToManyField('tutoring.Class', blank=True, null=True)
 
@@ -409,6 +411,8 @@ class Candidate(Member):
 
     def resume(self):
         return self.profile.resume_pdf or self.profile.resume_word
+    def test(self):
+        return self.profile.test_upload
 
     # REQUIREMENTS
     def generate_ev_reqs(self):
