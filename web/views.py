@@ -60,7 +60,6 @@ def get_officers():
             positions.append((position.position, position.mail_alias, [str(officer) for officer in position.profile.all()]))
 
     positions.append(('Faculty Advisor', None, ['Bill Goodin']))
-    positions.append(('Club Liaison', liaison_alias, liaisons))
     return positions
 
 faculty = MyTemplateView.as_view(template_name='faculty.html', 
