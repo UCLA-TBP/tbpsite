@@ -57,7 +57,7 @@ class HousePointsAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'position', 'house', 'major',
-                    'initiation_term', 'graduation_term', 'resume_pdf', 'resume_word', 'test_upload')
+                    'initiation_term', 'graduation_term', 'resume_pdf', 'resume_word')
     list_filter = ('position',)
     search_fields = ('user__first_name', 'user__last_name', 'user__email')
     actions = ('create_candidate', 'create_active_member', 'promote_candidate')
@@ -135,7 +135,7 @@ class OfficerAdmin(admin.ModelAdmin):
 class PeerAdmin(admin.ModelAdmin):
     list_display = ('profile', 'requirement_choice', 'academic_outreach_complete', 'emcc_complete') 
     list_editable = ('requirement_choice', 'academic_outreach_complete', 'emcc_complete')
-    readonly_fields = ('tutoring_complete')
+    readonly_fields = ('tutoring_complete', )
 
     def tutoring_complete(self, instance):
         return instance.tutoring.complete()
