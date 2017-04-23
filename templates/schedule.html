@@ -11,19 +11,14 @@
       <h1>TBP {{ term }} Tutoring Schedule</h1>
       {% if display_current_tutors %}
         <div class="row">
-          <div class="col-md-6">
-            <h4>Current Tutors:</h4>
-            <ul>
-            {% for tutor in current_tutors %}
-              <li>{{ tutor }}</li>
-            {% endfor %}
-            </ul>
+          <div>
+            Current Tutors: {{ current_tutors_string }}
           </div>
-          <div class="col-md-6">
-            <h4>Current Classes Covered:</h2>
+          <div>
+            <h4>Classes Covered:</h2>
             <ul>
-            {% for class in current_classes_covered %}
-              <li>{{ class }}</li>
+            {% for department, classes_string in department_classes %}
+              <li>{{ department }} - {{classes_string}}</li>
             {% endfor %}
             </ul>
           </div>

@@ -78,9 +78,23 @@ def schedule(request):
         current_classes_covered |= set(profile.classes.all())
 
     tutor_profiles = sorted(list(tutor_profiles), key=str)
-    current_classes_covered = sorted(list(current_classes_covered), key=str)
+    current_classes_covered = sorted(
+        list(current_classes_covered), 
+        key=lambda x: (x.department, int(''.join([s for s in x.course_number if s.isdigit()]))), #sorts by department, then by number of course_number
+    )
+
+    department_classes = {}
+    for cls in current_classes_covered:
+        department_classes.setdefault(cls.department, [])
+        department_classes[cls.department].append(cls)
 
     display_current_tutors = should_display and (tutor_profiles or current_classes_covered)
+
+    current_tutor_list_string = ', '.join(map(str, current_tutors))
+    for dep, cls_list in department_classes.iteritems():
+        department_classes[dep] = ', '.join(map(lambda x: str(x.course_number), cls_list))
+    department_classes = sorted(list(department_classes.iteritems()), key=lambda x: x[0]) # to sort by department
+
 
     if should_display: # the cached template always displays the schedule
         try:
@@ -92,8 +106,8 @@ def schedule(request):
                     'term': term, 
                     'display': should_display,
                     'display_current_tutors': display_current_tutors,
-                    'current_tutors': tutor_profiles,
-                    'current_classes_covered': current_classes_covered,
+                    'current_tutors_string': current_tutor_list_string,
+                    'department_classes': department_classes,
                 },
             )
         except TemplateDoesNotExist:
@@ -109,8 +123,8 @@ def schedule(request):
             'tutors': get_tutors(),
             'display': should_display,
             'display_current_tutors': display_current_tutors,
-            'current_tutors': tutor_profiles,
-            'current_classes_covered': current_classes_covered,
+            'current_tutors_string': current_tutor_list_string,
+            'department_classes': department_classes,
         },
     )
 
