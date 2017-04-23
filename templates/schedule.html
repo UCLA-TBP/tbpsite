@@ -1,7 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}TBP {{ term }} Tutoring Schedule{% endblock %}
+{% block title %}TBP Tutoring Schedule{% endblock %}
 
 {% block content %}
-  {% include schedule %}
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-body" style="padding: 2em;">
+      <script src="/static/js/application.js" type="text/javascript"></script>
+      <script src="/static/js/tutor.js" type="text/javascript"></script><style></style>
+      <h1>TBP {{ term }} Tutoring Schedule</h1>
+      {% if display_current_tutors %}
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Current Tutors:</h4>
+            <ul>
+            {% for tutor in current_tutors %}
+              <li>{{ tutor }}</li>
+            {% endfor %}
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h4>Current Classes Covered:</h2>
+            <ul>
+            {% for class in current_classes_covered %}
+              <li>{{ class }}</li>
+            {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+      {% include schedule_block %}
+    </div>
+  </div>
+</div>
 {% endblock %}

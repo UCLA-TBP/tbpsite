@@ -63,16 +63,56 @@ def schedule(request):
     :return:
     """
     term = Settings.objects.term()
-    display_tutoring = Settings.objects.display_tutoring()
-    try:
-        return render(request, 'schedule.html', {'schedule': 'cached_schedule_snippet.html', 'term': term, 'display': request.user.is_staff or display_tutoring})
-    except TemplateDoesNotExist:
-        pass
+    should_display = request.user.is_staff or Settings.objects.display_tutoring()
 
+    current_tutors = Tutoring.current.filter(
+        is_tutoring=True, 
+        last_start__gte=datetime.datetime.now().date(),
+    )
 
-    return render(request, 'schedule.html', {'schedule': 'schedule_snippet.html', 'term': term, 'classes': get_classes(),
-                                             'tutors': get_tutors(),
-                                             'display': request.user.is_staff or display_tutoring})
+    tutor_profiles = Profile.objects.filter(
+        id__in=map(lambda x: x.profile.id, current_tutors),
+    )
+    current_classes_covered = set()
+    for profile in tutor_profiles:
+        current_classes_covered |= set(profile.classes.all())
+
+    tutor_profiles = sorted(list(tutor_profiles), key=str)
+    current_classes_covered = sorted(list(current_classes_covered), key=str)
+
+    display_current_tutors = should_display and (tutor_profiles or current_classes_covered)
+
+    if should_display: # the cached template always displays the schedule
+        try:
+            return render(
+                request, 
+                'schedule.html', 
+                {
+                    'schedule_block': 'cached_schedule_snippet.html', 
+                    'term': term, 
+                    'display': should_display,
+                    'display_current_tutors': display_current_tutors,
+                    'current_tutors': tutor_profiles,
+                    'current_classes_covered': current_classes_covered,
+                },
+            )
+        except TemplateDoesNotExist:
+            pass
+
+    return render(
+        request, 
+        'schedule.html', 
+        {
+            'schedule_block': 'schedule_snippet.html', 
+            'term': term, 
+            'classes': get_classes(),
+            'tutors': get_tutors(),
+            'display': should_display,
+            'display_current_tutors': display_current_tutors,
+            'current_tutors': tutor_profiles,
+            'current_classes_covered': current_classes_covered,
+        },
+    )
 
 
 @login_required()
