@@ -1,16 +1,18 @@
 {% extends "base.html" %}
- 
+
 {% block title %}Partnership Spotlight{% endblock %}
 
 {% block content %}
 
-<h2>Partnership Spotlight</h2>
-  <!-- <img src="..."> --> <!--Sponsor Logo Collage -->
-  <p>While Tau Beta Pi is committed to promoting the growth of future engineers, our programs could not come to fruition without the support of our partners. These sponsors provide us with the means to continue hosting great programs like the Rube Goldberg Competition [link] and <a href="{% url 'web.views.emcc' %}">EMCC</a> year after year.</p>
-  <p>If you or someone you know is interested in partnering with Tau Beta Pi at UCLA, please contact our Corporate Relations team at <a href="mailto:corporate@tbp.seas.ucla.edu">corporate@tbp.seas.ucla.edu</a>. </p>
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h1>Partnership Spotlight</h1>
+        <!-- <img src="..."> --> <!--Sponsor Logo Collage -->
+        <p>While Tau Beta Pi is committed to promoting the growth of future engineers, our programs could not come to fruition without the support of our partners. These sponsors provide us with the means to continue hosting great programs like the Rube Goldberg Competition [link] and <a href="{% url 'web.views.emcc' %}">EMCC</a> year after year.</p>
+        <p>If you or someone you know is interested in partnering with Tau Beta Pi at UCLA, please contact our Corporate Relations team at <a href="mailto:corporate@tbp.seas.ucla.edu">corporate@tbp.seas.ucla.edu</a>. </p>
 
+    </div>
+  </div>
+</div>
 {% endblock %}
-
-
-
-

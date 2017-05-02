@@ -45,6 +45,7 @@ urlpatterns += patterns('main.views',
     url(r'^add/$', 'add'),
     url(r'^register/$', 'register'),
     url(r'^account/$', 'account'),
+    url(r'^upload/$', 'upload'),
 
     url(r'^resume_pdf/$', 'resume_pdf'),
     url(r'^resume_pdf/(?P<id>\d+)$', 'resume_pdf'),
@@ -56,6 +57,7 @@ urlpatterns += patterns('main.views',
     url(r'^proof/(?P<id>\d+)$', 'proof'),
 
     url(r'^add_requirement/$', 'add_requirement'),
+   
 )
 
 urlpatterns += patterns('event.views',
@@ -76,6 +78,7 @@ urlpatterns += patterns('',
     url(r'^tutoring/log_hours/$', 'tutoring.views.tutoring_logging'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+#    url(r'', include('tbpsite.urls'))
 )
 
 urlpatterns += patterns('',

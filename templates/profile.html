@@ -6,11 +6,29 @@
 
 {% load extras %}
 
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        <a data-toggle="collapse" href="#calendar">Calendar and Upcoming Events (click to view)</a>
+      </h2>
+    </div>
+    <div id="calendar" class="panel-collapse collapse">
+      <div class="panel-body">
+         <a href="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles">Calendar Link</a>
+         <iframe src="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles" width="100%" height="500px"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-group">
+<div class="panel panel-default">
+<div class="panel-body">
 <div class="row">
   <div class="col-lg-6">
     <form class="form-horizontal">
       <fieldset>
-        <legend>Profile</legend>
         {% for field in fields %}
         <div class="form-group">
           <label class="col-lg-4 control-label">{{ field.0 }}</label>
@@ -158,12 +176,10 @@
     {% endif %}
   </div>
 </div>
-  <!-- <a href="https://calendar.google.com/calendar/embed?src=mggb0dfbbh9au31u099hu093tk%40group.calendar.google.com&ctz=America/Los_Angeles">Old Calendar Link</a> -->
-<div class="row">
-  <div class="col-md-12">
-	<a href="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles">Calendar Link</a>
-	<iframe src="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles" width="100%" height="500px"></iframe>
-  </div>
 </div>
+</div>
+</div>
+</div>
+  <!-- <a href="https://calendar.google.com/calendar/embed?src=mggb0dfbbh9au31u099hu093tk%40group.calendar.google.com&ctz=America/Los_Angeles">Old Calendar Link</a> -->
 
 {% endblock %}

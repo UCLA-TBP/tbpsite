@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from main.models import Settings, Term, Profile, Candidate, ActiveMember, PeerTeaching
-
+from main.models import Settings, Term, Profile, Candidate, ActiveMember, PeerTeaching, Test_Upload
+from tutoring.models import Class
 
 class UserForm(ModelForm):
     def check_password(self, password):
@@ -70,7 +70,33 @@ class UserPersonalForm(ModelForm):
         model = User
         fields = ['email', 'first_name', 'middle_name', 'last_name']
 
+#TODO: add rest of form fields
+class TermForm(ModelForm):
+    class Meta:
+        model = Term
+        exclude = ('start_date', 'due_date')
+    
+class ClassForm(ModelForm):
+    class Meta:
+        model = Class
+        exclude = ('display')
+        
 
+class TestForm(ModelForm):
+    #professor = forms.CharField(required=True, label="Professor")
+    #origin_term = forms.ChoiceField(choices=Term.TERM_CHOICES, label = "Test Term")
+    #origin_quarter = forms.ChoiceField(choices=Term.QUARTER_CHOICES, label="Test quarter")
+    #origin_year = forms.IntegerField(label="Test year")
+    #test_upload = forms.FileField(required=True)
+
+    class Meta:
+        model = Test_Upload
+        exclude = ( 'profile')
+        #fields = ['professor', 'origin_quarter','origin_year','test_upload']
+    
+    def __init__(self, *args, **kwargs):
+        super(TestForm, self).__init__(*args, **kwargs)
+        
 class ProfileForm(ModelForm):
     birthday = forms.DateField(label="Birthday (mm/dd/yyyy)", widget=forms.DateInput)
     graduation_quarter = forms.ChoiceField(choices=Term.QUARTER_CHOICES, label="Graduation Quarter")

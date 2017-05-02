@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills nav-pills-info">
   {% for tab in profile_tabs %}
   {% if tab.0 == next %}
-  <li class="active"><a href="#">{{ tab.1 }}</a></li>
+  <li class="active"><a href="#">
   {% else %}
-  <li><a href="{{ tab.0 }}">{{ tab.1 }}</a></li>
+  <li><a href="{{ tab.0 }}">
   {% endif %}
+  {{ tab.1 }}</a></li>
   {% endfor %}
 </ul>
 
-{% block tabcontent %} 
+{% block tabcontent %}
 {% endblock %}
 
 {% endblock %}

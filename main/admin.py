@@ -145,6 +145,10 @@ class PeerAdmin(admin.ModelAdmin):
 class RequirementAdmin(admin.ModelAdmin):
     list_display = ('name', 'requirement_choice', 'event_hours', 'term')
     list_editable = ('requirement_choice', 'event_hours')
+
+
+class TestAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'course', 'professor', 'origin_term')
     
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
@@ -158,3 +162,4 @@ admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(Officer, OfficerAdmin)
 admin.site.register(PeerTeaching, PeerAdmin)
 admin.site.register(Requirement, RequirementAdmin)
+admin.site.register(Test_Upload, TestAdmin)

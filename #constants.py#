@@ -37,7 +37,7 @@ PROFILE_HOUR_CHOICES = (
     ('2', '12pm-2pm'),
     ('3', '1pm-3pm'),
     ('4', '2pm-4pm'),
-    ('5', '3pm-5pm'),
+    #('5', '3pm-5pm'),
 )
 TUTORING_DAY_CHOICES = (
     ('0', 'Monday'),
@@ -53,7 +53,7 @@ TUTORING_HOUR_CHOICES = (
     ('3', '1pm'),
     ('4', '2pm'),
     ('5', '3pm'),
-    ('6', '4pm'),
+    #('6', '4pm'),
     #('7', '5pm'),
 )
 TWO_HOUR_CHOICES = (

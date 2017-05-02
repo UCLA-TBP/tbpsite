@@ -5,6 +5,7 @@ import time
 import zipfile
 
 from django.forms.models import model_to_dict
+from django.forms.models import inlineformset_factory
 from django.contrib import auth
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
@@ -18,8 +19,8 @@ from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.db.models import Q
 
-from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement
-from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm
+from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement, Test_Upload
+from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm
 from tutoring.models import Tutoring, Class, TutoringPreferencesForm
 from common import render
 
@@ -57,9 +58,10 @@ def render_profile_page(request, template, template_args=None):
 
     tabs = [(reverse('main.views.profile_view'), 'Profile'),  # tuples of the url for the view and the tab label
             (reverse('main.views.edit'), 'Edit Profile'),
-            (reverse('main.views.add'), 'Modify Classes'),
-            (reverse('main.views.requirements_view'), request.user.profile.get_position_display())]
-
+            (reverse('main.views.requirements_view'), request.user.profile.get_position_display()),
+            (reverse('main.views.add'), 'Tutoring Profile'),
+            (reverse('main.views.upload'),'Upload Test')]                      
+    
     template_args['profile_tabs'] = tabs  # add the tab tuples to the variables to pass to the template
 
     return render(request, template, additional=template_args)  # render the template
@@ -202,7 +204,6 @@ def profile_view(request):
         ('Middle Name', profile.middle_name),
         ('Last Name', user.last_name),
         ('Nickname', profile.nickname),
-        ('House', profile.house),
         ('Gender', profile.get_gender_display()),
         ('Birthday', profile.birthday),
         ('Phone Number', profile.phone_number),
@@ -221,6 +222,37 @@ def profile_view(request):
             'details': details
         })
 
+
+@login_required(login_url=login)
+def upload(request):
+    profile = request.user.profile
+    #TermFormSet = inlineformset_factory(Term, Test_Upload, form = TermForm)
+    #ClassFormSet = inlineformset_factory(Class, Test_Upload, form = ClassForm)
+    if request.method == 'POST':        
+        form = TestForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            newTest = form.save(commit=False)
+            newTest.profile = profile
+            newTest.save()
+            #termForm = TermForm(request.POST, instance= newTest)
+            #classForm = ClassForm(request.POST)
+            #termForm = TermFormSet(request.POST, instance = newTest)
+            #classForm = ClassFormSet(request.POST, instance = newTest)
+            #term, _ = Term.objects.get_or_create(quarter='Spring', year = '2016')
+            #newTest.course,_ = Class.objects.get_or_create(department='CS', course_number='33')
+            #course.save()
+            #newTest.origin_term = term           
+            #newTest.save()
+            return redirect(profile_view)                      
+            
+    else:
+        test_form = TestForm()
+        #term_form = TermForm()
+        #class_form = ClassForm()
+        return render_profile_page(request, 'upload_test.html',{'test_form': test_form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
+    
+    return HttpResponse("OK")
 
 @login_required(login_url=login)
 def edit(request):

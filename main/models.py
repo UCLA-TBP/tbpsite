@@ -31,6 +31,12 @@ class Term(models.Model):
         ('2', 'Summer'),
         ('3', 'Fall'),
     )
+
+    TERM_CHOICES  = (
+        ('0','Fall 2016'),
+        ('1','Winter 2017'),
+        ('2','Spring 2017'),
+    )
     quarter = models.CharField(max_length=1, choices=QUARTER_CHOICES)
     year = models.IntegerField()
 
@@ -163,6 +169,28 @@ class HousePoints(models.Model):
                     self.professor_interview_and_resume_points(), self.other])
 
 
+class Test_Upload(models.Model):
+   profile = models.ForeignKey('Profile', blank=True, null=True)
+   course = models.ForeignKey('tutoring.Class', blank = True, null = True)
+   #class_name = models.CharField(max_length = 30, blank = True, verbose_name = "Class Name")
+   professor = models.CharField(max_length = 30, blank=True, verbose_name = "Class Professor")
+   origin_term = models.ForeignKey('Term', related_name = 'test_origin_term', blank = True, null = True )
+   test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=True,null=True,default=None,verbose_name="Uploaded Test")
+   
+   class Meta:
+        ordering = ['course','professor']
+        
+   def __unicode__(self):
+       return str(self.course)
+
+   def __str__(self):
+       return str(self.course)
+
+
+#TODO:need to add a method for Profile to return test upload status?
+    
+       
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
 
@@ -192,8 +220,9 @@ class Profile(models.Model):
                                   blank=True, null=True, default=None, verbose_name="Resume (PDF)")
     resume_word = models.FileField(upload_to=upload_to_path, storage=resume_word_fs,
                                    blank=True, null=True, default=None, verbose_name="Resume (word)")
-    test_upload = models.FileField(upload_to = upload_to_path, storage=test_upload_fs,
-                                   blank=True, null=True, default=None, verbose_name="Test Upload")
+    #test_upload = models.FileField(upload_to = upload_to_path, storage=test_upload_fs,
+    #                               blank=True, null=True, default=None, verbose_name="Test Upload")
+
 
     classes = models.ManyToManyField('tutoring.Class', blank=True, null=True)
 
@@ -411,8 +440,8 @@ class Candidate(Member):
 
     def resume(self):
         return self.profile.resume_pdf or self.profile.resume_word
-    def test(self):
-        return self.profile.test_upload
+  #  def test(self):
+  #      return self.profile.test_upload
 
     # REQUIREMENTS
     def generate_ev_reqs(self):

@@ -12,6 +12,7 @@ setup_environ(settings)
 
 from tutoring.models import Tutoring
 from constants import TUTORING_DAY_CHOICES, TUTORING_HOUR_CHOICES
+from main.models import Officer
 
 MAX_TUTORS_PER_HOUR = 5
 MIN_TUTORS_PER_HOUR = 2  # Want this
@@ -19,6 +20,8 @@ ENFORCED_MIN_TUTORS_PER_HOUR = 1  # Enforce this
 
 TUTORING_START = 10  # 10AM
 TUTORING_END = 16  # 1 hr before 5pm
+
+OFFICERS_1_HOUR = True
 
 tutoringHours = {}
 for d in TUTORING_DAY_CHOICES:
@@ -38,7 +41,13 @@ for t in Tutoring.current.all():
         else:
             tutoringObjs.append(t)
 
-def tutoring_hours_status(enforce=False):
+officers = set()
+for position in Officer.objects.all():
+    for officer in position.profile.all():
+        officers.add(officer)
+
+
+def print_tutoring_hours_status(tutoringHours, enforce=False):
     min_satisfied = True
     max_satisfied = True
     total_assigned_hours = 0
@@ -106,10 +115,18 @@ class TutoringTimes:
         self.dayRange = dayRange
         self.hourRange = hourRange
 
+        intervalsCovered = sum(map(
+            lambda x: average(map(
+                lambda y: sorted(y[1])[-1] - sorted(y[1])[0], x.preferences(two_hour=True)
+            )), self.tutorTimes.keys()
+        ))
+
+        self.idealPerInterval = intervalsCovered / len(self.intervals())
+
+
     def __str__(self):
         intervals = self.intervals()
-        print(intervals)
-        for time, tutors in intervals.iteritems:
+        for time, tutors in intervals.iteritems():
             intervals[time] = map(str, tutors)
         return str(intervals)
 
@@ -117,20 +134,17 @@ class TutoringTimes:
         intervals = {(day, hour) : [] for hour in range(*self.hourRange) for day in range(*self.dayRange)}
         for tutor, selection in self.tutorTimes.iteritems():
             day, hours = tutor.preferences(two_hour=True)[selection]
-            for hour in hours:
-                intervals[(day, hour)].append(tutor)
+            if OFFICERS_1_HOUR and tutor.profile in officers:
+                intervals[(day, hours[0])].append(tutor)
+            else:
+                for hour in hours:
+                    intervals[(day, hour)].append(tutor)
 
         return intervals
 
     def cost(self):
-        intervalsCovered = sum(map(
-            lambda x: average(map(
-                lambda y: sorted(y[1])[-1] - sorted(y[1])[0], x.preferences(two_hour=True)
-            )), self.tutorTimes.keys()
-        ))
 
         intervals = self.intervals()
-        idealPerInterval = intervalsCovered / len(intervals)
 
         cost = 0
 
@@ -140,7 +154,7 @@ class TutoringTimes:
 
         for _, tutors in intervals.iteritems():
             # covers cost of having too full or too empty tutoring times
-            cost += 10 * (len(tutors) - idealPerInterval) ** 4
+            cost += 10 * (len(tutors) - self.idealPerInterval) ** 4
             if len(tutors) == 0:
                 cost += 100000
             elif len(tutors) == 1:
@@ -184,11 +198,10 @@ def best_annealing_optimize(tutoringTimes, generation_times=10, T=100000, cool=0
 
 
 tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,17))
-print(tutoringTimes.intervals())
 tutoringHours = best_annealing_optimize(tutoringTimes).intervals()
 
 # Enforce min and max per hour
-tutoring_hours_status(enforce=False)
+print_tutoring_hours_status(tutoringHours, enforce=False)
 
 # Validate assigned hours with preferences
 for time, assignees in tutoringHours.items():
@@ -202,11 +215,15 @@ for time, assignees in tutoringHours.items():
             assert (time in assignee.preferences(two_hour=False) or
                     time in [(t[0], t[1] + 1) for t in assignee.preferences(two_hour=False)])
 
-
 # Commit
 for time, assignees in sorted(tutoringHours.iteritems()):
     for assignee in assignees:
-        if allTutors.count(assignee) == 2:
+        if assignee.profile in officers:
+            assignee.day_1 = str(time[0])
+            assignee.hour_1 = str(time[1] - TUTORING_START)
+            assignee.day_2 = str(time[0])
+            assignee.hour_2 = str(time[1] - TUTORING_START)
+        elif allTutors.count(assignee) == 2: # the strange way we check first or second hour
             allTutors.remove(assignee)
             assignee.day_1 = str(time[0])
             assignee.hour_1 = str(time[1] - TUTORING_START)
