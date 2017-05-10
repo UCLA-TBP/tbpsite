@@ -99,6 +99,7 @@
             </li>
             {% endif %}
             <li><a class="navigation-font" href="{% url 'main.views.profile_view' %}">{{ user.username }}</a></li>
+            <li><a class="navigation-font" href="/testbank">Test Bank</a></li>
             <li><a class="navigation-font" href="{% url 'main.views.logout' %}?next={{ next }}">Logout</a></li>
             {% else %}
 	    <li class="dropdown">

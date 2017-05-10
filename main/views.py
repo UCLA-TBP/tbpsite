@@ -589,13 +589,15 @@ def testbank(request):
         class_tests.setdefault(str(test.course), [])
         class_tests[str(test.course)].append(test)
 
-    for course, tests in class_tests.iteritems():
-        class_tests[course] = sorted(tests, key=lambda x: (str(x), x.professor))
+    ordered_class_tests = []
+
+    for course in sorted(class_tests.keys()):
+        ordered_class_tests.append((course, sorted(class_tests[course], key=lambda x: (str(x), x.professor))))
 
 
     return render(request, 'test_bank.html',
         {
-            'class_tests': class_tests,
+            'class_tests': ordered_class_tests,
         }
     )
 
