@@ -23,6 +23,9 @@ from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoin
 from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm
 from tutoring.models import Tutoring, Class, TutoringPreferencesForm
 from common import render
+from sendfile import sendfile
+
+import constants
 
 MAJOR_MAPPING = {
     '0': 'AeroE',
@@ -90,7 +93,6 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             username, new_password = map(form.cleaned_data.get, ('username', 'new_password'))
-            user = User.objects.create_user(username, password=new_password)
             auth.login(request, auth.authenticate(username=username, password=new_password))
             profile = Profile.objects.create(user=user)
             Candidate.objects.create(profile=profile, term=Settings.objects.term())
@@ -249,6 +251,7 @@ def upload(request):
     else:
         test_form = TestForm()
         #term_form = TermForm()
+        #term_form = TermForm()
         #class_form = ClassForm()
         return render_profile_page(request, 'upload_test.html',{'test_form': test_form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
     
@@ -318,13 +321,6 @@ def edit(request):
                 # interfere with anything else.
                 if peer_teaching_form.cleaned_data['requirement_choice'] != PeerTeaching.TUTORING:
                     candidate.peer_teaching.tutoring.frozen = True
-                    candidate.peer_teaching.tutoring.hidden = True
-                    candidate.peer_teaching.tutoring.save()
-
-                peer_teaching_form = PeerTeachingForm(request.POST, instance=candidate.peer_teaching)
-                peer_teaching_form.save()
-                
-                shirt_form.save()
                 return redirect(add)
 
     if not first_time:
@@ -579,10 +575,37 @@ class CandidateFileView(FileView):
                 raise Http404
             return getattr(get_object_or_404(Candidate, id=id), self.field)
 
+class TestFileView(FileView):
+    def get_object(self, request, id, filename=''):
+        test = get_object_or_404(Test_Upload, id=id)
+        return test.test_upload
+
+@login_required
+def testbank(request):
+    tests = Test_Upload.objects.all()
+
+    class_tests = {}
+    for test in tests:
+        class_tests.setdefault(str(test.course), [])
+        class_tests[str(test.course)].append(test)
+
+    for course, tests in class_tests.iteritems():
+        class_tests[course] = sorted(tests, key=lambda x: (str(x), x.professor))
+
+
+    return render(request, 'test_bank.html',
+        {
+            'class_tests': class_tests,
+        }
+    )
+
 
 resume_pdf = ProfileFileView.as_view(field='resume_pdf')
 resume_word = ProfileFileView.as_view(field='resume_word')
 interview = CandidateFileView.as_view(field='professor_interview')
+proof = CandidateFileView.as_view(field='community_service_proof')
+test_file = TestFileView.as_view()
+
 proof = CandidateFileView.as_view(field='community_service_proof')
 
 @staff_member_required
