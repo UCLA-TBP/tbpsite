@@ -237,6 +237,7 @@ def upload(request):
             newTest = form.save(commit=False)
             newTest.profile = profile
             newTest.save()
+            #TODO: fix this so test upload form is neater
             #termForm = TermForm(request.POST, instance= newTest)
             #classForm = ClassForm(request.POST)
             #termForm = TermFormSet(request.POST, instance = newTest)
@@ -246,7 +247,7 @@ def upload(request):
             #course.save()
             #newTest.origin_term = term           
             #newTest.save()
-            return redirect(profile_view)                      
+            return redirect(upload)                      
             
     else:
         test_form = TestForm()
@@ -592,7 +593,20 @@ def testbank(request):
     ordered_class_tests = []
 
     for course in sorted(class_tests.keys()):
-        ordered_class_tests.append((course, sorted(class_tests[course], key=lambda x: (str(x), x.professor))))
+        ordered_class_tests.append((course, sorted(
+            sorted(
+                class_tests[course], 
+                key=lambda test: (
+                    [test.test_type == t[0] for t in Test_Upload.TEST_TYPES],
+                    test.origin_term, 
+                ),
+                reverse=True,
+            ), 
+            key=lambda test: (
+                str(test), 
+                test.professor.split(' ')[-1] if test.professor else '',
+            ),
+        )))
 
 
     return render(request, 'test_bank.html',

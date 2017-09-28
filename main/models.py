@@ -32,11 +32,6 @@ class Term(models.Model):
         ('3', 'Fall'),
     )
 
-    TERM_CHOICES  = (
-        ('0','Fall 2016'),
-        ('1','Winter 2017'),
-        ('2','Spring 2017'),
-    )
     quarter = models.CharField(max_length=1, choices=QUARTER_CHOICES)
     year = models.IntegerField()
 
@@ -49,6 +44,15 @@ class Term(models.Model):
 
     def __unicode__(self):
         return '{} {}'.format(self.get_quarter_display(), self.year)
+
+    @property
+    def year_quarter(self):
+        if not self:
+            return None
+        return (self.year, self.quarter)
+
+    def __lt__(self, other):
+        return self.year_quarter < other.year_quarter
 
     def get_week(self):
         """
@@ -170,26 +174,29 @@ class HousePoints(models.Model):
 
 
 class Test_Upload(models.Model):
-   profile = models.ForeignKey('Profile', blank=True, null=True)
-   course = models.ForeignKey('tutoring.Class', blank = True, null = True)
-   #class_name = models.CharField(max_length = 30, blank = True, verbose_name = "Class Name")
-   professor = models.CharField(max_length = 30, blank=True, verbose_name = "Class Professor")
-   origin_term = models.ForeignKey('Term', related_name = 'test_origin_term', blank = True, null = True )
-   test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=True,null=True,default=None,verbose_name="Uploaded Test")
-   
-   class Meta:
-        ordering = ['course','professor']
-        
-   def __unicode__(self):
-       return str(self.course)
-
-   def __str__(self):
-       return str(self.course)
-
-
-#TODO:need to add a method for Profile to return test upload status?
     
-       
+    TEST_TYPES=(
+        ('Q',  'Quiz'),
+        ('M1', 'Midterm 1'),
+        ('M2', 'Midterm 2'),
+        ('F',  'Final'),
+        ('?',  'N/A')
+    )
+    profile = models.ForeignKey('Profile', blank=True, null=True)
+    course = models.ForeignKey('tutoring.Class', blank = False, null = True)
+    test_type = models.CharField(max_length = 10, choices=TEST_TYPES, default = '?', blank=True  )
+    professor = models.CharField(max_length = 30, blank=True, verbose_name = "Class Professor")
+    origin_term = models.ForeignKey('Term', related_name = 'test_origin_term', blank = False, null = True )
+    test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=False,null=True,default=None,verbose_name="Uploaded Test")
+   
+    class Meta:
+        ordering = ['course','professor','test_type']
+        
+    def __unicode__(self):
+        return str(self.course)
+
+    def __str__(self):
+        return str(self.course)  
 
 class Profile(models.Model):
     user = models.OneToOneField(User)

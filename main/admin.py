@@ -148,7 +148,7 @@ class RequirementAdmin(admin.ModelAdmin):
 
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'course', 'professor', 'origin_term')
+    list_display = ('profile', 'course', 'test_type', 'professor', 'origin_term')
     
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
