@@ -110,16 +110,28 @@ def schedule(request):
                     'department_classes': department_classes,
                 },
             )
-        except TemplateDoesNotExist:
-            pass
+        except templatedoesnotexist:
+            return render(
+                request, 
+                'schedule.html', 
+                {
+                    'schedule_block': 'schedule_snippet.html', 
+                    'term': term, 
+                    'display': should_display,
+                    'display_current_tutors': display_current_tutors,
+                    'current_tutors_string': current_tutor_list_string,
+                    'department_classes': department_classes,
+                },
+            )
 
     return render(
         request, 
         'schedule.html', 
         {
-            'schedule_block': 'schedule_snippet.html', 
+            'schedule_block': 'no_display_schedule_snippet.html', 
             'term': term, 
             'classes': get_classes(),
+            #'classes': [],
             'tutors': get_tutors(),
             'display': should_display,
             'display_current_tutors': display_current_tutors,

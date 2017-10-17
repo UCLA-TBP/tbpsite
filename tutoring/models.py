@@ -174,8 +174,17 @@ class Tutoring(BaseTutoring):
         :param term:
         :return:
         """
-        tutoring_weeks = {'week_{}'.format(d): globals()['Week{}'.format(d)].objects.create() for d in range(3, 10)}
-        return cls.objects.create(profile=profile, term=term, **tutoring_weeks)
+        tutoring_weeks = {'week_{}'.format(d): globals()['Week{}'.format(d)].objects.create() for d in range(3, 10)}\
+#creates a new entry despite profile_id already existing: tutoring weeks dont match in query
+#        return cls.objects.get_or_create(profile=profile, term=term, **tutoring_weeks)[0]
+        try:
+            tut = cls.current.get(profile=profile)
+            cls.objects.filter(profile=profile).update(term=term, **tutoring_weeks)
+        except cls.DoesNotExist:
+            tut = Tutoring(profile=profile, term=term, **tutoring_weeks)
+            tut.save()
+        return tut
+
 
 
 class WeekManager(models.Manager):

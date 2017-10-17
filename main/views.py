@@ -93,9 +93,15 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             username, new_password = map(form.cleaned_data.get, ('username', 'new_password'))
-            auth.login(request, auth.authenticate(username=username, password=new_password))
-            profile = Profile.objects.create(user=user)
-            Candidate.objects.create(profile=profile, term=Settings.objects.term())
+            new_user, created = User.objects.get_or_create(username=username)
+            new_user.set_password(new_password)
+            new_user.save()
+
+            u = auth.authenticate(username=username, password=new_password)
+
+            auth.login(request, u)
+            profile = Profile.objects.get_or_create(user=new_user)[0]
+            Candidate.objects.get_or_create(profile=profile, term=Settings.objects.term())
             return redirect(edit)
     else:
         form = RegisterForm()
@@ -312,11 +318,17 @@ def edit(request):
                 return redirect(profile_view)
             else:
                 candidate = profile.candidate
-                candidate.peer_teaching = PeerTeaching.objects.create(profile=profile, term=Settings.objects.term())
+                candidate.peer_teaching = PeerTeaching.objects.get_or_create(profile=profile, term=Settings.objects.term())[0]
                 candidate.peer_teaching.tutoring = Tutoring.with_weeks(profile=profile, term=Settings.objects.term())
+                candidate.peer_teaching.requirement_choice = peer_teaching_form.cleaned_data['requirement_choice']
+                candidate.peer_teaching.save()
+
                 tutoring_form = TutoringPreferencesForm(request.POST, instance=candidate.peer_teaching.tutoring)
                 tutoring_form.save()
-                
+
+                candidate.shirt_size = shirt_form.cleaned_data['shirt_size']
+                shirt_form.save()
+
                 # If the candidate did NOT select tutoring, then we will set the attributes
                 # of their tutoring object to hidden/frozen so that their object does not
                 # interfere with anything else.

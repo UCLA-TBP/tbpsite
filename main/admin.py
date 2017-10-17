@@ -149,10 +149,13 @@ class RequirementAdmin(admin.ModelAdmin):
 
 class TestAdmin(admin.ModelAdmin):
     list_display = ('profile', 'course', 'test_type', 'professor', 'origin_term')
-    
+ 
+class TermAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'start_date', 'due_date')
+       
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
-admin.site.register(Term)
+admin.site.register(Term, TermAdmin)
 admin.site.register(Settings, SettingsAdmin)
 admin.site.register(HousePoints, HousePointsAdmin)
 admin.site.register(Profile, ProfileAdmin)

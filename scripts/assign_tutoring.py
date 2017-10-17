@@ -29,8 +29,19 @@ for d in TUTORING_DAY_CHOICES:
         tutoringHours[( int(d[0]), int(h[0]) + TUTORING_START )] = []
 
 # Add all 'frozen' tutors to schedule
+# I have no idea what frozen is btw
 tutoringObjs = []
 allTutors = []
+
+everyone_default = True
+user_override = False
+
+
+officers = set()
+for position in Officer.objects.all():
+    for officer in position.profile.all():
+        officers.add(officer)
+
 for t in Tutoring.current.all():
     allTutors.append(t)
     allTutors.append(t)
@@ -38,13 +49,19 @@ for t in Tutoring.current.all():
         if t.frozen:
             tutoringHours[( int(t.day_1), int(t.hour_1) + TUTORING_START )].append(t)
             tutoringHours[( int(t.day_2), int(t.hour_2) + TUTORING_START )].append(t)
+            print('i still have no idea wtf frozen is, but here is one: %s' % t)
         else:
+            if not(t.day_1 == t.day_2 == '0' and t.hour_1 == t.hour_2 == '0'):
+                everyone_default = False
+
+            t.courses = t.profile.classes.all()
+            t.officer_bool = t.profile in officers
             tutoringObjs.append(t)
 
-officers = set()
-for position in Officer.objects.all():
-    for officer in position.profile.all():
-        officers.add(officer)
+if not everyone_default:
+    if raw_input('The tutoring schedule looks like it\'s been set!  Type "override" to overwrite it: ').lower().strip() != 'override':
+        print('Ok, quitting')
+        exit(0)
 
 
 def print_tutoring_hours_status(tutoringHours, enforce=False):
@@ -122,6 +139,8 @@ class TutoringTimes:
         ))
 
         self.idealPerInterval = intervalsCovered / len(self.intervals())
+        self.idealOfficersPerInterval = len(officers) / len(self.intervals())
+        self._cost = None
 
 
     def __str__(self):
@@ -143,31 +162,46 @@ class TutoringTimes:
         return intervals
 
     def cost(self):
-
+        if self._cost is not None:
+            return self._cost
         intervals = self.intervals()
 
-        cost = 0
+        cost = 1000
 
         for _, selection in self.tutorTimes.iteritems():
             # covers cost of selecting 2nd or 3rd tutoring choices
-            cost += 40 * (selection**2)
+            cost += 3 * (selection**2)
 
         for _, tutors in intervals.iteritems():
             # covers cost of having too full or too empty tutoring times
-            cost += 10 * (len(tutors) - self.idealPerInterval) ** 4
+            cost += (len(tutors) - self.idealPerInterval) ** 4
+            cost += 3 * (len(filter(lambda x: x.officer_bool, tutors)) - self.idealOfficersPerInterval) ** 4
             if len(tutors) == 0:
                 cost += 100000
             elif len(tutors) == 1:
                 cost += 10000
 
+            depts_covered = set()
+            classes_covered = set()
+
+            for t in tutors:
+                for course in t.courses:
+                    depts_covered.add(course.department)
+                    classes_covered.add(course)
+
+            cost -= 2 * len(depts_covered)
+            cost -= 1 * len(classes_covered)
+
+        self._cost = cost
         return cost
 
     def changeRandomTutor(self):
         selectedTutor = self.tutorTimes.keys()[random.randint(0, len(self.tutorTimes) - 1)]
         self.tutorTimes[selectedTutor] = random.randint(0, len(selectedTutor.preferences(two_hour=True)) - 1)
+        self._cost = None
 
 # function that will generate optimized schedule
-def annealingoptimize(tutoringTimes, T=100000, cool=0.95, step=1):
+def annealingoptimize(tutoringTimes, T, cool, step):
     while T > 0.1:
         # Create a new list with one of the values changed
         tutoringTimesNew = copy.deepcopy(tutoringTimes)
@@ -188,17 +222,18 @@ def annealingoptimize(tutoringTimes, T=100000, cool=0.95, step=1):
         T = T * cool
     return tutoringTimes
 
-def best_annealing_optimize(tutoringTimes, generation_times=10, T=100000, cool=0.95, step=1):
+def best_annealing_optimize(tutoringObjs, dayRange, hourRange, generation_times=10, T=100000, cool=0.95, step=1):
+    tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,17))
     best_tutoringTimes = None
-    for _ in range(generation_times):
+    for i in range(generation_times):
         new_tutoringTimes = annealingoptimize(tutoringTimes, T, cool, step)
         if best_tutoringTimes==None or best_tutoringTimes.cost() > new_tutoringTimes.cost():
             best_tutoringTimes = new_tutoringTimes
+        print("%d/%d iterations done" % (i+1, generation_times))
     return best_tutoringTimes
 
 
-tutoringTimes = TutoringTimes(tutoringObjs, dayRange=(0,5), hourRange=(10,17))
-tutoringHours = best_annealing_optimize(tutoringTimes).intervals()
+tutoringHours = best_annealing_optimize(tutoringObjs, dayRange=(0, 5), hourRange=(10, 17)).intervals()
 
 # Enforce min and max per hour
 print_tutoring_hours_status(tutoringHours, enforce=False)
