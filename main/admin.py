@@ -148,7 +148,9 @@ class RequirementAdmin(admin.ModelAdmin):
 
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'course', 'test_type', 'professor', 'origin_term')
+    list_display = ('__str__', 'profile', 'course', 'test_type', 'professor', 'origin_term', 'file_link')
+    readonly_fields = ('file_link',)
+    
  
 class TermAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'start_date', 'due_date')

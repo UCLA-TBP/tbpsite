@@ -24,7 +24,7 @@ urlpatterns = patterns('web.views',
 )
 
 urlpatterns += patterns('main.views',
-    url(r'^tutoring_hours/$', 'tutoring_hours'),
+    url(r'^tutoring_admin/$', 'tutoring_admin'),
     url(r'^houses/$', 'houses'),
 
     url(r'^profile_requirements/$', 'requirements_view'),
@@ -60,7 +60,7 @@ urlpatterns += patterns('main.views',
     url(r'^proof/(?P<id>\d+)$', 'proof'),
 
     url(r'^add_requirement/$', 'add_requirement'),
-   
+
 )
 
 urlpatterns += patterns('event.views',
@@ -79,6 +79,7 @@ urlpatterns += patterns('',
     url(r'^expanded_schedule/$', 'tutoring.views.expanded_schedule'),
     url(r'^tutoring/feedback/$', 'tutoring.views.feedback'),
     url(r'^tutoring/log_hours/$', 'tutoring.views.tutoring_logging'),
+    url(r'^tutoring_admin/csvdump/$', 'tutoring.views.getTutoringCsv'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 #    url(r'', include('tbpsite.urls'))
@@ -87,4 +88,5 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^rg_signup/$', RedirectView.as_view(url='https://goo.gl/forms/QJDTetubbD8vMGNc2')),
     url(r'^rg_event/$', RedirectView.as_view(url='https://www.facebook.com/events/225337421258770/')),
+    url(r'^oa/$', RedirectView.as_view(url='https://docs.google.com/forms/d/e/1FAIpQLSeUHGyweGT6P2p269Ol_9adgzhjkGOGxKRlqQxNXyADqbyOPg/viewform?usp=sf_link')),
 )

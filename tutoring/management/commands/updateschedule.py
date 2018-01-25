@@ -13,11 +13,12 @@ class Command(NoArgsCommand):
     
     def handle_noargs(self, *args, **kwargs):
         term = Settings.objects.term()
+        
         t = Template(open(os.path.join(BASE_DIR, 'templates', 'schedule_snippet.html')).read())
-        c = Context({'term': term, 'classes': get_classes(), 'tutors': get_tutors(), 'display': Settings.objects.display_tutoring()})
 
         temp_path = os.path.join(BASE_DIR, 'cached_templates', 'cached_schedule_snippet.html.temp')
         actual_path = os.path.join(BASE_DIR, 'cached_templates', 'cached_schedule_snippet.html')
+        c = Context({'term': term, 'classes': get_classes(), 'tutors': get_tutors(), 'display': Settings.objects.display_tutoring()})
         open(temp_path, 'w').write(t.render(c))
         os.rename(temp_path, actual_path)
         cache.clear()

@@ -1,11 +1,15 @@
 import itertools
 import re
 import datetime
+import random, math, copy
+import pdb
+import csv
 
 from django.contrib.auth.decorators import login_required
 from django.template import TemplateDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+from django.http import HttpResponse
 
 from common import render
 from main.models import Settings, Profile
@@ -28,7 +32,7 @@ def get_classes():
         department, _ = department
         courses = [(cls.course_number, cls.department+cls.course_number)
                    for cls in sorted((c for c in Class.objects.filter(department=department, display=True)
-                                      if any(filter(Profile.current, c.profile_set.all()))),
+                       if any(filter(lambda x: x.active(), c.profile_set.all()))),
                                      key=lambda c: tuple(int(s) if s.isdigit() else s
                                                          for s in re.search(r'(\d+)([ABCD]?L?)?',
                                                                             c.course_number).groups()))]
@@ -66,11 +70,11 @@ def schedule(request):
     should_display = request.user.is_staff or Settings.objects.display_tutoring()
 
     current_tutors = Tutoring.current.filter(
-        is_tutoring=True, 
+        is_tutoring=True,
         last_start__gte=datetime.datetime.now().date(),
     )
 
-    tutor_profiles = Profile.objects.filter(
+    tutor_profiles = Profile.current.filter(
         id__in=map(lambda x: x.profile.id, current_tutors),
     )
     current_classes_covered = set()
@@ -79,7 +83,7 @@ def schedule(request):
 
     tutor_profiles = sorted(list(tutor_profiles), key=str)
     current_classes_covered = sorted(
-        list(current_classes_covered), 
+        list(current_classes_covered),
         key=lambda x: (x.department, int(''.join([s for s in x.course_number if s.isdigit()]))), #sorts by department, then by number of course_number
     )
 
@@ -96,49 +100,53 @@ def schedule(request):
     department_classes = sorted(list(department_classes.iteritems()), key=lambda x: x[0]) # to sort by department
 
 
-    if should_display: # the cached template always displays the schedule
-        try:
-            return render(
-                request, 
-                'schedule.html', 
-                {
-                    'schedule_block': 'cached_schedule_snippet.html', 
-                    'term': term, 
-                    'display': should_display,
-                    'display_current_tutors': display_current_tutors,
-                    'current_tutors_string': current_tutor_list_string,
-                    'department_classes': department_classes,
-                },
-            )
-        except templatedoesnotexist:
-            return render(
-                request, 
-                'schedule.html', 
-                {
-                    'schedule_block': 'schedule_snippet.html', 
-                    'term': term, 
-                    'display': should_display,
-                    'display_current_tutors': display_current_tutors,
-                    'current_tutors_string': current_tutor_list_string,
-                    'department_classes': department_classes,
-                },
-            )
+    if not should_display:
+        return render(
+            request,
+            'schedule.html',
+            {
+                'schedule_block': 'no_display_schedule_snippet.html',
+                'term': term,
+                #'classes': get_classes(),
+                'classes': [],
+                #'tutors': get_tutors(),
+                'tutors': [],
+                'display': should_display,
+                'display_current_tutors': display_current_tutors,
+                'current_tutors_string': current_tutor_list_string,
+                #'department_classes': department_classes,
+                'department_classes': [],
+            },
+        )
 
-    return render(
-        request, 
-        'schedule.html', 
-        {
-            'schedule_block': 'no_display_schedule_snippet.html', 
-            'term': term, 
-            'classes': get_classes(),
-            #'classes': [],
-            'tutors': get_tutors(),
-            'display': should_display,
-            'display_current_tutors': display_current_tutors,
-            'current_tutors_string': current_tutor_list_string,
-            'department_classes': department_classes,
-        },
-    )
+
+    # the cached template always displays the schedule
+    try:
+        return render(
+            request,
+            'schedule.html',
+            {
+                'schedule_block': 'cached_schedule_snippet.html',
+                'term': term,
+                'display': should_display,
+                'display_current_tutors': display_current_tutors,
+                'current_tutors_string': current_tutor_list_string,
+                'department_classes': department_classes,
+            },
+        )
+    except templatedoesnotexist:
+        return render(
+            request,
+            'schedule.html',
+            {
+                'schedule_block': 'schedule_snippet.html',
+                'term': term,
+                'display': should_display,
+                'display_current_tutors': display_current_tutors,
+                'current_tutors_string': current_tutor_list_string,
+                'department_classes': department_classes,
+            },
+        )
 
 
 @login_required()
@@ -192,7 +200,7 @@ def expanded_schedule(request):
         department, _ = department
         courses = [(cls.course_number, cls.department+cls.course_number)
                    for cls in sorted((c for c in Class.objects.filter(department=department, display=True)
-                                      if any(filter(Profile.current, c.profile_set.all()))),
+                       if any(filter(lambda x: x.active(), c.profile_set.all()))),
                                      key=lambda c: tuple(int(s) if s.isdigit() else s
                                                          for s in re.search(r'(\d+)([ABCD]?L?)?',
                                                                             c.course_number).groups()))]
@@ -212,14 +220,14 @@ def tutoring_logging(request):
     :return:
     """
     c_term = Settings.objects.term()
-    
+
     tutoring = None
     error = None
     isTutoring = False
     hours = 0
     classes = None
     confirm = False
-    
+
     last_logged_in = None
     sign_out_time = None
 
@@ -234,15 +242,15 @@ def tutoring_logging(request):
         #   3. Candidate who chose Academic Outreach
         # The error should be a diagnostic on one of these issues.
         error = "We apologize, but you cannot log your tutoring hours at this time. Please try again tomorrow."
-    
+
     if tutoring:
         isTutoring = tutoring.is_tutoring
-    
+
         td = (datetime.datetime.now() - tutoring.last_start).seconds
         hours = td // 3600
         if (td // 60) % 60 >= 45:
             hours += 1
-        
+
         display_signout_screen = True
 
         if request.method == "POST":
@@ -254,7 +262,7 @@ def tutoring_logging(request):
                 hours = 0
                 classes = Class.objects.filter(display=True)
                 confirm = True
-                
+
             elif 'sign_out' in request.POST:
                 display_signout_screen = False
                 last_logged_in = tutoring.last_start
@@ -275,9 +283,9 @@ def tutoring_logging(request):
                     week = c_term.get_week()
                     if makeup_e > 0:
                         h -= makeup_e # hours not logged!
-                        send_mail('Make up Tutoring Hours!', 
-                                  'Hi! {} indicated they tutored {} hours to make up for an event. Please check this out!'.format(tutoring.profile, makeup_e),
-                                  'tutoring@tbp.seas.ucla.edu', ['tutoring@tbp.seas.ucla.edu'], fail_silently=True)
+                        send_mail('Make up Tutoring Hours!',
+                                  'Hi! {} indicated they tutored {} hours to make up for an event. Please check this out! -- Tutoring Bot'.format(tutoring.profile, makeup_e),
+                                  'tutoring@tbp.seas.ucla.edu', ['tutoring@tbp.seas.ucla.edu', 'board@tbp.seas.ucla.edu'], fail_silently=True)
 
                     if makeup_t > 0:
                         for i in range(3, week):
@@ -299,15 +307,70 @@ def tutoring_logging(request):
 
         else:
             if tutoring.is_tutoring and tutoring.last_start.date() != datetime.datetime.now().date():  # midnight passed :P
-                display_signout_screen = False    
+                display_signout_screen = False
                 error = 'You forgot to sign out of your last tutoring session. Please contact the tutoring chair at tutoring@tbp.seas.ucla.edu to have those hours logged'
                 tutoring.is_tutoring = False
-        
+
         if display_signout_screen:
             classes = Class.objects.filter(display=True)
 
         tutoring.save()
-    
-    return render(request, 'tutoring_logging.html', {'error': error, 'isTutoring': isTutoring, 'hours': hours, 'classes': classes, 'confirm': confirm, 
+
+    return render(request, 'tutoring_logging.html', {'error': error, 'isTutoring': isTutoring, 'hours': hours, 'classes': classes, 'confirm': confirm,
                                                      'last_logged_in': last_logged_in,
                                                      'sign_out_time': sign_out_time})
+
+def getTutoringCsv(request):
+    # Manifest constants
+    MAX_TUTORS_PER_HOUR = 5
+    MIN_TUTORS_PER_HOUR = 2  # Want this
+    ENFORCED_MIN_TUTORS_PER_HOUR = 1  # Enforce this
+
+    TUTORING_START = 10  # 10AM
+    TUTORING_END = 16  # 1 hr before 5pm
+
+    days = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday"}
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="tutoring.csv"'
+
+    tutoringHours = {}
+    for d in TUTORING_DAY_CHOICES:
+        for h in TUTORING_HOUR_CHOICES:
+            tutoringHours[( int(d[0]), int(h[0]) + TUTORING_START )] = set()
+
+    for t in Tutoring.current.all():
+        if not t.hidden:
+            tutoringHours[(int(t.day_1), int(t.hour_1) + 10)] |= set(map(lambda x: str(x), list(t.profile.classes.all())))
+            tutoringHours[(int(t.day_2), int(t.hour_2) + 10)] |= set(map(lambda x: str(x), list(t.profile.classes.all())))
+
+    for key in tutoringHours:
+        tutoringHours[key] = list(tutoringHours[key])
+
+    data = tutoringHours
+    subjects = set()
+    for ls in data.values():
+      for item in ls:
+        subject = item.split(' ')[0]
+        if subject not in subjects:
+          subjects.add(subject)
+
+    subjects = sorted(list(subjects))
+
+    # utility function
+    def format_classes(classes_lst):
+        formatted_classes_lst = [','.join([class_str.split(' ')[1] for class_str in classes_lst if subject in class_str]) for subject in subjects]
+        return formatted_classes_lst
+
+    writer = csv.writer(response)
+    writer.writerow(['Hour', 'Class'] + days.values())
+    for hour in range(TUTORING_START, TUTORING_END + 1):
+        classes = []
+        for day in days:
+            classes.append(format_classes(data[(day, hour)]))
+        rows = zip(*classes)
+        for index, row in enumerate(rows):
+            writer.writerow([str(hour) if not index else '', subjects[index]] + list(row))
+
+    return response

@@ -63,7 +63,7 @@
 			  <!-- <li><a href="../media/files/Eligibility List for Sp14.pdf">Eligibility List</a></li> -->
 			  <li><a href="../media/files/Candidate Packet F17.pdf">Candidate Packet</a></li>
 			  <li><a href="../media/files/TBPCandidateOrientation_F16.pptx">Orientation Presentation</a></li>
-	      <!-- {% if user.is_authenticated %}		  
+	      <!-- {% if user.is_authenticated %}
 	      <li><a href="../media/files/eventsF16.pdf">Fall Events</a></li>
 	      {% endif %}-->
             </ul>
@@ -92,8 +92,8 @@
               <li><a href="{% url 'main.views.active_members' %}">Active Members</a></li>
 	      <li><a href="{% url 'main.views.add_requirement' %}">Requirement Attendance</a></li>
               <li><a href="{% url 'main.views.all_profiles' %}">All Profiles</a></li>
-              <li><a href="{% url 'main.views.pending_community_service' %}">Pending Community Service</a></li>
-              <li><a href="{% url 'main.views.tutoring_hours' %}">Tutoring Hours</a></li>
+              <!--<li><a href="{% url 'main.views.pending_community_service' %}">Pending Community Service</a></li>-->
+              <li><a href="{% url 'main.views.tutoring_admin' %}">Tutoring</a></li>
               <li><a href="{% url 'main.views.downloads' %}">Downloads</a></li>
               <li><a href="https://sites.google.com/site/tbpcaeofficers/">Wiki</a></li>
             </ul>
@@ -113,7 +113,7 @@
 		  {% endif %}
 		  <input type="text" class="form-control" id="form" placeholder="Username" name="username" style="width: 200px; margin-top: 1em; margin-bottom: 0.5em;" autocomplete="off">
 		  <input type="password" class="form-control" id="form" placeholder="Password" name="password" style="width: 200px;" autocomplete="off">
-		  <button type="submit" class="btn btn-warning btn-submit" style="margin-top:1em; margin-bottom:1em;">Sign in</button>	
+		  <button type="submit" class="btn btn-warning btn-submit" style="margin-top:1em; margin-bottom:1em;">Sign in</button>
 		</form>
 	      </ul>
 	    </li>
@@ -129,8 +129,8 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            Tau Beta Pi at UCLA | 
-            <a href="{% url 'web.views.home' %}">Home</a> | 
+            Tau Beta Pi at UCLA |
+            <a href="{% url 'web.views.home' %}">Home</a> |
             <a href="{% url 'web.views.officers' %}">Contact</a>
           </div>
         </div>
@@ -148,8 +148,8 @@
 	$('.carousel').carousel({
 	interval: 4000
 	})
-	});    
-      </script> 
+	});
+      </script>
     <script src="/static/js/material.min.js"></script>
     <script src="/static/js/material-kit.js" type="text/javascript"></script>
     <script>

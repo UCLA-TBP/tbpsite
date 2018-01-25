@@ -1,7 +1,7 @@
-#!/usr/bin/env python
-from __future__ import division, print_function
+#!/usr/bin/env python from __future__ import division, print_function
 import sys
 import random, math, copy
+import pdb
 
 sys.path.insert(0, '..')
 sys.path.append('.')
@@ -39,6 +39,49 @@ for key in tutoringHours:
     tutoringHours[key] = list(tutoringHours[key])
 
 
-print(repr(tutoringHours))
+data = tutoringHours
 
+toDay = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday"}
 
+sortedData = sorted(data.items(), key=lambda x: (x[0][1], x[0][0]))
+
+subjects = set()
+for ls in data.values():
+  for item in ls:
+    subject = item.split(' ')[0]
+    if subject not in subjects:
+      subjects.add(subject)
+
+pdb.set_trace()
+
+currentTime = None
+fields = {}
+for item in sortedData:
+  if item[0][1] != currentTime and currentTime:
+    currentDay = 0
+    print("Hour: {}".format(currentTime))
+    for day in fields.items():
+      print(toDay[day[0]])
+      for subject in sorted(day[1].items(), key=lambda x: x[0]):
+        print(subject[0] + ": " + ' '.join(subject[1]))
+      print("")
+    currentTime = item[0][1]
+    fields = {}
+  else:
+    currentTime = item[0][1]
+  fields[item[0][0]] = {}
+  for subject in item[1]:
+    if subject.split(' ')[0] not in fields[item[0][0]]:
+      fields[item[0][0]][subject.split(' ')[0]] = [subject.split(' ')[1]]
+    else:
+      fields[item[0][0]][subject.split(' ')[0]].append(subject.split(' ')[1])
+if fields:
+  currentDay = 0
+  print("Hour: {}".format(currentTime))
+  for day in fields.items():
+    print(toDay[day[0]])
+    for subject in sorted(day[1].items(), key=lambda x: x[0]):
+      print(subject[0] + ": " + ' '.join(sorted(subject[1])))
+    print("")
+  currentTime = item[0][1]
+  fields = {}

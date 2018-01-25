@@ -140,7 +140,7 @@ class LoginForm(forms.Form):
 class CandidateForm(ModelForm):
     class Meta:
         model = Candidate
-        fields = ['professor_interview', 'community_service_proof']
+        fields = ['professor_interview']
 
 
 class MemberForm(ModelForm):

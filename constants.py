@@ -14,13 +14,14 @@ MAJOR_CHOICES = (
     ('6', 'Electrical Engineering'),
     ('7', 'Materials Engineering'),
     ('8', 'Mechanical Engineering'),
+    ('9', 'Computer Engineering'),
 )
 DEPT_CHOICES = (
     ('0', 'Bioengineering'),
     ('1', 'Chemical and Biomolecular Engineering'),
     ('2', 'Civil and Environmental Engineering'),
     ('3', 'Computer Science'),
-    ('4', 'Electrical Engineering'),
+    ('4', 'Electrical and Computer Engineering'),
     ('5', 'Mechanical and Aerospace Engineering'),
     ('6', 'Materials Science and Engineering'),
 )

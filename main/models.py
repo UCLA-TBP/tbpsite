@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 
 from constants import MAJOR_CHOICES, DEPT_CHOICES, resume_word_fs, resume_pdf_fs, community_service_fs, \
     professor_interview_fs, test_upload_fs
+import datetime
 
 from points import *
 
@@ -107,7 +108,6 @@ class Settings(models.Model):
     def __unicode__(self):
         return 'Settings'
 
-
 class TermManager(models.Manager):
     def get_query_set(self):
         """
@@ -119,6 +119,19 @@ class TermManager(models.Manager):
                 return super(TermManager, self).get_query_set().filter(term=term)
         return super(TermManager, self).get_query_set()
 
+class GraduatedManager(models.Manager):
+    def get_query_set(self):
+        """
+        :return: Current term if display_all_terms is not set in Settings and term is set, otherwise all terms
+        """
+        if not Settings.objects.display_all_terms():
+            term = Settings.objects.term()
+            if term:
+                return super(GraduatedManager, self).get_query_set().filter(
+                    models.Q(graduation_term__year__gt=term.year) |
+                    models.Q(graduation_term__year=term.year, graduation_term__due_date__gte=datetime.datetime.now())
+                )
+        return super(GraduatedManager, self).get_query_set()
 
 class House(models.Model):
     HOUSE_CHOICES = (
@@ -187,7 +200,9 @@ class Test_Upload(models.Model):
     test_type = models.CharField(max_length = 10, choices=TEST_TYPES, default = '?', blank=True  )
     professor = models.CharField(max_length = 30, blank=True, verbose_name = "Class Professor")
     origin_term = models.ForeignKey('Term', related_name = 'test_origin_term', blank = False, null = True )
-    test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=False,null=True,default=None,verbose_name="Uploaded Test")
+    test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=False,null=True,default=None,verbose_name="Uploaded Test",
+                                   validators=[lambda v : validate_re(r'^.*\.pdf$', v.name.lower(),
+                                                                      'Please upload files in PDF format only')])
    
     class Meta:
         ordering = ['course','professor','test_type']
@@ -197,6 +212,14 @@ class Test_Upload(models.Model):
 
     def __str__(self):
         return str(self.course)  
+
+    def file_link(self):
+        if self.test_upload:
+            link = '/testbank/file/%d/%s' % (self.id, self.test_upload)
+            return '<a href="%s">%s</a>' % (link, self.test_upload)
+        return '<a href=''>None</a>'
+    file_link.allow_tags = True
+    file_link.short_desrciption = 'Test File Link'
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -218,6 +241,9 @@ class Profile(models.Model):
         (CANDIDATE, 'Candidate'),
         (MEMBER, 'Member'),
     )
+    uid = models.CharField(max_length=12, verbose_name="University ID (xxx-xxx-xxx)", null=True,
+                                    validators=[lambda v: validate_re(r'^\d{3}-\d{3}-\d{3}$', v,
+                                                                      'Please enter a valid university ID')])
     position = models.CharField(max_length=1, choices=POSITION_CHOICES, default='0')
     house = models.ForeignKey('House', blank=True, null=True)
     major = models.CharField(max_length=1, choices=MAJOR_CHOICES, default='0')
@@ -232,6 +258,8 @@ class Profile(models.Model):
 
 
     classes = models.ManyToManyField('tutoring.Class', blank=True, null=True)
+    objects = models.Manager()
+    current = GraduatedManager()
 
     class Meta:
         ordering = ('position', 'user__last_name', 'user__first_name')
@@ -242,9 +270,9 @@ class Profile(models.Model):
             name += ' (%s)' % (self.nickname)
         return name if name else self.user.get_username()
 
-    def current(self):
+    def active(self):
         """
-        :return: Requirement object associated with current term
+        :return: Boolean on whether the profile has a requirement
         """
         if self.position == Profile.CANDIDATE:
             try:

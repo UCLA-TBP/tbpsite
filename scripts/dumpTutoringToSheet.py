@@ -15,9 +15,10 @@ from tutoring.models import ForeignTutoring
 from constants import TUTORING_DAY_CHOICES, TUTORING_HOUR_CHOICES, TWO_HOUR_CHOICES
 from tutoring.models import Class
 from constants import *
+import pdb
 
 fts = ForeignTutoring.objects.filter(term=Settings.objects.term())
-tutors = Tutoring.objects.filter(term=Settings.objects.term())
+tutors = Tutoring.current.all()
 csvFileName = sys.argv[1];
 
 hr1Choices = set()
@@ -30,12 +31,11 @@ hr7Choices = set()
 
 #IN PROGRESS
 
-header = ['Hours', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] 
+header = ['Hours', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
 with open(csvFileName, 'wb') as csvFile:
     writer = csv.writer(csvFile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(header)
     for t in tutors:
         classes = t.get_classes()
-    
-    
+        pdb.set_trace()

@@ -89,10 +89,7 @@ message_text = \
 """Hi Tutors,
 
 The following is a list of people who have missed tutoring hours. If you are on this list, you must contact the tutoring chairs (tutoring@tbp.seas.ucla.edu) to make up your hours. 
-
 If you have contacted us before about changing your hours, or you believe there may be a mistake in the provided information, please let us know.
-
-If your tutoring hours have fallen on a holiday and you are on this list, let us know so we can adjust your hours correctly.  
 
 Please take a look at the schedule (https://tbp.seas.ucla.edu/schedule/), pick a make-up time slot to attend and send an email back to us with your choice.
 
@@ -124,7 +121,7 @@ server.login(from_addr, settings.EMAIL_PASSWORD)
 #server.set_debuglevel(1)
 #server.sendmail(from_addr, recipients, message)
 
-#print("sending to %s" % repr(bad_tutors))
+print("sending to %s" % repr(bad_tutors))
 print(message)
 server.quit()
 

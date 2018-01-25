@@ -63,8 +63,8 @@ def render_profile_page(request, template, template_args=None):
             (reverse('main.views.edit'), 'Edit Profile'),
             (reverse('main.views.requirements_view'), request.user.profile.get_position_display()),
             (reverse('main.views.add'), 'Tutoring Profile'),
-            (reverse('main.views.upload'),'Upload Test')]
-
+            (reverse('main.views.upload'),'Upload Test')]                      
+    
     template_args['profile_tabs'] = tabs  # add the tab tuples to the variables to pass to the template
 
     return render(request, template, additional=template_args)  # render the template
@@ -142,11 +142,11 @@ def profile_view(request):
         candidate = profile.candidate
 
         #Core Requirements
-        core_requirements = ((name, 'Completed' if requirement else 'Not Completed')
+        core_requirements = ((name, 'Completed' if requirement else 'Not Completed') 
                             for name, requirement in candidate.requirements())
 
         #Peer Teaching Track
-        track = (candidate.peer_teaching_track(),
+        track = (candidate.peer_teaching_track(), 
                 'Completed' if candidate.peer_teaching_complete() else 'Not Completed')
 
         # #Event Requirements
@@ -183,8 +183,8 @@ def profile_view(request):
         #         catReqs.append(prof_int)
         #         sum += prof_int.event_hours
         #     ev_reqs.append((cat[1], (catReqs, sum, Requirement.POINTS_NEEDED[cat[1]])))
-
-        # ev_reqs.append(('Elective', (None, electiveSum, Requirement.POINTS_NEEDED['Elective'])))
+            
+        # ev_reqs.append(('Elective', (None, electiveSum, Requirement.POINTS_NEEDED['Elective']))) 
         ev_reqs = candidate.generate_ev_reqs()
         details = None  # extra profile information
     else:  # otherwise the profile belongs to an active member
@@ -196,12 +196,12 @@ def profile_view(request):
             core_requirements = ((name, 'Completed' if requirement else 'Not Completed') for name, requirement in
                             ActiveMember.objects.get(profile=profile, term=Settings.objects.term).requirements())
             #track = (am.peer_teaching_track(), 'Completed' if am.peer_teaching_complete() else 'Not Completed')
-
+        
         except ActiveMember.DoesNotExist:
             core_requirements = None
             track = None
-
-
+            
+            
 
         details = ((active.term, 'Completed' if active.requirement() else 'In Progress')
                    for active in ActiveMember.objects.filter(profile=profile))
@@ -236,9 +236,9 @@ def upload(request):
     profile = request.user.profile
     #TermFormSet = inlineformset_factory(Term, Test_Upload, form = TermForm)
     #ClassFormSet = inlineformset_factory(Class, Test_Upload, form = ClassForm)
-    if request.method == 'POST':
+    if request.method == 'POST':        
         form = TestForm(request.POST, request.FILES)
-
+        
         if form.is_valid():
             newTest = form.save(commit=False)
             newTest.profile = profile
@@ -251,17 +251,17 @@ def upload(request):
             #term, _ = Term.objects.get_or_create(quarter='Spring', year = '2016')
             #newTest.course,_ = Class.objects.get_or_create(department='CS', course_number='33')
             #course.save()
-            #newTest.origin_term = term
+            #newTest.origin_term = term           
             #newTest.save()
-            return redirect(upload)
-
+            return redirect(upload)                      
+            
     else:
         test_form = TestForm()
         #term_form = TermForm()
         #term_form = TermForm()
         #class_form = ClassForm()
         return render_profile_page(request, 'upload_test.html',{'test_form': test_form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
-
+    
     return HttpResponse("OK")
 
 @login_required(login_url=login)
@@ -289,7 +289,7 @@ def edit(request):
             tutoring_form = TutoringPreferencesForm()
             shirt_form = ShirtForm()
             peer_teaching_form = PeerTeachingForm()
-
+            
     else:
         user_personal_form = UserPersonalForm(request.POST, instance=user)
 
@@ -468,7 +468,7 @@ def active_members(request):
 
 
     aMembers = ActiveMember.current
-    return render(request, 'active_members.html',
+    return render(request, 'active_members.html', 
                   {'member_list': aMembers.filter(profile__user__is_staff=False).order_by('profile'),
                    'staff_member_list': aMembers.filter(profile__user__is_staff=True).order_by('profile'),
                    'dropdown_term' : Settings.objects.term(), 'terms': terms_list})
@@ -489,7 +489,7 @@ def pending_community_service(request):
 
 
 @staff_member_required
-def tutoring_admin(request):
+def tutoring_hours(request):
     return render(request, 'tutoring_hours.html', {'tutoring_list': Tutoring.current.order_by('profile')})
 
 
@@ -510,7 +510,7 @@ def all_profiles(request):
     profile_list = []
     for prof in prof_list_initial:
         if prof.user.last_name:
-            profile_list.append(prof)
+            profile_list.append(prof) 
     return render(request, 'user_info_dump.html', {'profile_list': profile_list})
 
 def create_zipfile(filenames):
@@ -607,15 +607,15 @@ def testbank(request):
     for course in sorted(class_tests.keys()):
         ordered_class_tests.append((course, sorted(
             sorted(
-                class_tests[course],
+                class_tests[course], 
                 key=lambda test: (
                     [test.test_type == t[0] for t in Test_Upload.TEST_TYPES],
-                    test.origin_term,
+                    test.origin_term, 
                 ),
                 reverse=True,
-            ),
+            ), 
             key=lambda test: (
-                str(test),
+                str(test), 
                 test.professor.split(' ')[-1] if test.professor else '',
             ),
         )))
@@ -661,6 +661,6 @@ def add_requirement(request):
            successD += str(da) + " "
     return render(request, 'add_requirement.html', {'candidate_list': Candidate.current.order_by('profile'),
                                                     'da_list': ActiveMember.current.order_by('profile'),
-                                                    'requirement_list': Requirement.current.all(),
+                                                    'requirement_list': Requirement.current.all(), 
                                                     "successC": successC,
                                                     "successD": successD})
