@@ -200,7 +200,7 @@ class Test_Upload(models.Model):
     test_type = models.CharField(max_length = 10, choices=TEST_TYPES, default = '?', blank=True  )
     professor = models.CharField(max_length = 30, blank=True, verbose_name = "Class Professor")
     origin_term = models.ForeignKey('Term', related_name = 'test_origin_term', blank = False, null = True )
-    test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=False,null=True,default=None,verbose_name="Uploaded Test",
+    test_upload = models.FileField(upload_to=upload_to_path, storage=test_upload_fs,blank=False,null=True,default=None,verbose_name="Uploaded Test (pdf)",
                                    validators=[lambda v : validate_re(r'^.*\.pdf$', v.name.lower(),
                                                                       'Please upload files in PDF format only')])
    

@@ -360,7 +360,7 @@ def getTutoringCsv(request):
 
     # utility function
     def format_classes(classes_lst):
-        formatted_classes_lst = [','.join([class_str.split(' ')[1] for class_str in classes_lst if subject in class_str]) for subject in subjects]
+        formatted_classes_lst = [','.join(sorted([class_str.split(' ')[1] for class_str in classes_lst if subject in class_str])) for subject in subjects]
         return formatted_classes_lst
 
     writer = csv.writer(response)

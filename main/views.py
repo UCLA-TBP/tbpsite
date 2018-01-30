@@ -215,6 +215,7 @@ def profile_view(request):
         ('Gender', profile.get_gender_display()),
         ('Birthday', profile.birthday),
         ('Phone Number', profile.phone_number),
+        ('University ID', profile.uid),
         ('Major', profile.get_major_display()),
         ('Graduation Term', profile.graduation_term),
     )
@@ -254,6 +255,7 @@ def upload(request):
             #newTest.origin_term = term
             #newTest.save()
             return redirect(upload)
+        return render_profile_page(request, 'upload_test.html',{'test_form': form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
 
     else:
         test_form = TestForm()
@@ -261,8 +263,6 @@ def upload(request):
         #term_form = TermForm()
         #class_form = ClassForm()
         return render_profile_page(request, 'upload_test.html',{'test_form': test_form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
-
-    return HttpResponse("OK")
 
 @login_required(login_url=login)
 def edit(request):

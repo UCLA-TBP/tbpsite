@@ -104,7 +104,7 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['nickname', 'gender', 'birthday', 'phone_number', 'major',
+        fields = ['nickname', 'gender', 'birthday', 'phone_number', 'uid', 'major',
                   'graduation_quarter', 'graduation_year', 'resume_pdf', 'resume_word']
         widgets = {
             'gender': forms.widgets.RadioSelect
@@ -117,7 +117,7 @@ class FirstProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['nickname', 'gender', 'birthday', 'phone_number', 'major', 'graduation_quarter', 'graduation_year']
+        fields = ['nickname', 'gender', 'birthday', 'phone_number', 'uid', 'major', 'graduation_quarter', 'graduation_year']
         widgets = {
             'gender': forms.widgets.RadioSelect
         }
