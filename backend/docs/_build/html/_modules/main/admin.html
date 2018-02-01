@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>main.admin &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for main.admin</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.admin</span> <span class="kn">import</span> <span class="n">UserAdmin</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="kn">from</span> <span class="nn">main.models</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="MyUserAdmin"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin">[docs]</a><span class="k">class</span> <span class="nc">MyUserAdmin</span><span class="p">(</span><span class="n">UserAdmin</span><span class="p">):</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;create_profile&#39;</span><span class="p">,</span> <span class="s">&#39;reset_password&#39;</span><span class="p">,</span> <span class="s">&#39;add_staff&#39;</span><span class="p">,</span> <span class="s">&#39;remove_staff&#39;</span><span class="p">,</span> <span class="s">&#39;clear_groups&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span> <span class="n">UserAdmin</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_display</span> <span class="o">+=</span> <span class="p">(</span> <span class="s">&#39;date_joined&#39;</span><span class="p">,</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="MyUserAdmin.create_profile"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin.create_profile">[docs]</a>    <span class="k">def</span> <span class="nf">create_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">Profile</span><span class="o">.</span><span class="n">MEMBER</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MyUserAdmin.reset_password"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin.reset_password">[docs]</a>    <span class="k">def</span> <span class="nf">reset_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">make_random_password</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">email_user</span><span class="p">(</span>
+                <span class="s">&#39;TBP Account Password Reset&#39;</span><span class="p">,</span>
+                <span class="s">&#39;Username: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;Password: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;Please change your password and update your information so we can keep the resumes we send out up to date.</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;Webmaster - Tau Beta Pi</span><span class="se">\n</span><span class="s">&#39;</span>
+                <span class="s">&#39;UCLA - CA Epsilon</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">get_username</span><span class="p">(),</span> <span class="n">password</span><span class="p">),</span>
+                <span class="s">&#39;webmaster@tbp.seas.ucla.edu&#39;</span>
+            <span class="p">)</span>
+
+        <span class="n">send_mail</span><span class="p">(</span> <span class="s">&#39;TBP Password Reset Accounting&#39;</span><span class="p">,</span> 
+                <span class="s">&#39;The following users had their passwords reset:</span><span class="se">\n\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                    <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="p">[</span> <span class="n">user</span><span class="o">.</span><span class="n">get_username</span><span class="p">()</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">queryset</span> <span class="p">]</span> <span class="p">),</span>
+                <span class="s">&#39;webmaster@tbp.seas.ucla.edu&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;webmaster@tbp.seas.ucla.edu&#39;</span> <span class="p">]</span> <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MyUserAdmin.add_staff"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin.add_staff">[docs]</a>    <span class="k">def</span> <span class="nf">add_staff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_staff</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MyUserAdmin.remove_staff"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin.remove_staff">[docs]</a>    <span class="k">def</span> <span class="nf">remove_staff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_staff</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MyUserAdmin.clear_groups"><a class="viewcode-back" href="../../main.html#main.admin.MyUserAdmin.clear_groups">[docs]</a>    <span class="k">def</span> <span class="nf">clear_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="HousePointsAdmin"><a class="viewcode-back" href="../../main.html#main.admin.HousePointsAdmin">[docs]</a><span class="k">class</span> <span class="nc">HousePointsAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;__unicode__&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;professor_interview_and_resume&#39;</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">)</span>
+    <span class="n">list_editable</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;professor_interview_and_resume&#39;</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ProfileAdmin"><a class="viewcode-back" href="../../main.html#main.admin.ProfileAdmin">[docs]</a><span class="k">class</span> <span class="nc">ProfileAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;__unicode__&#39;</span><span class="p">,</span> <span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;house&#39;</span><span class="p">,</span> <span class="s">&#39;major&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;initiation_term&#39;</span><span class="p">,</span> <span class="s">&#39;graduation_term&#39;</span><span class="p">,</span> <span class="s">&#39;resume_pdf&#39;</span><span class="p">,</span> <span class="s">&#39;resume_word&#39;</span><span class="p">)</span>
+    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,)</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;user__first_name&#39;</span><span class="p">,</span> <span class="s">&#39;user__last_name&#39;</span><span class="p">,</span> <span class="s">&#39;user__email&#39;</span><span class="p">)</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;create_candidate&#39;</span><span class="p">,</span> <span class="s">&#39;create_active_member&#39;</span><span class="p">,</span> <span class="s">&#39;promote_candidate&#39;</span><span class="p">)</span>
+    <span class="n">filter_horizontal</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;classes&#39;</span><span class="p">,)</span>
+
+<div class="viewcode-block" id="ProfileAdmin.create_candidate"><a class="viewcode-back" href="../../main.html#main.admin.ProfileAdmin.create_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">create_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Current term not set&#39;</span><span class="p">)</span>
+
+        <span class="c"># check for errors, all or nothing</span>
+        <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="s">&#39;1&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;{} is already a member&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">profile</span><span class="p">))</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="s">&#39;candidate&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;{} is already a candidate&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">profile</span><span class="p">))</span>
+                <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span> <span class="o">=</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+            <span class="n">profile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ProfileAdmin.create_active_member"><a class="viewcode-back" href="../../main.html#main.admin.ProfileAdmin.create_active_member">[docs]</a>    <span class="k">def</span> <span class="nf">create_active_member</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;Current term not set&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;{} is already an active member for the term&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">profile</span><span class="p">))</span>
+                <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
+            <span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">candidate</span><span class="o">=</span><span class="n">Candidate</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="ProfileAdmin.promote_candidate"><a class="viewcode-back" href="../../main.html#main.admin.ProfileAdmin.promote_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">promote_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">Profile</span><span class="o">.</span><span class="n">MEMBER</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CandidateAdmin"><a class="viewcode-back" href="../../main.html#main.admin.CandidateAdmin">[docs]</a><span class="k">class</span> <span class="nc">CandidateAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;__unicode__&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;shirt_size&#39;</span><span class="p">,</span> <span class="s">&#39;bent_polish&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_quiz&#39;</span><span class="p">,</span> <span class="s">&#39;quiz_first_try&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_meet_and_greet&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;signature_book&#39;</span><span class="p">,</span> <span class="s">&#39;community_service&#39;</span><span class="p">,</span> <span class="s">&#39;initiation_fee&#39;</span><span class="p">,</span> <span class="s">&#39;engineering_futures&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_sorting&#39;</span><span class="p">)</span>
+    <span class="n">list_editable</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;bent_polish&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_quiz&#39;</span><span class="p">,</span> <span class="s">&#39;quiz_first_try&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_meet_and_greet&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;signature_book&#39;</span><span class="p">,</span> <span class="s">&#39;community_service&#39;</span><span class="p">,</span> <span class="s">&#39;initiation_fee&#39;</span><span class="p">,</span> <span class="s">&#39;engineering_futures&#39;</span><span class="p">,</span> <span class="s">&#39;candidate_sorting&#39;</span><span class="p">)</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;create_candidate&#39;</span><span class="p">,</span> <span class="s">&#39;create_active_member&#39;</span><span class="p">,</span> <span class="s">&#39;promote_candidate&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CandidateAdmin.promote_candidate"><a class="viewcode-back" href="../../main.html#main.admin.CandidateAdmin.promote_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">promote_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">position__member</span><span class="o">=</span><span class="n">Profile</span><span class="o">.</span><span class="n">MEMBER</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ActiveMemberAdmin"><a class="viewcode-back" href="../../main.html#main.admin.ActiveMemberAdmin">[docs]</a><span class="k">class</span> <span class="nc">ActiveMemberAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;__unicode__&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;requirement_choice&#39;</span><span class="p">,</span> <span class="s">&#39;requirement_complete&#39;</span><span class="p">)</span>
+    <span class="n">list_editable</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;requirement_choice&#39;</span><span class="p">,</span> <span class="s">&#39;requirement_complete&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="FacultyAdmin"><a class="viewcode-back" href="../../main.html#main.admin.FacultyAdmin">[docs]</a><span class="k">class</span> <span class="nc">FacultyAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;dept&#39;</span><span class="p">,</span> <span class="s">&#39;chapter&#39;</span><span class="p">,</span> <span class="s">&#39;graduation&#39;</span><span class="p">,</span> <span class="s">&#39;link&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="SettingsAdmin"><a class="viewcode-back" href="../../main.html#main.admin.SettingsAdmin">[docs]</a><span class="k">class</span> <span class="nc">SettingsAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;__unicode__&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;signup_term&#39;</span><span class="p">,</span> <span class="s">&#39;display_all_terms&#39;</span><span class="p">,</span> <span class="s">&#39;display_tutoring&#39;</span><span class="p">,</span> <span class="s">&#39;registration_code&#39;</span><span class="p">)</span>
+    <span class="n">list_editable</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;signup_term&#39;</span><span class="p">,</span> <span class="s">&#39;display_all_terms&#39;</span><span class="p">,</span> <span class="s">&#39;display_tutoring&#39;</span><span class="p">,</span> <span class="s">&#39;registration_code&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="OfficerAdmin"><a class="viewcode-back" href="../../main.html#main.admin.OfficerAdmin">[docs]</a><span class="k">class</span> <span class="nc">OfficerAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;rank&#39;</span><span class="p">,</span> <span class="s">&#39;mail_alias&#39;</span><span class="p">,</span> <span class="s">&#39;list_profiles&#39;</span><span class="p">)</span>
+    <span class="n">filter_horizontal</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">,)</span>
+</div>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">MyUserAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Term</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Settings</span><span class="p">,</span> <span class="n">SettingsAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">HousePoints</span><span class="p">,</span> <span class="n">HousePointsAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Profile</span><span class="p">,</span> <span class="n">ProfileAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Candidate</span><span class="p">,</span> <span class="n">CandidateAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ActiveMember</span><span class="p">,</span> <span class="n">ActiveMemberAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Faculty</span><span class="p">,</span> <span class="n">FacultyAdmin</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Officer</span><span class="p">,</span> <span class="n">OfficerAdmin</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1739 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>main package &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="index.html" />
+    <link rel="next" title="event package" href="event.html" />
+    <link rel="prev" title="web package" href="web.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="event.html" title="event package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="web.html" title="web package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-main">
+<span id="main-package"></span><h1>main package<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h1>
+<p>This directory is the central database system for the website, profiles, and house points.</p>
+<div class="section" id="module-main.admin">
+<span id="main-admin-module"></span><h2>main.admin module<a class="headerlink" href="#module-main.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="main.admin.ActiveMemberAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">ActiveMemberAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#ActiveMemberAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.ActiveMemberAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.ActiveMemberAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'requirement_choice', 'requirement_complete')</em><a class="headerlink" href="#main.admin.ActiveMemberAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ActiveMemberAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('requirement_choice', 'requirement_complete')</em><a class="headerlink" href="#main.admin.ActiveMemberAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ActiveMemberAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.ActiveMemberAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.CandidateAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">CandidateAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#CandidateAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.CandidateAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.CandidateAdmin.actions">
+<tt class="descname">actions</tt><em class="property"> = ('create_candidate', 'create_active_member', 'promote_candidate')</em><a class="headerlink" href="#main.admin.CandidateAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.CandidateAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'shirt_size', 'bent_polish', 'candidate_quiz', 'quiz_first_try', 'candidate_meet_and_greet', 'signature_book', 'community_service', 'initiation_fee', 'engineering_futures', 'candidate_sorting')</em><a class="headerlink" href="#main.admin.CandidateAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.CandidateAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('bent_polish', 'candidate_quiz', 'quiz_first_try', 'candidate_meet_and_greet', 'signature_book', 'community_service', 'initiation_fee', 'engineering_futures', 'candidate_sorting')</em><a class="headerlink" href="#main.admin.CandidateAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.CandidateAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.CandidateAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.CandidateAdmin.promote_candidate">
+<tt class="descname">promote_candidate</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#CandidateAdmin.promote_candidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.CandidateAdmin.promote_candidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.FacultyAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">FacultyAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#FacultyAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.FacultyAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.FacultyAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('name', 'dept', 'chapter', 'graduation', 'link')</em><a class="headerlink" href="#main.admin.FacultyAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.FacultyAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.FacultyAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.HousePointsAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">HousePointsAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#HousePointsAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.HousePointsAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.HousePointsAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'professor_interview_and_resume', 'other')</em><a class="headerlink" href="#main.admin.HousePointsAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.HousePointsAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('professor_interview_and_resume', 'other')</em><a class="headerlink" href="#main.admin.HousePointsAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.HousePointsAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.HousePointsAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.MyUserAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">MyUserAdmin</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.admin.UserAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.MyUserAdmin.actions">
+<tt class="descname">actions</tt><em class="property"> = ('create_profile', 'reset_password', 'add_staff', 'remove_staff', 'clear_groups')</em><a class="headerlink" href="#main.admin.MyUserAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.MyUserAdmin.add_staff">
+<tt class="descname">add_staff</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin.add_staff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin.add_staff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.MyUserAdmin.clear_groups">
+<tt class="descname">clear_groups</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin.clear_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin.clear_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.MyUserAdmin.create_profile">
+<tt class="descname">create_profile</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin.create_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin.create_profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.MyUserAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.MyUserAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.MyUserAdmin.remove_staff">
+<tt class="descname">remove_staff</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin.remove_staff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin.remove_staff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.MyUserAdmin.reset_password">
+<tt class="descname">reset_password</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#MyUserAdmin.reset_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.MyUserAdmin.reset_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.OfficerAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">OfficerAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#OfficerAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.OfficerAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.OfficerAdmin.filter_horizontal">
+<tt class="descname">filter_horizontal</tt><em class="property"> = ('profile',)</em><a class="headerlink" href="#main.admin.OfficerAdmin.filter_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.OfficerAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('position', 'rank', 'mail_alias', 'list_profiles')</em><a class="headerlink" href="#main.admin.OfficerAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.OfficerAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.OfficerAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.ProfileAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">ProfileAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#ProfileAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.ProfileAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.actions">
+<tt class="descname">actions</tt><em class="property"> = ('create_candidate', 'create_active_member', 'promote_candidate')</em><a class="headerlink" href="#main.admin.ProfileAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.ProfileAdmin.create_active_member">
+<tt class="descname">create_active_member</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#ProfileAdmin.create_active_member"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.ProfileAdmin.create_active_member" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.ProfileAdmin.create_candidate">
+<tt class="descname">create_candidate</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#ProfileAdmin.create_candidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.ProfileAdmin.create_candidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.filter_horizontal">
+<tt class="descname">filter_horizontal</tt><em class="property"> = ('classes',)</em><a class="headerlink" href="#main.admin.ProfileAdmin.filter_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'position', 'house', 'major', 'initiation_term', 'graduation_term', 'resume_pdf', 'resume_word')</em><a class="headerlink" href="#main.admin.ProfileAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.list_filter">
+<tt class="descname">list_filter</tt><em class="property"> = ('position',)</em><a class="headerlink" href="#main.admin.ProfileAdmin.list_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.ProfileAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.admin.ProfileAdmin.promote_candidate">
+<tt class="descname">promote_candidate</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#ProfileAdmin.promote_candidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.ProfileAdmin.promote_candidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.ProfileAdmin.search_fields">
+<tt class="descname">search_fields</tt><em class="property"> = ('user__first_name', 'user__last_name', 'user__email')</em><a class="headerlink" href="#main.admin.ProfileAdmin.search_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.admin.SettingsAdmin">
+<em class="property">class </em><tt class="descclassname">main.admin.</tt><tt class="descname">SettingsAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/main/admin.html#SettingsAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.admin.SettingsAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="main.admin.SettingsAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'signup_term', 'display_all_terms', 'display_tutoring', 'registration_code')</em><a class="headerlink" href="#main.admin.SettingsAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.SettingsAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('term', 'signup_term', 'display_all_terms', 'display_tutoring', 'registration_code')</em><a class="headerlink" href="#main.admin.SettingsAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.admin.SettingsAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.admin.SettingsAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-main.forms">
+<span id="main-forms-module"></span><h2>main.forms module<a class="headerlink" href="#module-main.forms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="main.forms.CandidateForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">CandidateForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#CandidateForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.CandidateForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.CandidateForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#CandidateForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.CandidateForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.CandidateForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['professor_interview', 'community_service_proof']</em><a class="headerlink" href="#main.forms.CandidateForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.CandidateForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.CandidateForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.CandidateForm.base_fields">
+<tt class="descclassname">CandidateForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'professor_interview': &lt;django.forms.fields.FileField object at 0xacfb86c&gt;, 'community_service_proof': &lt;django.forms.fields.FileField object at 0xacfb90c&gt;}</em><a class="headerlink" href="#main.forms.CandidateForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.CandidateForm.declared_fields">
+<tt class="descclassname">CandidateForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#main.forms.CandidateForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.CandidateForm.media">
+<tt class="descclassname">CandidateForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.CandidateForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.FirstProfileForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">FirstProfileForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#FirstProfileForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.FirstProfileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.FirstProfileForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#FirstProfileForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.FirstProfileForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.FirstProfileForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['nickname', 'gender', 'birthday', 'phone_number', 'major', 'graduation_quarter', 'graduation_year']</em><a class="headerlink" href="#main.forms.FirstProfileForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.FirstProfileForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.FirstProfileForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Profile</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.FirstProfileForm.Meta.widgets">
+<tt class="descname">widgets</tt><em class="property"> = {'gender': &lt;class 'django.forms.widgets.RadioSelect'&gt;}</em><a class="headerlink" href="#main.forms.FirstProfileForm.Meta.widgets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.FirstProfileForm.base_fields">
+<tt class="descclassname">FirstProfileForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nickname': &lt;django.forms.fields.CharField object at 0xacfb3ec&gt;, 'gender': &lt;django.forms.fields.TypedChoiceField object at 0xacfb16c&gt;, 'birthday': &lt;django.forms.fields.DateField object at 0xacfb2cc&gt;, 'phone_number': &lt;django.forms.fields.CharField object at 0xacfb8ec&gt;, 'major': &lt;django.forms.fields.TypedChoiceField object at 0xacfba4c&gt;, 'graduation_quarter': &lt;django.forms.fields.ChoiceField object at 0xacfbf0c&gt;, 'graduation_year': &lt;django.forms.fields.IntegerField object at 0xacfbbcc&gt;}</em><a class="headerlink" href="#main.forms.FirstProfileForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.FirstProfileForm.declared_fields">
+<tt class="descclassname">FirstProfileForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'graduation_quarter': &lt;django.forms.fields.ChoiceField object at 0xacfbf0c&gt;, 'graduation_year': &lt;django.forms.fields.IntegerField object at 0xacfbbcc&gt;}</em><a class="headerlink" href="#main.forms.FirstProfileForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.FirstProfileForm.media">
+<tt class="descclassname">FirstProfileForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.FirstProfileForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.LoginForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">LoginForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#LoginForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.LoginForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="main.forms.LoginForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'username': &lt;django.forms.fields.CharField object at 0xacfb26c&gt;, 'password': &lt;django.forms.fields.CharField object at 0xacfbb2c&gt;}</em><a class="headerlink" href="#main.forms.LoginForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.forms.LoginForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/forms.html#LoginForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.LoginForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.LoginForm.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.LoginForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.MemberForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">MemberForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#MemberForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.MemberForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.MemberForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#MemberForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.MemberForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.MemberForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['requirement_choice']</em><a class="headerlink" href="#main.forms.MemberForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.MemberForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.MemberForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">ActiveMember</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.MemberForm.base_fields">
+<tt class="descclassname">MemberForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'requirement_choice': &lt;django.forms.fields.TypedChoiceField object at 0xacf350c&gt;}</em><a class="headerlink" href="#main.forms.MemberForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.MemberForm.declared_fields">
+<tt class="descclassname">MemberForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#main.forms.MemberForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.MemberForm.media">
+<tt class="descclassname">MemberForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.MemberForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.ProfileForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">ProfileForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#ProfileForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.ProfileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.ProfileForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#ProfileForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.ProfileForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.ProfileForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['nickname', 'gender', 'birthday', 'phone_number', 'major', 'graduation_quarter', 'graduation_year', 'resume_pdf', 'resume_word']</em><a class="headerlink" href="#main.forms.ProfileForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ProfileForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.ProfileForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Profile</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ProfileForm.Meta.widgets">
+<tt class="descname">widgets</tt><em class="property"> = {'gender': &lt;class 'django.forms.widgets.RadioSelect'&gt;}</em><a class="headerlink" href="#main.forms.ProfileForm.Meta.widgets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ProfileForm.base_fields">
+<tt class="descclassname">ProfileForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'nickname': &lt;django.forms.fields.CharField object at 0xacfbb8c&gt;, 'gender': &lt;django.forms.fields.TypedChoiceField object at 0xacfbcec&gt;, 'birthday': &lt;django.forms.fields.DateField object at 0xa92b42c&gt;, 'phone_number': &lt;django.forms.fields.CharField object at 0xacfbdec&gt;, 'major': &lt;django.forms.fields.TypedChoiceField object at 0xacfb8cc&gt;, 'graduation_quarter': &lt;django.forms.fields.ChoiceField object at 0xac19d8c&gt;, 'graduation_year': &lt;django.forms.fields.IntegerField object at 0xad0162c&gt;, 'resume_pdf': &lt;django.forms.fields.FileField object at 0xacfbe0c&gt;, 'resume_word': &lt;django.forms.fields.FileField object at 0xacfb02c&gt;}</em><a class="headerlink" href="#main.forms.ProfileForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ProfileForm.declared_fields">
+<tt class="descclassname">ProfileForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'birthday': &lt;django.forms.fields.DateField object at 0xa92b42c&gt;, 'graduation_quarter': &lt;django.forms.fields.ChoiceField object at 0xac19d8c&gt;, 'graduation_year': &lt;django.forms.fields.IntegerField object at 0xad0162c&gt;}</em><a class="headerlink" href="#main.forms.ProfileForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ProfileForm.media">
+<tt class="descclassname">ProfileForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.ProfileForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.RegisterForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">RegisterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#RegisterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.RegisterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.forms.UserForm" title="main.forms.UserForm"><tt class="xref py py-class docutils literal"><span class="pre">main.forms.UserForm</span></tt></a></p>
+<dl class="class">
+<dt id="main.forms.RegisterForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#RegisterForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.RegisterForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.RegisterForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['current_password', 'username', 'new_password', 'confirm_password']</em><a class="headerlink" href="#main.forms.RegisterForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.RegisterForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.RegisterForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.RegisterForm.base_fields">
+<tt class="descclassname">RegisterForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'current_password': &lt;django.forms.fields.CharField object at 0xac200cc&gt;, 'username': &lt;django.forms.fields.CharField object at 0xa92b1ac&gt;, 'new_password': &lt;django.forms.fields.CharField object at 0xad084ac&gt;, 'confirm_password': &lt;django.forms.fields.CharField object at 0xad0884c&gt;}</em><a class="headerlink" href="#main.forms.RegisterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.forms.RegisterForm.check_password">
+<tt class="descclassname">RegisterForm.</tt><tt class="descname">check_password</tt><big>(</big><em>password</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#RegisterForm.check_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.RegisterForm.check_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.RegisterForm.declared_fields">
+<tt class="descclassname">RegisterForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'current_password': &lt;django.forms.fields.CharField object at 0xac200cc&gt;, 'username': &lt;django.forms.fields.CharField object at 0xa92b1ac&gt;, 'new_password': &lt;django.forms.fields.CharField object at 0xad084ac&gt;, 'confirm_password': &lt;django.forms.fields.CharField object at 0xad0884c&gt;}</em><a class="headerlink" href="#main.forms.RegisterForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.RegisterForm.media">
+<tt class="descclassname">RegisterForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.RegisterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.ShirtForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">ShirtForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#ShirtForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.ShirtForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.ShirtForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#ShirtForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.ShirtForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.ShirtForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['shirt_size']</em><a class="headerlink" href="#main.forms.ShirtForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ShirtForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.ShirtForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ShirtForm.base_fields">
+<tt class="descclassname">ShirtForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'shirt_size': &lt;django.forms.fields.TypedChoiceField object at 0xacf32cc&gt;}</em><a class="headerlink" href="#main.forms.ShirtForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ShirtForm.declared_fields">
+<tt class="descclassname">ShirtForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#main.forms.ShirtForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.ShirtForm.media">
+<tt class="descclassname">ShirtForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.ShirtForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.UserAccountForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">UserAccountForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserAccountForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserAccountForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.forms.UserForm" title="main.forms.UserForm"><tt class="xref py py-class docutils literal"><span class="pre">main.forms.UserForm</span></tt></a></p>
+<dl class="class">
+<dt id="main.forms.UserAccountForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#UserAccountForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserAccountForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.UserAccountForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['current_password', 'username', 'new_password', 'confirm_password']</em><a class="headerlink" href="#main.forms.UserAccountForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserAccountForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.UserAccountForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserAccountForm.base_fields">
+<tt class="descclassname">UserAccountForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'current_password': &lt;django.forms.fields.CharField object at 0xac1758c&gt;, 'username': &lt;django.forms.fields.CharField object at 0xad0142c&gt;, 'new_password': &lt;django.forms.fields.CharField object at 0xac1c54c&gt;, 'confirm_password': &lt;django.forms.fields.CharField object at 0xac2002c&gt;}</em><a class="headerlink" href="#main.forms.UserAccountForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.forms.UserAccountForm.check_password">
+<tt class="descclassname">UserAccountForm.</tt><tt class="descname">check_password</tt><big>(</big><em>password</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserAccountForm.check_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserAccountForm.check_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserAccountForm.declared_fields">
+<tt class="descclassname">UserAccountForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'current_password': &lt;django.forms.fields.CharField object at 0xac1758c&gt;, 'username': &lt;django.forms.fields.CharField object at 0xad0142c&gt;, 'new_password': &lt;django.forms.fields.CharField object at 0xac1c54c&gt;, 'confirm_password': &lt;django.forms.fields.CharField object at 0xac2002c&gt;}</em><a class="headerlink" href="#main.forms.UserAccountForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserAccountForm.media">
+<tt class="descclassname">UserAccountForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.UserAccountForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.UserForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">UserForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="attribute">
+<dt id="main.forms.UserForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#main.forms.UserForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.forms.UserForm.check_password">
+<tt class="descname">check_password</tt><big>(</big><em>password</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserForm.check_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserForm.check_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.forms.UserForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserForm.declared_fields">
+<tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#main.forms.UserForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserForm.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.UserForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.forms.UserPersonalForm">
+<em class="property">class </em><tt class="descclassname">main.forms.</tt><tt class="descname">UserPersonalForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/main/forms.html#UserPersonalForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserPersonalForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="main.forms.UserPersonalForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/forms.html#UserPersonalForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.forms.UserPersonalForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.forms.UserPersonalForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['email', 'first_name', 'middle_name', 'last_name']</em><a class="headerlink" href="#main.forms.UserPersonalForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserPersonalForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#main.forms.UserPersonalForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserPersonalForm.base_fields">
+<tt class="descclassname">UserPersonalForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'email': &lt;django.forms.fields.CharField object at 0xad0890c&gt;, 'first_name': &lt;django.forms.fields.CharField object at 0xad08aac&gt;, 'middle_name': &lt;django.forms.fields.CharField object at 0xad08a8c&gt;, 'last_name': &lt;django.forms.fields.CharField object at 0xad0e14c&gt;}</em><a class="headerlink" href="#main.forms.UserPersonalForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserPersonalForm.declared_fields">
+<tt class="descclassname">UserPersonalForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'email': &lt;django.forms.fields.CharField object at 0xad0890c&gt;, 'first_name': &lt;django.forms.fields.CharField object at 0xad08aac&gt;, 'middle_name': &lt;django.forms.fields.CharField object at 0xad08a8c&gt;, 'last_name': &lt;django.forms.fields.CharField object at 0xad0e14c&gt;}</em><a class="headerlink" href="#main.forms.UserPersonalForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.forms.UserPersonalForm.media">
+<tt class="descclassname">UserPersonalForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#main.forms.UserPersonalForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="main-models-module">
+<h2>main.models module<a class="headerlink" href="#main-models-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-main.models"></span><dl class="class">
+<dt id="main.models.ActiveMember">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">ActiveMember</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#ActiveMember"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.ActiveMember" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.models.Member" title="main.models.Member"><tt class="xref py py-class docutils literal"><span class="pre">main.models.Member</span></tt></a></p>
+<p>ActiveMember(id, term_id, tutoring_id, completed, other, profile_id, requirement_choice, requirement_complete)</p>
+<dl class="attribute">
+<dt id="main.models.ActiveMember.ACAD_OUTREACH">
+<tt class="descname">ACAD_OUTREACH</tt><em class="property"> = '6'</em><a class="headerlink" href="#main.models.ActiveMember.ACAD_OUTREACH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.CBR">
+<tt class="descname">CBR</tt><em class="property"> = '5'</em><a class="headerlink" href="#main.models.ActiveMember.CBR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.COMMITTEE">
+<tt class="descname">COMMITTEE</tt><em class="property"> = '3'</em><a class="headerlink" href="#main.models.ActiveMember.COMMITTEE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="main.models.ActiveMember.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.ActiveMember.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.EMCC">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">EMCC</tt><em class="property"> = '0'</em><a class="headerlink" href="#main.models.ActiveMember.EMCC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.HOUSE_LEADER">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">HOUSE_LEADER</tt><em class="property"> = '2'</em><a class="headerlink" href="#main.models.ActiveMember.HOUSE_LEADER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="main.models.ActiveMember.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ActiveMember.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.ActiveMember.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.POKER">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">POKER</tt><em class="property"> = '4'</em><a class="headerlink" href="#main.models.ActiveMember.POKER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.REQUIREMENT_CHOICES">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">REQUIREMENT_CHOICES</tt><em class="property"> = (('0', 'EMCC'), ('1', 'Tutoring'), ('2', 'House Leader'), ('5', 'Cardboard Boat Race Committee'), ('6', 'Academic Outreach Committee'))</em><a class="headerlink" href="#main.models.ActiveMember.REQUIREMENT_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.TUTORING">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">TUTORING</tt><em class="property"> = '1'</em><a class="headerlink" href="#main.models.ActiveMember.TUTORING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.current">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xa70504c&gt;</em><a class="headerlink" href="#main.models.ActiveMember.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.ActiveMember.get_requirement_choice_display">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">get_requirement_choice_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.ActiveMember.get_requirement_choice_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.objects">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa7050ac&gt;</em><a class="headerlink" href="#main.models.ActiveMember.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.ActiveMember.points">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#ActiveMember.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.ActiveMember.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.profile">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">profile</tt><em class="property"> None</em><a class="headerlink" href="#main.models.ActiveMember.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.ActiveMember.requirement">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">requirement</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#ActiveMember.requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.ActiveMember.requirement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.ActiveMember.requirements">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">requirements</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#ActiveMember.requirements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.ActiveMember.requirements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.ActiveMember.social_count">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">social_count</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#ActiveMember.social_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.ActiveMember.social_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.term">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.ActiveMember.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.ActiveMember.tutoring">
+<tt class="descclassname">ActiveMember.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#main.models.ActiveMember.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Candidate">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Candidate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.models.Member" title="main.models.Member"><tt class="xref py py-class docutils literal"><span class="pre">main.models.Member</span></tt></a></p>
+<p>Candidate(id, term_id, tutoring_id, completed, other, profile_id, shirt_size, bent_polish, candidate_quiz, candidate_meet_and_greet, signature_book, community_service_proof, community_service, initiation_fee, engineering_futures, candidate_sorting, professor_interview, tbp_event, professor_interview_on_time, resume_on_time, quiz_first_try)</p>
+<dl class="exception">
+<dt id="main.models.Candidate.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Candidate.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Candidate.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Candidate.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Candidate.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.SHIRT_SIZES">
+<tt class="descclassname">Candidate.</tt><tt class="descname">SHIRT_SIZES</tt><em class="property"> = (('S', 'S'), ('M', 'M'), ('L', 'L'), ('XL', 'XL'))</em><a class="headerlink" href="#main.models.Candidate.SHIRT_SIZES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.bent_polish_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">bent_polish_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.bent_polish_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.bent_polish_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.community_service_complete">
+<tt class="descclassname">Candidate.</tt><tt class="descname">community_service_complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.community_service_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.community_service_complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.community_service_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">community_service_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.community_service_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.community_service_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.current">
+<tt class="descclassname">Candidate.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xa70072c&gt;</em><a class="headerlink" href="#main.models.Candidate.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.get_shirt_size_display">
+<tt class="descclassname">Candidate.</tt><tt class="descname">get_shirt_size_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Candidate.get_shirt_size_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.objects">
+<tt class="descclassname">Candidate.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa70078c&gt;</em><a class="headerlink" href="#main.models.Candidate.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.professor_interview_on_time_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">professor_interview_on_time_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.professor_interview_on_time_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.professor_interview_on_time_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.profile">
+<tt class="descclassname">Candidate.</tt><tt class="descname">profile</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Candidate.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.quiz_first_try_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">quiz_first_try_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.quiz_first_try_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.quiz_first_try_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.requirement_count">
+<tt class="descclassname">Candidate.</tt><tt class="descname">requirement_count</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.requirement_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.requirement_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.requirements">
+<tt class="descclassname">Candidate.</tt><tt class="descname">requirements</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.requirements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.requirements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.resume">
+<tt class="descclassname">Candidate.</tt><tt class="descname">resume</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.resume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.resume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.resume_on_time_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">resume_on_time_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.resume_on_time_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.resume_on_time_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.tbp_event_complete">
+<tt class="descclassname">Candidate.</tt><tt class="descname">tbp_event_complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.tbp_event_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.tbp_event_complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Candidate.tbp_event_points">
+<tt class="descclassname">Candidate.</tt><tt class="descname">tbp_event_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Candidate.tbp_event_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Candidate.tbp_event_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.term">
+<tt class="descclassname">Candidate.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Candidate.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Candidate.tutoring">
+<tt class="descclassname">Candidate.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Candidate.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Faculty">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Faculty</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Faculty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Faculty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Faculty(id, name, dept, chapter, graduation, link)</p>
+<dl class="exception">
+<dt id="main.models.Faculty.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Faculty.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Faculty.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Faculty.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Faculty.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.Faculty.get_dept_display">
+<tt class="descclassname">Faculty.</tt><tt class="descname">get_dept_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Faculty.get_dept_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Faculty.objects">
+<tt class="descclassname">Faculty.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa70a4ec&gt;</em><a class="headerlink" href="#main.models.Faculty.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.House">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">House</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#House"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.House" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>House(id, house)</p>
+<dl class="exception">
+<dt id="main.models.House.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.House.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.House.HOUSE_CHOICES">
+<tt class="descclassname">House.</tt><tt class="descname">HOUSE_CHOICES</tt><em class="property"> = (('0', 'Tau'), ('1', 'Beta'), ('2', 'Pi'), ('3', 'Epsilon'))</em><a class="headerlink" href="#main.models.House.HOUSE_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="main.models.House.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">House.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.House.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.House.get_house_display">
+<tt class="descclassname">House.</tt><tt class="descname">get_house_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.House.get_house_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.House.housepoints_set">
+<tt class="descclassname">House.</tt><tt class="descname">housepoints_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.House.housepoints_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.House.objects">
+<tt class="descclassname">House.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa6f350c&gt;</em><a class="headerlink" href="#main.models.House.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.House.profile_set">
+<tt class="descclassname">House.</tt><tt class="descname">profile_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.House.profile_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.HousePoints">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">HousePoints</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#HousePoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.HousePoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>HousePoints(id, house_id, term_id, professor_interview_and_resume, other)</p>
+<dl class="exception">
+<dt id="main.models.HousePoints.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.HousePoints.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.HousePoints.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">HousePoints.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.HousePoints.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.HousePoints.current">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xa6f362c&gt;</em><a class="headerlink" href="#main.models.HousePoints.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.HousePoints.get_professor_interview_and_resume_display">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">get_professor_interview_and_resume_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.HousePoints.get_professor_interview_and_resume_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.HousePoints.house">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">house</tt><em class="property"> None</em><a class="headerlink" href="#main.models.HousePoints.house" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.HousePoints.member_list">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">member_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#HousePoints.member_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.HousePoints.member_list" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Candidates and members in the house for the term</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.HousePoints.objects">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa6f366c&gt;</em><a class="headerlink" href="#main.models.HousePoints.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.HousePoints.points">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#HousePoints.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.HousePoints.points" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Total number of points for the house, including members</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.HousePoints.professor_interview_and_resume_points">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">professor_interview_and_resume_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#HousePoints.professor_interview_and_resume_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.HousePoints.professor_interview_and_resume_points" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">N points for each person depending on the house ranking</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.HousePoints.term">
+<tt class="descclassname">HousePoints.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.HousePoints.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Member">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Member</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Member"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<dl class="class">
+<dt id="main.models.Member.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/main/models.html#Member.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="main.models.Member.Meta.abstract">
+<tt class="descname">abstract</tt><em class="property"> = False</em><a class="headerlink" href="#main.models.Member.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Member.Meta.ordering">
+<tt class="descname">ordering</tt><em class="property"> = ('term', 'profile__user__last_name', 'profile__user__first_name')</em><a class="headerlink" href="#main.models.Member.Meta.ordering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.complete">
+<tt class="descclassname">Member.</tt><tt class="descname">complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.points">
+<tt class="descclassname">Member.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Member.profile">
+<tt class="descclassname">Member.</tt><tt class="descname">profile</tt><em class="property"> = None</em><a class="headerlink" href="#main.models.Member.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.requirements">
+<tt class="descclassname">Member.</tt><tt class="descname">requirements</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.requirements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.requirements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.social_complete">
+<tt class="descclassname">Member.</tt><tt class="descname">social_complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.social_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.social_complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.social_count">
+<tt class="descclassname">Member.</tt><tt class="descname">social_count</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.social_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.social_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.social_points">
+<tt class="descclassname">Member.</tt><tt class="descname">social_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.social_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.social_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Member.term">
+<tt class="descclassname">Member.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Member.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Member.tutoring">
+<tt class="descclassname">Member.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Member.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.tutoring_complete">
+<tt class="descclassname">Member.</tt><tt class="descname">tutoring_complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.tutoring_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.tutoring_complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Member.tutoring_points">
+<tt class="descclassname">Member.</tt><tt class="descname">tutoring_points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Member.tutoring_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Member.tutoring_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Officer">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Officer</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Officer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Officer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Officer(id, position, rank, mail_alias)</p>
+<dl class="exception">
+<dt id="main.models.Officer.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Officer.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Officer.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Officer.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Officer.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.Officer.list_profiles">
+<tt class="descclassname">Officer.</tt><tt class="descname">list_profiles</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Officer.list_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Officer.list_profiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Officer.objects">
+<tt class="descclassname">Officer.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa705f2c&gt;</em><a class="headerlink" href="#main.models.Officer.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Officer.profile">
+<tt class="descclassname">Officer.</tt><tt class="descname">profile</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Officer.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Profile">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Profile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Profile(id, user_id, middle_name, nickname, gender, birthday, phone_number, position, house_id, major, initiation_term_id, graduation_term_id, resume_pdf, resume_word)</p>
+<dl class="attribute">
+<dt id="main.models.Profile.CANDIDATE">
+<tt class="descname">CANDIDATE</tt><em class="property"> = '0'</em><a class="headerlink" href="#main.models.Profile.CANDIDATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Profile.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Profile.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.GENDER_CHOICES">
+<tt class="descclassname">Profile.</tt><tt class="descname">GENDER_CHOICES</tt><em class="property"> = (('M', 'Male'), ('F', 'Female'))</em><a class="headerlink" href="#main.models.Profile.GENDER_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.MEMBER">
+<tt class="descclassname">Profile.</tt><tt class="descname">MEMBER</tt><em class="property"> = '1'</em><a class="headerlink" href="#main.models.Profile.MEMBER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Profile.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Profile.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Profile.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.POSITION_CHOICES">
+<tt class="descclassname">Profile.</tt><tt class="descname">POSITION_CHOICES</tt><em class="property"> = (('0', 'Candidate'), ('1', 'Member'))</em><a class="headerlink" href="#main.models.Profile.POSITION_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.activemember_set">
+<tt class="descclassname">Profile.</tt><tt class="descname">activemember_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.activemember_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.candidate">
+<tt class="descclassname">Profile.</tt><tt class="descname">candidate</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.candidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.classes">
+<tt class="descclassname">Profile.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Profile.current">
+<tt class="descclassname">Profile.</tt><tt class="descname">current</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Profile.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Profile.current" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Requirement object associated with current term</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.Profile.dump">
+<tt class="descclassname">Profile.</tt><tt class="descname">dump</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Profile.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Profile.dump" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Comma delimited fields of profile</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.event_set">
+<tt class="descclassname">Profile.</tt><tt class="descname">event_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.event_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Profile.get_gender_display">
+<tt class="descclassname">Profile.</tt><tt class="descname">get_gender_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Profile.get_gender_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Profile.get_major_display">
+<tt class="descclassname">Profile.</tt><tt class="descname">get_major_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Profile.get_major_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Profile.get_position_display">
+<tt class="descclassname">Profile.</tt><tt class="descname">get_position_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Profile.get_position_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.graduation_term">
+<tt class="descclassname">Profile.</tt><tt class="descname">graduation_term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.graduation_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.house">
+<tt class="descclassname">Profile.</tt><tt class="descname">house</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.house" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.initiation_term">
+<tt class="descclassname">Profile.</tt><tt class="descname">initiation_term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.initiation_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.objects">
+<tt class="descclassname">Profile.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa6fc40c&gt;</em><a class="headerlink" href="#main.models.Profile.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.officer_set">
+<tt class="descclassname">Profile.</tt><tt class="descname">officer_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.officer_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Profile.user">
+<tt class="descclassname">Profile.</tt><tt class="descname">user</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Profile.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Settings">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Settings</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Settings(id, term_id, signup_term_id, display_all_terms, display_tutoring, registration_code, eligibility_list)</p>
+<dl class="exception">
+<dt id="main.models.Settings.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Settings.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Settings.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Settings.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Settings.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Settings.objects">
+<tt class="descclassname">Settings.</tt><tt class="descname">objects</tt><em class="property"> = &lt;main.models.SettingsManager object at 0xa6eeb6c&gt;</em><a class="headerlink" href="#main.models.Settings.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Settings.signup_term">
+<tt class="descclassname">Settings.</tt><tt class="descname">signup_term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Settings.signup_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Settings.term">
+<tt class="descclassname">Settings.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Settings.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.SettingsManager">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">SettingsManager</tt><a class="reference internal" href="_modules/main/models.html#SettingsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<dl class="method">
+<dt id="main.models.SettingsManager.display_all_terms">
+<tt class="descname">display_all_terms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.display_all_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.display_all_terms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.display_tutoring">
+<tt class="descname">display_tutoring</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.display_tutoring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.display_tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.get_eligibility_list">
+<tt class="descname">get_eligibility_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.get_eligibility_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.get_eligibility_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.get_registration_code">
+<tt class="descname">get_registration_code</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.get_registration_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.get_registration_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.settings">
+<tt class="descname">settings</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.settings" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Singleton Settings object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.signup_term">
+<tt class="descname">signup_term</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.signup_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.signup_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.SettingsManager.term">
+<tt class="descname">term</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#SettingsManager.term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.SettingsManager.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.Term">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">Term</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/models.html#Term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Term(id, quarter, year, start_date, due_date)</p>
+<dl class="exception">
+<dt id="main.models.Term.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#main.models.Term.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="main.models.Term.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Term.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#main.models.Term.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.QUARTER_CHOICES">
+<tt class="descclassname">Term.</tt><tt class="descname">QUARTER_CHOICES</tt><em class="property"> = (('0', 'Winter'), ('1', 'Spring'), ('2', 'Summer'), ('3', 'Fall'))</em><a class="headerlink" href="#main.models.Term.QUARTER_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.activemember_set">
+<tt class="descclassname">Term.</tt><tt class="descname">activemember_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.activemember_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.candidate_set">
+<tt class="descclassname">Term.</tt><tt class="descname">candidate_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.candidate_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.current">
+<tt class="descclassname">Term.</tt><tt class="descname">current</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.event_set">
+<tt class="descclassname">Term.</tt><tt class="descname">event_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.event_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Term.get_quarter_display">
+<tt class="descclassname">Term.</tt><tt class="descname">get_quarter_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#main.models.Term.get_quarter_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.models.Term.get_week">
+<tt class="descclassname">Term.</tt><tt class="descname">get_week</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#Term.get_week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.Term.get_week" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Current week of term</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.housepoints_set">
+<tt class="descclassname">Term.</tt><tt class="descname">housepoints_set</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.housepoints_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.objects">
+<tt class="descclassname">Term.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa6ee9cc&gt;</em><a class="headerlink" href="#main.models.Term.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.profile_graduation_term">
+<tt class="descclassname">Term.</tt><tt class="descname">profile_graduation_term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.profile_graduation_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.profile_initiation_term">
+<tt class="descclassname">Term.</tt><tt class="descname">profile_initiation_term</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.profile_initiation_term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="main.models.Term.signup">
+<tt class="descclassname">Term.</tt><tt class="descname">signup</tt><em class="property"> None</em><a class="headerlink" href="#main.models.Term.signup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.models.TermManager">
+<em class="property">class </em><tt class="descclassname">main.models.</tt><tt class="descname">TermManager</tt><a class="reference internal" href="_modules/main/models.html#TermManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.TermManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<dl class="method">
+<dt id="main.models.TermManager.get_query_set">
+<tt class="descname">get_query_set</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/main/models.html#TermManager.get_query_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.TermManager.get_query_set" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Current term if display_all_terms is not set in Settings and term is set, otherwise all terms</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="main.models.upload_to_path">
+<tt class="descclassname">main.models.</tt><tt class="descname">upload_to_path</tt><big>(</big><em>instance</em>, <em>filename</em><big>)</big><a class="reference internal" href="_modules/main/models.html#upload_to_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.upload_to_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename files that are uploaded</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.models.validate_re">
+<tt class="descclassname">main.models.</tt><tt class="descname">validate_re</tt><big>(</big><em>regex</em>, <em>value</em>, <em>msg</em><big>)</big><a class="reference internal" href="_modules/main/models.html#validate_re"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.models.validate_re" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-main.templatetags.extras">
+<span id="main-templatetags-extras-module"></span><h2>main.templatetags.extras module<a class="headerlink" href="#module-main.templatetags.extras" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="main.templatetags.extras.classname">
+<tt class="descclassname">main.templatetags.extras.</tt><tt class="descname">classname</tt><big>(</big><em>obj</em>, <em>arg=None</em><big>)</big><a class="reference internal" href="_modules/main/templatetags/extras.html#classname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.templatetags.extras.classname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-main.views">
+<span id="main-views-module"></span><h2>main.views module<a class="headerlink" href="#module-main.views" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="main.views.CandidateFileView">
+<em class="property">class </em><tt class="descclassname">main.views.</tt><tt class="descname">CandidateFileView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#CandidateFileView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.CandidateFileView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.views.FileView" title="main.views.FileView"><tt class="xref py py-class docutils literal"><span class="pre">main.views.FileView</span></tt></a></p>
+<dl class="method">
+<dt id="main.views.CandidateFileView.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>request</em>, <em>id</em><big>)</big><a class="reference internal" href="_modules/main/views.html#CandidateFileView.get_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.CandidateFileView.get_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.views.FileView">
+<em class="property">class </em><tt class="descclassname">main.views.</tt><tt class="descname">FileView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#FileView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.FileView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.views.generic.base.View</span></tt></p>
+<dl class="attribute">
+<dt id="main.views.FileView.field">
+<tt class="descname">field</tt><em class="property"> = ''</em><a class="headerlink" href="#main.views.FileView.field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.views.FileView.get">
+<tt class="descname">get</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#FileView.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.FileView.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.views.FileView.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>request</em>, <em>id</em><big>)</big><a class="reference internal" href="_modules/main/views.html#FileView.get_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.FileView.get_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.views.ProfileFileView">
+<em class="property">class </em><tt class="descclassname">main.views.</tt><tt class="descname">ProfileFileView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#ProfileFileView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.ProfileFileView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#main.views.FileView" title="main.views.FileView"><tt class="xref py py-class docutils literal"><span class="pre">main.views.FileView</span></tt></a></p>
+<dl class="method">
+<dt id="main.views.ProfileFileView.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>request</em>, <em>id</em><big>)</big><a class="reference internal" href="_modules/main/views.html#ProfileFileView.get_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.ProfileFileView.get_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="main.views.account">
+<tt class="descclassname">main.views.</tt><tt class="descname">account</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.active_members">
+<tt class="descclassname">main.views.</tt><tt class="descname">active_members</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#active_members"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.active_members" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.add">
+<tt class="descclassname">main.views.</tt><tt class="descname">add</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.candidates">
+<tt class="descclassname">main.views.</tt><tt class="descname">candidates</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.candidates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.create_zipfile">
+<tt class="descclassname">main.views.</tt><tt class="descname">create_zipfile</tt><big>(</big><em>filenames</em><big>)</big><a class="reference internal" href="_modules/main/views.html#create_zipfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.create_zipfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.downloads">
+<tt class="descclassname">main.views.</tt><tt class="descname">downloads</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#downloads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.downloads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.edit">
+<tt class="descclassname">main.views.</tt><tt class="descname">edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#edit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.edit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.houses">
+<tt class="descclassname">main.views.</tt><tt class="descname">houses</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/main/views.html#houses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.houses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.interview">
+<tt class="descclassname">main.views.</tt><tt class="descname">interview</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#main.views.interview" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.login">
+<tt class="descclassname">main.views.</tt><tt class="descname">login</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/main/views.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.logout">
+<tt class="descclassname">main.views.</tt><tt class="descname">logout</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/main/views.html#logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.logout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.pending_community_service">
+<tt class="descclassname">main.views.</tt><tt class="descname">pending_community_service</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#pending_community_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.pending_community_service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.profile_view">
+<tt class="descclassname">main.views.</tt><tt class="descname">profile_view</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#profile_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.profile_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.proof">
+<tt class="descclassname">main.views.</tt><tt class="descname">proof</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#main.views.proof" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.register">
+<tt class="descclassname">main.views.</tt><tt class="descname">register</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/main/views.html#register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.render_profile_page">
+<tt class="descclassname">main.views.</tt><tt class="descname">render_profile_page</tt><big>(</big><em>request</em>, <em>template</em>, <em>template_args=None</em><big>)</big><a class="reference internal" href="_modules/main/views.html#render_profile_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.render_profile_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that looks up the links for the profile tabs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; The request object used to generate this response.</li>
+<li><strong>template</strong> &#8211; The full name of a template to use or sequence of template names.</li>
+<li><strong>template_args</strong> &#8211; Variables to pass to the template</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Rendered template</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.views.requirements_view">
+<tt class="descclassname">main.views.</tt><tt class="descname">requirements_view</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#requirements_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.requirements_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.resume_pdf">
+<tt class="descclassname">main.views.</tt><tt class="descname">resume_pdf</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#main.views.resume_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.resume_word">
+<tt class="descclassname">main.views.</tt><tt class="descname">resume_word</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#main.views.resume_word" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.resumes_pdf">
+<tt class="descclassname">main.views.</tt><tt class="descname">resumes_pdf</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#resumes_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.resumes_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.resumes_word">
+<tt class="descclassname">main.views.</tt><tt class="descname">resumes_word</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#resumes_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.resumes_word" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.spreadsheet">
+<tt class="descclassname">main.views.</tt><tt class="descname">spreadsheet</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#spreadsheet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.tutoring_hours">
+<tt class="descclassname">main.views.</tt><tt class="descname">tutoring_hours</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/main/views.html#tutoring_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.tutoring_hours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.views.update_professor_interview_and_resume">
+<tt class="descclassname">main.views.</tt><tt class="descname">update_professor_interview_and_resume</tt><big>(</big><em>candidate</em><big>)</big><a class="reference internal" href="_modules/main/views.html#update_professor_interview_and_resume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.views.update_professor_interview_and_resume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">main package</a><ul>
+<li><a class="reference internal" href="#module-main.admin">main.admin module</a></li>
+<li><a class="reference internal" href="#module-main.forms">main.forms module</a></li>
+<li><a class="reference internal" href="#main-models-module">main.models module</a></li>
+<li><a class="reference internal" href="#module-main.templatetags.extras">main.templatetags.extras module</a></li>
+<li><a class="reference internal" href="#module-main.views">main.views module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="web.html"
+                        title="previous chapter">web package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="event.html"
+                        title="next chapter">event package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/main.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="event.html" title="event package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="web.html" title="web package"
+             >previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

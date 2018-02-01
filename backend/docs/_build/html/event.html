@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>event package &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="index.html" />
+    <link rel="next" title="tutoring package" href="tutoring.html" />
+    <link rel="prev" title="main package" href="main.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutoring.html" title="tutoring package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="main.html" title="main package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-event">
+<span id="event-package"></span><h1>event package<a class="headerlink" href="#module-event" title="Permalink to this headline">¶</a></h1>
+<p>This directory manages event pages and social requirements.</p>
+<div class="section" id="module-event.admin">
+<span id="event-admin-module"></span><h2>event.admin module<a class="headerlink" href="#module-event.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="event.admin.EventAdmin">
+<em class="property">class </em><tt class="descclassname">event.admin.</tt><tt class="descname">EventAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/event/admin.html#EventAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.admin.EventAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="event.admin.EventAdmin.filter_horizontal">
+<tt class="descname">filter_horizontal</tt><em class="property"> = ('attendees',)</em><a class="headerlink" href="#event.admin.EventAdmin.filter_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.admin.EventAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'name', 'start', 'end', 'event_type', 'dropdown')</em><a class="headerlink" href="#event.admin.EventAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.admin.EventAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('dropdown',)</em><a class="headerlink" href="#event.admin.EventAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.admin.EventAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#event.admin.EventAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="event-models-module">
+<h2>event.models module<a class="headerlink" href="#event-models-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-event.models"></span><dl class="class">
+<dt id="event.models.Event">
+<em class="property">class </em><tt class="descclassname">event.models.</tt><tt class="descname">Event</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/event/models.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Event(id, term_id, name, url, description, start, end, display_time, location, event_type, image, dropdown)</p>
+<dl class="exception">
+<dt id="event.models.Event.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#event.models.Event.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.EVENT_TYPE_CHOICES">
+<tt class="descclassname">Event.</tt><tt class="descname">EVENT_TYPE_CHOICES</tt><em class="property"> = (('0', 'Social'), ('1', 'Project'), ('2', 'Mentorship'), ('3', 'House'), ('4', 'Infosession'), ('5', 'Academic Outreach'))</em><a class="headerlink" href="#event.models.Event.EVENT_TYPE_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.HOUSE">
+<tt class="descclassname">Event.</tt><tt class="descname">HOUSE</tt><em class="property"> = '3'</em><a class="headerlink" href="#event.models.Event.HOUSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="event.models.Event.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Event.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#event.models.Event.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.SOCIAL">
+<tt class="descclassname">Event.</tt><tt class="descname">SOCIAL</tt><em class="property"> = '0'</em><a class="headerlink" href="#event.models.Event.SOCIAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.attendees">
+<tt class="descclassname">Event.</tt><tt class="descname">attendees</tt><em class="property"> None</em><a class="headerlink" href="#event.models.Event.attendees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.current">
+<tt class="descclassname">Event.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xa70a8ac&gt;</em><a class="headerlink" href="#event.models.Event.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_date">
+<tt class="descclassname">Event.</tt><tt class="descname">get_date</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.get_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.get_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_datetime">
+<tt class="descclassname">Event.</tt><tt class="descname">get_datetime</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.get_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.get_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_end">
+<tt class="descclassname">Event.</tt><tt class="descname">get_end</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.get_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.get_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_event_type_display">
+<tt class="descclassname">Event.</tt><tt class="descname">get_event_type_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#event.models.Event.get_event_type_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_next_by_end">
+<tt class="descclassname">Event.</tt><tt class="descname">get_next_by_end</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#event.models.Event.get_next_by_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_next_by_start">
+<tt class="descclassname">Event.</tt><tt class="descname">get_next_by_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#event.models.Event.get_next_by_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_previous_by_end">
+<tt class="descclassname">Event.</tt><tt class="descname">get_previous_by_end</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#event.models.Event.get_previous_by_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_previous_by_start">
+<tt class="descclassname">Event.</tt><tt class="descname">get_previous_by_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#event.models.Event.get_previous_by_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_start">
+<tt class="descclassname">Event.</tt><tt class="descname">get_start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.get_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.get_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.get_time">
+<tt class="descclassname">Event.</tt><tt class="descname">get_time</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.get_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.is_same_day">
+<tt class="descclassname">Event.</tt><tt class="descname">is_same_day</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.is_same_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.is_same_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.is_upcoming">
+<tt class="descclassname">Event.</tt><tt class="descname">is_upcoming</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.is_upcoming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.is_upcoming" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.objects">
+<tt class="descclassname">Event.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xa70a98c&gt;</em><a class="headerlink" href="#event.models.Event.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="event.models.Event.save">
+<tt class="descclassname">Event.</tt><tt class="descname">save</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/event/models.html#Event.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.models.Event.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="event.models.Event.term">
+<tt class="descclassname">Event.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#event.models.Event.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-event.views">
+<span id="event-views-module"></span><h2>event.views module<a class="headerlink" href="#module-event.views" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="event.views.event">
+<tt class="descclassname">event.views.</tt><tt class="descname">event</tt><big>(</big><em>request</em>, <em>url</em><big>)</big><a class="reference internal" href="_modules/event/views.html#event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.views.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="event.views.event_redirect">
+<tt class="descclassname">event.views.</tt><tt class="descname">event_redirect</tt><big>(</big><em>request</em>, <em>event_url</em><big>)</big><a class="reference internal" href="_modules/event/views.html#event_redirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.views.event_redirect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="event.views.events">
+<tt class="descclassname">event.views.</tt><tt class="descname">events</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/event/views.html#events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#event.views.events" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">event package</a><ul>
+<li><a class="reference internal" href="#module-event.admin">event.admin module</a></li>
+<li><a class="reference internal" href="#event-models-module">event.models module</a></li>
+<li><a class="reference internal" href="#module-event.views">event.views module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="main.html"
+                        title="previous chapter">main package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutoring.html"
+                        title="next chapter">tutoring package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/event.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutoring.html" title="tutoring package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="main.html" title="main package"
+             >previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

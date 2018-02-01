@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tutoring.views &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for tutoring.views</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">TemplateDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">main.models</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Profile</span>
+<span class="kn">from</span> <span class="nn">tutoring.models</span> <span class="kn">import</span> <span class="n">Tutoring</span><span class="p">,</span> <span class="n">ForeignTutoring</span><span class="p">,</span> <span class="n">Class</span>
+<span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">TUTORING_HOUR_CHOICES</span><span class="p">,</span> <span class="n">TUTORING_DAY_CHOICES</span>
+
+
+<span class="n">number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;\d+&#39;</span><span class="p">)</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;One&#39;</span><span class="p">,</span> <span class="s">&#39;Two&#39;</span><span class="p">,</span> <span class="s">&#39;Three&#39;</span><span class="p">,</span> <span class="s">&#39;Four&#39;</span><span class="p">,</span> <span class="s">&#39;Five&#39;</span><span class="p">,</span> <span class="s">&#39;Six&#39;</span><span class="p">,</span> <span class="s">&#39;Seven&#39;</span><span class="p">,</span> <span class="s">&#39;Eight&#39;</span><span class="p">,</span> <span class="s">&#39;Nine&#39;</span><span class="p">,</span> <span class="s">&#39;Ten&#39;</span><span class="p">,</span> <span class="s">&#39;Eleven&#39;</span><span class="p">,</span> <span class="s">&#39;Twelve&#39;</span><span class="p">,</span> <span class="s">&#39;Thirteen&#39;</span><span class="p">,</span> <span class="s">&#39;Fourteen&#39;</span><span class="p">,</span> <span class="s">&#39;Fifteen&#39;</span><span class="p">,</span> <span class="s">&#39;Sixteen&#39;</span><span class="p">,</span> <span class="s">&#39;Seventeen&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.get_classes">[docs]</a><span class="k">def</span> <span class="nf">get_classes</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">department</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Class</span><span class="o">.</span><span class="n">DEPT_CHOICES</span><span class="p">,</span> <span class="n">numbers</span><span class="p">):</span>
+        <span class="n">department</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">department</span>
+        <span class="n">courses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">cls</span><span class="o">.</span><span class="n">course_number</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">department</span><span class="o">+</span><span class="n">cls</span><span class="o">.</span><span class="n">course_number</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">department</span><span class="o">=</span><span class="n">department</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                                      <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">Profile</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">profile_set</span><span class="o">.</span><span class="n">all</span><span class="p">()))),</span>
+                                     <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="n">s</span>
+                                                         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;(\d+)([ABCD]?L?)?&#39;</span><span class="p">,</span>
+                                                                            <span class="n">c</span><span class="o">.</span><span class="n">course_number</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()))]</span>
+        <span class="k">if</span> <span class="n">courses</span><span class="p">:</span>
+            <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">department</span><span class="p">,</span> <span class="n">courses</span><span class="p">,</span> <span class="s">&#39;collapse{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">classes</span>
+
+</div>
+<div class="viewcode-block" id="get_tutors"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.get_tutors">[docs]</a><span class="k">def</span> <span class="nf">get_tutors</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tutors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">hour</span><span class="p">,</span> <span class="n">hour_name</span> <span class="ow">in</span> <span class="n">TUTORING_HOUR_CHOICES</span><span class="p">:</span>
+        <span class="n">tutors_for_hour</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tutoring_objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span> <span class="o">+</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ForeignTutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">day_name</span> <span class="ow">in</span> <span class="n">TUTORING_DAY_CHOICES</span><span class="p">:</span>
+            <span class="n">tutors_for_hour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="nb">sorted</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tutoring_objs</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_1</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_1</span> <span class="o">==</span> <span class="n">day</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_2</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_2</span> <span class="o">==</span> <span class="n">day</span><span class="p">)],</span>
+                       <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()))</span>
+        <span class="n">tutors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hour_name</span><span class="p">,</span> <span class="n">tutors_for_hour</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tutors</span>
+
+</div>
+<div class="viewcode-block" id="schedule"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.schedule">[docs]</a><span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_tutoring</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;schedule.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;schedule&#39;</span><span class="p">:</span> <span class="s">&#39;cached_schedule_snippet.html&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">})</span>
+        <span class="k">except</span> <span class="n">TemplateDoesNotExist</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;schedule.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;schedule&#39;</span><span class="p">:</span> <span class="s">&#39;schedule_snippet.html&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span> <span class="s">&#39;classes&#39;</span><span class="p">:</span> <span class="n">get_classes</span><span class="p">(),</span>
+                                             <span class="s">&#39;tutors&#39;</span><span class="p">:</span> <span class="n">get_tutors</span><span class="p">(),</span>
+                                             <span class="s">&#39;display&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span> <span class="ow">or</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_tutoring</span><span class="p">()})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">()</span>
+<div class="viewcode-block" id="classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.classes">[docs]</a><span class="k">def</span> <span class="nf">classes</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+    <span class="n">tutors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">hour</span><span class="p">,</span> <span class="n">hour_name</span> <span class="ow">in</span> <span class="n">TUTORING_HOUR_CHOICES</span><span class="p">:</span>
+        <span class="n">tutors_for_hour</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tutoring_objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span> <span class="o">+</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ForeignTutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">day_name</span> <span class="ow">in</span> <span class="n">TUTORING_DAY_CHOICES</span><span class="p">:</span>
+            <span class="n">tutors_for_hour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="nb">sorted</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tutoring_objs</span>
+                       <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_1</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_1</span> <span class="o">==</span> <span class="n">day</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_2</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_2</span> <span class="o">==</span> <span class="n">day</span><span class="p">))</span> <span class="o">+</span>
+                <span class="nb">sorted</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tutoring_objs</span>
+                                                     <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_1</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_1</span> <span class="o">==</span> <span class="n">day</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour_2</span> <span class="o">==</span> <span class="n">hour</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">day_2</span> <span class="o">==</span> <span class="n">day</span><span class="p">))))</span>
+        <span class="n">tutors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hour_name</span><span class="p">,</span> <span class="n">tutors_for_hour</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;classes.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span> <span class="s">&#39;tutors&#39;</span><span class="p">:</span> <span class="n">tutors</span><span class="p">})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">()</span>
+<div class="viewcode-block" id="expanded_schedule"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.expanded_schedule">[docs]</a><span class="k">def</span> <span class="nf">expanded_schedule</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+    <span class="n">tutors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">hour</span><span class="p">,</span> <span class="n">hour_name</span> <span class="ow">in</span> <span class="n">TUTORING_HOUR_CHOICES</span><span class="p">:</span>
+        <span class="n">tutors_for_hour</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">day_name</span> <span class="ow">in</span> <span class="n">TUTORING_DAY_CHOICES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_tutoring</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">):</span>
+                <span class="n">tutors_for_hour</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">best_hour</span><span class="o">=</span><span class="n">hour</span><span class="p">,</span> <span class="n">best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)]</span> <span class="o">+</span>
+                                       <span class="p">[</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">best_hour</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)]</span> <span class="o">+</span>
+                                       <span class="p">[</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">second_best_hour</span><span class="o">=</span><span class="n">hour</span><span class="p">,</span> <span class="n">second_best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)]</span> <span class="o">+</span>
+                                       <span class="p">[</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">second_best_hour</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">second_best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)]</span> <span class="o">+</span>
+                                       <span class="p">[</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">third_best_hour</span><span class="o">=</span><span class="n">hour</span><span class="p">,</span> <span class="n">third_best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)]</span> <span class="o">+</span>
+                                       <span class="p">[</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">tutor</span><span class="p">)</span> <span class="k">for</span> <span class="n">tutor</span> <span class="ow">in</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">third_best_hour</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">third_best_day</span><span class="o">=</span><span class="n">day</span><span class="p">)])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tutors_for_hour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">tutors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hour_name</span><span class="p">,</span> <span class="n">tutors_for_hour</span><span class="p">))</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">department</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Class</span><span class="o">.</span><span class="n">DEPT_CHOICES</span><span class="p">,</span> <span class="n">numbers</span><span class="p">):</span>
+        <span class="n">department</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">department</span>
+        <span class="n">courses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">cls</span><span class="o">.</span><span class="n">course_number</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">department</span><span class="o">+</span><span class="n">cls</span><span class="o">.</span><span class="n">course_number</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">department</span><span class="o">=</span><span class="n">department</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                                      <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">Profile</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">profile_set</span><span class="o">.</span><span class="n">all</span><span class="p">()))),</span>
+                                     <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="n">s</span>
+                                                         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;(\d+)([ABCD]?L?)?&#39;</span><span class="p">,</span>
+                                                                            <span class="n">c</span><span class="o">.</span><span class="n">course_number</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()))]</span>
+        <span class="k">if</span> <span class="n">courses</span><span class="p">:</span>
+            <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">department</span><span class="p">,</span> <span class="n">courses</span><span class="p">,</span> <span class="s">&#39;collapse{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;schedule.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span> <span class="s">&#39;classes&#39;</span><span class="p">:</span> <span class="n">classes</span><span class="p">,</span> <span class="s">&#39;tutors&#39;</span><span class="p">:</span> <span class="n">tutors</span><span class="p">,</span>
+                                             <span class="s">&#39;display&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span> <span class="ow">or</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_tutoring</span><span class="p">()})</span></div>
+<div class="viewcode-block" id="feedback"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.feedback">[docs]</a><span class="k">def</span> <span class="nf">feedback</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;tutoring_feedback.html&#39;</span><span class="p">)</span>
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="s">&#39;/login&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="tutoring_logging"><a class="viewcode-back" href="../../tutoring.html#tutoring.views.tutoring_logging">[docs]</a><span class="k">def</span> <span class="nf">tutoring_logging</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param request:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c_term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+    <span class="n">tutoring</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Tutoring</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">c_term</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">confirm</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="n">td</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">tutoring</span><span class="o">.</span><span class="n">last_start</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="n">td</span> <span class="o">//</span> <span class="mi">3600</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">td</span> <span class="o">//</span> <span class="mi">60</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="o">&gt;=</span> <span class="mi">45</span><span class="p">:</span>
+        <span class="n">hours</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;sign_in&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">tutoring</span><span class="o">.</span><span class="n">is_tutoring</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">tutoring</span><span class="o">.</span><span class="n">last_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">hours</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">classes</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">confirm</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">elif</span> <span class="s">&#39;sign_out&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hours</span>
+            <span class="n">tutees</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;tutees&#39;</span><span class="p">])</span>
+            <span class="n">makeup_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;makeup_tutoring&#39;</span><span class="p">])</span>
+            <span class="n">makeup_e</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;makeup_event&#39;</span><span class="p">])</span>
+            <span class="n">class_ids</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&#39;subjects&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">makeup_t</span> <span class="o">+</span> <span class="n">makeup_e</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">hours</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s">&#39;Hmm please check your math. According to our records, you have tutored approximately &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">hours</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;hours this session (we round up after 45 minutes).&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tutoring</span><span class="o">.</span><span class="n">is_tutoring</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">week</span> <span class="o">=</span> <span class="n">c_term</span><span class="o">.</span><span class="n">get_week</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">makeup_e</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">h</span> <span class="o">-=</span> <span class="n">makeup_e</span> <span class="c"># hours not logged!</span>
+                    <span class="n">send_mail</span><span class="p">(</span><span class="s">&#39;Make up Tutoring Hours!&#39;</span><span class="p">,</span> 
+                              <span class="s">&#39;Hi! {} indicated they tutored {} hours to make up for an event. Please check this out!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tutoring</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">makeup_e</span><span class="p">),</span>
+                              <span class="s">&#39;webmaster@tbp.seas.ucla.edu&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;webmaster@tbp.seas.ucla.edu&#39;</span><span class="p">],</span> <span class="n">fail_silently</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">makeup_t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">week</span><span class="p">):</span>
+                        <span class="n">week_obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tutoring</span><span class="p">,</span> <span class="s">&#39;week_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                        <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="n">week_obj</span><span class="o">.</span><span class="n">complete</span><span class="p">())</span> <span class="ow">and</span> <span class="n">makeup_t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">week_obj</span><span class="o">.</span><span class="n">hours</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="n">h</span> <span class="o">-=</span> <span class="mi">1</span>
+                            <span class="n">makeup_t</span> <span class="o">-=</span> <span class="mi">1</span>
+                            <span class="n">week_obj</span><span class="o">.</span><span class="n">no_makeup</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="n">week_obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">cur_week</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tutoring</span><span class="p">,</span> <span class="s">&#39;week_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">week</span><span class="p">))</span>
+                <span class="n">cur_week</span><span class="o">.</span><span class="n">hours</span> <span class="o">+=</span> <span class="n">h</span>
+                <span class="n">cur_week</span><span class="o">.</span><span class="n">tutees</span> <span class="o">+=</span> <span class="n">tutees</span>
+                <span class="n">cur_week</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">class_ids</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">cur_week</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">s</span><span class="p">))</span>
+                <span class="n">confirm</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tutoring</span><span class="o">.</span><span class="n">is_tutoring</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tutoring</span><span class="o">.</span><span class="n">last_start</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="o">!=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">():</span>  <span class="c"># midnight passed :P</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s">&#39;You forgot to sign out of your last tutoring session. Please contact the tutoring chair to have those hours logged&#39;</span>
+                <span class="n">tutoring</span><span class="o">.</span><span class="n">is_tutoring</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># actually is tutoring</span>
+                <span class="n">classes</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">tutoring</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;tutoring_logging.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">,</span> <span class="s">&#39;isTutoring&#39;</span><span class="p">:</span> <span class="n">tutoring</span><span class="o">.</span><span class="n">is_tutoring</span><span class="p">,</span> <span class="s">&#39;hours&#39;</span><span class="p">:</span> <span class="n">hours</span><span class="p">,</span> <span class="s">&#39;classes&#39;</span><span class="p">:</span> <span class="n">classes</span><span class="p">,</span> <span class="s">&#39;confirm&#39;</span><span class="p">:</span> <span class="n">confirm</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>web.views &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for web.views</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">MyTemplateView</span>
+<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">main.models</span> <span class="kn">import</span> <span class="n">Faculty</span><span class="p">,</span> <span class="n">Officer</span><span class="p">,</span> <span class="n">Settings</span>
+
+<span class="n">about</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;about.html&#39;</span><span class="p">)</span>
+<span class="n">awards</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;awards.html&#39;</span><span class="p">)</span>
+<span class="n">candidates</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;candidates.html&#39;</span><span class="p">)</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;contact.html&#39;</span><span class="p">)</span>
+<span class="n">emcc</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;emcc.html&#39;</span><span class="p">)</span>
+<span class="n">fe</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;fe.html&#39;</span><span class="p">)</span>
+<span class="n">home</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;home.html&#39;</span><span class="p">,</span> 
+                              <span class="n">additional</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;upcoming_events&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">Event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                                  <span class="n">dropdown</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">end__gt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">)</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">event_type</span> <span class="o">!=</span> <span class="n">Event</span><span class="o">.</span><span class="n">SOCIAL</span><span class="p">],</span>
+                                  <span class="s">&#39;display&#39;</span><span class="p">:</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_tutoring</span><span class="p">()})</span>
+<span class="n">programs</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;programs.html&#39;</span><span class="p">)</span>
+<span class="n">requirements</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;requirements.html&#39;</span><span class="p">)</span>
+<span class="n">tutoring</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;tutoring.html&#39;</span><span class="p">)</span>
+<span class="n">sponsor</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;sponsor.html&#39;</span><span class="p">)</span>
+<span class="n">donate</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;donate.html&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_faculty_by_dept"><a class="viewcode-back" href="../../web.html#web.views.get_faculty_by_dept">[docs]</a><span class="k">def</span> <span class="nf">get_faculty_by_dept</span><span class="p">():</span>
+    <span class="n">faculty</span> <span class="o">=</span> <span class="n">Faculty</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">faculty_by_dept</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">faculty</span><span class="p">:</span>
+        <span class="n">faculty_by_dept</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_dept_display</span><span class="p">()),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">chapter</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">graduation</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">link</span><span class="p">))</span>
+    <span class="n">faculty_by_dept</span><span class="p">[</span><span class="s">&#39;Advisors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&#39;William R. Goodin&#39;</span><span class="p">,</span> <span class="s">&#39;CA E&#39;</span><span class="p">,</span> <span class="s">&quot;&#39;75 (Chief Advisor)&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Stacey Ross&#39;</span><span class="p">,</span> <span class="s">&#39;CA K&#39;</span><span class="p">,</span> <span class="s">&quot;&#39;06 (District 16 Director)&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Neal Bussett&#39;</span><span class="p">,</span> <span class="s">&#39;CA X&#39;</span><span class="p">,</span> <span class="s">&quot;&#39;09 (District 16 Director)&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Jason Corl&#39;</span><span class="p">,</span> <span class="s">&#39;CA Q&#39;</span><span class="p">,</span> <span class="s">&quot;&#39;06 (District 16 Director)&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Scott Eckersall&#39;</span><span class="p">,</span> <span class="s">&#39;CA I&#39;</span><span class="p">,</span> <span class="s">&quot;&#39;96 (District 16 Director)&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">dept</span><span class="p">,</span> <span class="n">faculty_by_dept</span><span class="p">[</span><span class="n">dept</span><span class="p">])</span> <span class="k">for</span> <span class="n">dept</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">faculty_by_dept</span><span class="p">)]</span>
+
+</div>
+<div class="viewcode-block" id="get_officers"><a class="viewcode-back" href="../../web.html#web.views.get_officers">[docs]</a><span class="k">def</span> <span class="nf">get_officers</span><span class="p">():</span>
+    <span class="n">position_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;Club Liaison (\([^)]*\))&#39;</span><span class="p">)</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">liaisons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">liaison_alias</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">Officer</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">liaison_alias</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">mail_alias</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">position_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">officer</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">liaisons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">officer</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">position</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">position</span><span class="o">.</span><span class="n">mail_alias</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">officer</span><span class="p">)</span> <span class="k">for</span> <span class="n">officer</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">all</span><span class="p">()]))</span>
+
+    <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;Faculty Advisor&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;Bill Goodin&#39;</span><span class="p">]))</span>
+    <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;Club Liaison&#39;</span><span class="p">,</span> <span class="n">liaison_alias</span><span class="p">,</span> <span class="n">liaisons</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">positions</span>
+</div>
+<span class="n">faculty</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;faculty.html&#39;</span><span class="p">,</span> 
+                                 <span class="n">additional</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;faculty&#39;</span><span class="p">:</span> <span class="n">get_faculty_by_dept</span><span class="p">,</span> <span class="s">&#39;facultyAdvisor&#39;</span><span class="p">:</span> <span class="s">&#39;Ann R. Karagozian&#39;</span><span class="p">})</span>
+<span class="n">officers</span> <span class="o">=</span> <span class="n">MyTemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s">&#39;officers.html&#39;</span><span class="p">,</span> 
+                                  <span class="n">additional</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="s">&#39;Summer - Fall 2013&#39;</span><span class="p">,</span> <span class="s">&#39;positions&#39;</span><span class="p">:</span> <span class="n">get_officers</span><span class="p">})</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

@@ -45,3 +45,5 @@ interviews/
 static/
 cached_templates
 docs/_*
+
+*.sql
