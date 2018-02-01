@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:5.5.59 
+    environment:
+      - MYSQL_ROOT_PASSWORD=CAEpsilon
+  backend:
+    image: tbpsite/backend:latest
+    build: .
+    volumes:
+      - .:/app
+      - ./static:/static
+    depends_on:
+      - db
+  nginx:
+    image: tbpsite/nginx:latest
+    build: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/static
+    depends_on:
+      - backend
+  
