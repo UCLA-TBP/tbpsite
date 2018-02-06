@@ -49,7 +49,11 @@ urlpatterns += patterns('main.views',
     url(r'^testbank/$', 'testbank'),
     url(r'^testbank/file/(?P<id>\d+)/(?P<filename>.*)$', 'test_file'),
     url(r'^testbank/file/(?P<id>\d+)$', 'test_file'),
-
+    url(r'^uploadreviewsheet/$', 'upload_review_sheet'),
+    url(r'^reviewsheets/$','reviewsheetbank'),
+    url(r'^reviewsheets/file/(?P<id>\d+)$', 'reviewsheets'),
+    url(r'^reviewsheets/file/(?P<id>\d+)/(?P<filename>.*)$', 'reviewsheets'),
+                        
     url(r'^resume_pdf/$', 'resume_pdf'),
     url(r'^resume_pdf/(?P<id>\d+)$', 'resume_pdf'),
     url(r'^resume_word/$', 'resume_word'),
