@@ -10,10 +10,11 @@ services:
     build: backend 
     volumes:
       - ./backend:/app
-      - ./static:/static
-      - ./media:/media
+      - tbpsite-static:/app/static
+      - ./media:/app/media
     depends_on:
       - db
+      
   nginx:
     image: tbpsite/nginx:latest
     build: nginx
@@ -21,8 +22,11 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./static:/static
+      - tbpsite-static:/static
       - ./media:/media
     depends_on:
       - backend
-  
+
+volumes:
+  tbpsite-static:
+
