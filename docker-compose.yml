@@ -11,7 +11,7 @@ services:
     volumes:
       - ./backend:/app
       - tbpsite-static:/app/static
-      - ./media:/app/media
+      - ./media:/media
     depends_on:
       - db
       
