@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from main.models import Settings, Term, Profile, Candidate, ActiveMember, PeerTeaching, Test_Upload
+from main.models import Settings, Term, Profile, Candidate, ActiveMember, PeerTeaching, Test_Upload, ReviewSheet
 from tutoring.models import Class
 
 class UserForm(ModelForm):
@@ -96,6 +96,13 @@ class TestForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(TestForm, self).__init__(*args, **kwargs)
+
+class ReviewSheetForm(ModelForm):
+    class Meta:
+        model = ReviewSheet
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewSheetForm, self).__init__(*args, **kwargs)
         
 class ProfileForm(ModelForm):
     birthday = forms.DateField(label="Birthday (mm/dd/yyyy)", widget=forms.DateInput)

@@ -49,6 +49,7 @@
 	      <li><a href="{% url 'web.views.tutoring' %}">Info</a></li>
               <li><a href="{% url 'tutoring.views.schedule' %}">Schedule</a></li>
               <li><a href="{% url 'tutoring.views.feedback' %}">Feedback</a></li>
+	      <li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li>
               {% if user.is_authenticated %}
               <li><a href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a></li>
               {% endif %}
@@ -80,6 +81,8 @@
               <li><a href="{% url 'web.views.sponsor' %}">Sponsors</a></li>
             </ul>
             </li>
+	    
+	    <!--<li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li>-->
           </ul>
 	  <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
@@ -101,6 +104,7 @@
             {% endif %}
             <li><a class="navigation-font" href="{% url 'main.views.profile_view' %}">{{ user.username }}</a></li>
             <li><a class="navigation-font" href="/testbank">Test Bank</a></li>
+	    <!---<li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li> -->
             <li><a class="navigation-font" href="{% url 'main.views.logout' %}?next={{ next }}">Logout</a></li>
             {% else %}
 	    <li class="dropdown">

@@ -7,7 +7,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from constants import MAJOR_CHOICES, DEPT_CHOICES, resume_word_fs, resume_pdf_fs, community_service_fs, \
-    professor_interview_fs, test_upload_fs
+    professor_interview_fs, test_upload_fs, review_upload_fs
 import datetime
 
 from points import *
@@ -220,6 +220,28 @@ class Test_Upload(models.Model):
         return '<a href=''>None</a>'
     file_link.allow_tags = True
     file_link.short_desrciption = 'Test File Link'
+
+class ReviewSheet(models.Model):
+    course = models.ForeignKey('tutoring.Class', blank= False, null = True)
+    reviewSheetFile = models.FileField(upload_to = upload_to_path, storage = review_upload_fs, blank = False, null=True, default = None, verbose_name="Uploaded Review Sheet (pdf)",
+                                       validators = [lambda v : validate_re(r'^.*\.pdf$', v.name.lower(),
+                                                                             'Please upload files in PDF format only')])
+    class Meta:
+        ordering = ['course']
+
+    def __unicode__(self):
+        return str(self.course)
+    
+    def __str__(self):
+        return str(self.course)
+
+    def file_line(self):
+        if self.reviewSheetFile:
+            link = '/reviewsheets/file/%d/%s' % (self.id, self.test_upload)
+            return '<a href="%s"?%s</a>' % (link, self.reviewSheetFile)
+        return '<a href=''>None</a>'
+    file_line.allow_tags = True
+    file_line.short_description = 'Review Sheet File Link'
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
