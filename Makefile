@@ -28,8 +28,10 @@ init_db: clean_db
 				docker-compose exec db /bin/sh -c "mysql -uroot -pCAEpsilon tbpsite < /init_db.sql" 
 				-docker-compose exec backend /app/manage.py migrate --noinput --merge
 
-init: init_db collect_static
+untar_setup:
+				tar -xzf setup.tar.gz
 
+init: untar_setup init_db collect_static
 
 backup_db:
 				docker-compose exec db mysqldump -uroot -pCAEpsilon > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
