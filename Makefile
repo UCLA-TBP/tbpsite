@@ -19,11 +19,17 @@ test:
 clean_db:
 				-docker-compose exec db mysql -uroot -pCAEpsilon -e "DROP DATABASE tbpsite;"
 
+collect_static:
+				docker-compose exec backend /app/manage.py collectstatic --noinput
+
 init_db: clean_db 
 				docker cp init_db.sql "$(shell docker-compose ps -q db)":/init_db.sql
 				docker-compose exec db mysql -uroot -pCAEpsilon -e "CREATE DATABASE tbpsite;"
 				docker-compose exec db /bin/sh -c "mysql -uroot -pCAEpsilon tbpsite < /init_db.sql" 
-				docker-compose exec backend /app/manage.py migrate --noinput --merge
+				-docker-compose exec backend /app/manage.py migrate --noinput --merge
+
+init: init_db collect_static
+
 
 backup_db:
 				docker-compose exec db mysqldump -uroot -pCAEpsilon > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
