@@ -4,7 +4,7 @@ build:
 				docker-compose build
 
 run: 
-				-pkill docker-compose
+				-docker-compose down
 				docker-compose up
 
 restart:
