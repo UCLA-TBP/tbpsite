@@ -1,9 +1,6 @@
 default: build
 
 build: 
-				docker build -t tbpsite/backend backend
-				docker build -t tbpsite/frontend frontend
-				docker build -t tbpsite/websockets frontend
 				docker-compose build
 
 run: 
@@ -11,7 +8,7 @@ run:
 				docker-compose up
 
 restart:
-				docker-compose restart backend frontend
+				docker-compose restart backend
 
 shell:
 				docker-compose exec backend /app/manage.py shell_plus
