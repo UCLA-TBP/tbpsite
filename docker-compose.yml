@@ -12,6 +12,7 @@ services:
       - ./backend:/app
       - tbpsite-static:/app/static
       - ./media:/media
+      - ./postfix_conf:/etc/postfix_conf
     depends_on:
       - db
       
