@@ -34,17 +34,16 @@ sys.path.append('.')
 ├── event
 │   ├── admin.py    # config file for admin page (/admin)
 │   ├── forms.py    # configures forms for user input
-│   ├── migrations  # folder for django migrations (sql schema changes)
+│   ├── migrations  # folder for generated Django migrations (sql schema changes)
 │   ├── models.py   # configures event models and behaviors
 │   └── views.py    # configures views (HTML and HTTP endpoints) for events
 ├── main
 │   ├── admin.py    # config file for admin page
 │   ├── forms.py    # configures forms for user input                    
-│   ├── migrations  # folder for django migrations (sql schema changes)
+│   ├── migrations  # folder for generated Django migrations (sql schema changes)
 │   ├── models.py   # configures event models and behaviors
 │   └── views.py    # configures views (HTML and HTTP endpoints) for main models of TBP
-├── manage.py
-├── requirements.txt
+├── requirements.txt  # Python modules that the TBP site requires.  Is used in the Dockerfile
 ├── scripts
 │   ├── add_ao_and_emcc.py          # adds Academic Outreach and EMCC officers to distinguished active members
 │   ├── assign_tutoring.py          # assigns tutors to a tutoring time
@@ -65,7 +64,7 @@ sys.path.append('.')
 ├── tutoring
 │   ├── admin.py    # config file for admin page
 │   ├── management  # contains scripts to manage tutoring (create cache copy of tutoring schedule)
-│   ├── migrations  # folder for django migrations (sql schema changes)
+│   ├── migrations  # folder for generated Django migrations (sql schema changes)
 │   ├── models.py   # configures event models and behaviors
 │   └── views.py    # configures views (HTML and HTTP endpoints) for tutoring
 └── web
