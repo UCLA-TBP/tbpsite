@@ -215,6 +215,7 @@ nosetests.xml
 docs/_*
 
 init_db.sql
+tbpsite_dump*.sql
 media.tar.gz
 setup.tar.gz
 

@@ -11,10 +11,7 @@ restart:
 				docker-compose restart backend
 
 shell:
-				docker-compose exec backend /app/manage.py shell_plus
-
-test:
-				docker-compose exec backend /app/manage.py test --no-input --parallel $(args)
+				docker-compose exec backend /app/manage.py shell
 
 clean_db:
 				-docker-compose exec db mysql -uroot -pCAEpsilon -e "DROP DATABASE tbpsite;"
@@ -34,7 +31,7 @@ untar_setup:
 init: untar_setup init_db collect_static
 
 backup_db:
-				docker-compose exec db mysqldump -uroot -pCAEpsilon > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+				docker-compose exec db mysqldump -uroot -pCAEpsilon tbpsite > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
 
 install_package:
 				docker-compose exec backend pip install $(pkg)
