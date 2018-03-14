@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}TBP Test Bank{% endblock %}
+
+{% block content %}
+
+{% load extras %}
+
+<h1>TBP Test Bank</h1>
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-md-12">
+      <a href="/upload">Upload your own here</a>
+      <table class="table table-striped">
+        <thead>
+          <tr class="table-head">
+            <th>Term</th>
+            <th>Professor</th>
+            <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course, tests in class_tests %}
+            <tr class="table-head active">
+              <th colspan="4">{{ course }}</th>
+            </tr>
+
+            {% for test in tests %}
+              <tr>
+                <td>{{ test.origin_term }}</td>
+                <td>{{ test.professor }}</td>
+		
+                <td>
+                  <a target="_blank" href="/testbank/file/{{ test.id }}/{{ test.test_upload.name }}">Download</a>
+                </td>
+              </tr>
+            {% endfor %}
+
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+
+{% endblock %}

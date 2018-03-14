@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Programs{% endblock %}
+
+{% block content %}
+
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h1>Programs</h1>
+
+      <ul>
+        <li><a href="{% url 'web.views.emcc' %}">EMCC</a></li>
+        <li><a href="{% url 'web.views.fe' %}">FE Test Preparation Materials</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
