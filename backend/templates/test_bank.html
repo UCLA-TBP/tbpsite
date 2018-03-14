@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}TBP Test Bank{% endblock %}
+
+{% block content %}
+
+{% load extras %}
+
+<h1>TBP Test Bank</h1>
+<div class="row" style="margin-bottom: 10px">
+  <div class="col-md-12">
+      <a href="/upload">Upload your own here</a>
+      <table class="table table-striped">
+        <thead>
+          <tr class="table-head">
+            <th>Professor</th>
+            <th>Type</th>
+            <th>Term</th>
+            <th>File</th>
+            {% if user.is_staff %}
+            <th>Edit Link</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for course, tests in class_tests %}
+            <tr class="table-head active">
+              {% if user.is_staff %}
+              <th colspan="5">{{ course }}</th>
+              {% else %}
+              <th colspan="4">{{ course }}</th>
+              {% endif %}
+            </tr>
+
+            {% for test in tests %}
+              <tr>
+                <td>{{ test.professor }}</td>
+		<td>{{ test.test_type }}</td> 
+                <td>{{ test.origin_term }}</td>
+                <td>
+                  <a target="_blank" href="/testbank/file/{{ test.id }}/{{ test.test_upload.name }}">Download</a>
+                </td>
+                {% if user.is_staff %}
+                <td>
+                  <a href="/admin/main/test_upload/{{ test.id }}/">Edit</a>
+                </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+
+{% endblock %}

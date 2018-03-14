@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h1>Events</h1>
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table">
+            <tr>
+              <th>Upcoming Events</th>
+              <th>Date/Time</th>
+              <th>Location</th>
+              <th>Event Type:</th>
+            </tr>
+            {% for event in upcoming_events %}
+            <tr>
+              <td><a href="/events/{{ event.url }}">{{ event.name }}</a></td>
+              <td>{{ event.get_datetime }}</td>
+              <td>{{ event.location }}</td>
+              <td>{{ event.get_event_type_display }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <th>Past Events</th>
+              <th>Date/Time</th>
+              <th>Location</th>
+              <th>Event Type:</th>
+            </tr>
+            {% for event in past_events %}
+            <tr>
+              <td><a href="/events/{{ event.url }}" style="color:gray">{{ event.name }}</a></td>
+              <td style="color:gray">{{ event.get_datetime }}</td>
+              <td style="color:gray">{{ event.location }}</td>
+              <td style="color:gray">{{ event.get_event_type_display }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+
+
+<!--
+  <div class="col-lg-4">
+    <img src="/static/img/events_main.jpg" width="100%">
+  </div>-->
+
+<div class="row">
+  <div class="col-md-12">
+  <a href="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles">Calendar Link</a>
+  <iframe src="https://calendar.google.com/calendar/embed?src=bWdnYjBkZmJiaDlhdTMxdTA5OWh1MDkzdGtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&ctz=America/Los_Angeles" width="100%" height="500px"></iframe>
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

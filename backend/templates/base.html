@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tau Beta Pi | UCLA{% endblock %}</title>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!-- Fonts and Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- Other Styles -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/component-style.css" rel="stylesheet"/>
+    <link href="/static/css/custom-styles.css" rel="stylesheet" />
+    <link href="/static/img/favicon.ico?v=2" rel="shortcut icon">
+    {% block headContent %} {% endblock %}
+  </head>
+  <body>
+    <div class="navbar navbar-info" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'web.views.home' %}"><img alt="tbp logo" src="/static/img/tbp-logo.png" class="logo"><strong>Tau Beta Pi | UCLA</strong></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse" style="min-width:230px">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+	    <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Events & Programs<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'event.views.events' %}">Events</a></li>
+	      {% for event in events %}
+              <li><a href="/events/{{ event.url }}">{{ event.name }}</a></li>
+              {% endfor %}
+              <li><a href="{% url 'web.views.emcc' %}">EMCC</a></li>
+              <li><a href="{% url 'web.views.fe' %}">FE Test Preparation Materials</a></li>
+            </ul>
+            </li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutoring <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+	      <li><a href="{% url 'web.views.tutoring' %}">Info</a></li>
+              <li><a href="{% url 'tutoring.views.schedule' %}">Schedule</a></li>
+              <li><a href="{% url 'tutoring.views.feedback' %}">Feedback</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a></li>
+              {% endif %}
+            </ul>
+            </li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Candidates <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'web.views.requirements' %}">Requirements</a></li>
+			  <!-- <li><a href="{% url 'main.views.houses' %}">Houses</a></li> -->
+              <!-- <li><a href="{{ eligibility_list }}">Eligibility List</a></li> -->
+			  <!-- <li><a href="../media/files/Eligibility List for Sp14.pdf">Eligibility List</a></li> -->
+			  <li><a href="../media/files/Candidate Packet F17.pdf">Candidate Packet</a></li>
+			  <li><a href="../media/files/TBPCandidateOrientation_F16.pptx">Orientation Presentation</a></li>
+	      <!-- {% if user.is_authenticated %}
+	      <li><a href="../media/files/eventsF16.pdf">Fall Events</a></li>
+	      {% endif %}-->
+            </ul>
+            </li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About Us <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+	      <li><a href="{% url 'web.views.about' %}">Overview</a></li>
+              <li><a href="https://www.facebook.com/tbp.ucla/">Facebook Page</a></li>
+	      <li><a href="../media/files/Officer-Positions.pdf">Officer Positions</a></li>
+              <li><a href="{% url 'web.views.awards' %}">Awards</a></li>
+              <li><a href="{% url 'web.views.officers' %}">Contact Officers</a></li>
+              <li><a href="{% url 'web.views.faculty' %}">Advisors and Faculty</a></li>
+              <li><a href="{% url 'web.views.sponsor' %}">Sponsors</a></li>
+            </ul>
+            </li>
+          </ul>
+	  <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+	      <li><a href="/admin">Admin Panel</a></li>
+              <li><a href="{% url 'main.views.candidates' %}">Candidates</a></li>
+              <li><a href="{% url 'main.views.active_members' %}">Active Members</a></li>
+	      <li><a href="{% url 'main.views.add_requirement' %}">Requirement Attendance</a></li>
+              <li><a href="{% url 'main.views.all_profiles' %}">All Profiles</a></li>
+              <!--<li><a href="{% url 'main.views.pending_community_service' %}">Pending Community Service</a></li>-->
+              <li><a href="{% url 'main.views.tutoring_admin' %}">Tutoring</a></li>
+              <li><a href="{% url 'main.views.downloads' %}">Downloads</a></li>
+              <li><a href="https://sites.google.com/site/tbpcaeofficers/">Wiki</a></li>
+            </ul>
+            </li>
+            {% endif %}
+            <li><a class="navigation-font" href="{% url 'main.views.profile_view' %}">{{ user.username }}</a></li>
+            <li><a class="navigation-font" href="/testbank">Test Bank</a></li>
+            <li><a class="navigation-font" href="{% url 'main.views.logout' %}?next={{ next }}">Logout</a></li>
+            {% else %}
+	    <li class="dropdown">
+              <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign In <span class="caret"></span></a>
+              <ul class="dropdown-menu sign-in">
+		<form class="navbar-form navbar-right" method="post" action="{% url 'main.views.login' %}?next={{ next }}" autocomplete="off">
+		  {% csrf_token %}
+		  {% if request.GET.error %}
+		  <span class="help-inline" style="color:white;">Invalid login</span>
+		  {% endif %}
+		  <input type="text" class="form-control" id="form" placeholder="Username" name="username" style="width: 200px; margin-top: 1em; margin-bottom: 0.5em;" autocomplete="off">
+		  <input type="password" class="form-control" id="form" placeholder="Password" name="password" style="width: 200px;" autocomplete="off">
+		  <button type="submit" class="btn btn-warning btn-submit" style="margin-top:1em; margin-bottom:1em;">Sign in</button>
+		</form>
+	      </ul>
+	    </li>
+          {% endif %}
+	  </ul>
+        </div>
+      </div>
+    </div>
+    <div id="main" class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            Tau Beta Pi at UCLA |
+            <a href="{% url 'web.views.home' %}">Home</a> |
+            <a href="{% url 'web.views.officers' %}">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <!-- Carousel -->
+      <script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+	$('.carousel').carousel({
+	interval: 4000
+	})
+	});
+      </script>
+    <script src="/static/js/material.min.js"></script>
+    <script src="/static/js/material-kit.js" type="text/javascript"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-45540915-1', 'ucla.edu');
+      ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>
