@@ -1,4 +1,4 @@
-# TBP Site
+# Django folder
 
 The UCLA Tau Beta Pi website runs on the Django framework.  It uses server side rendering and minimal frontend JS.
 

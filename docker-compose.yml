@@ -12,6 +12,8 @@ services:
       - ./backend:/app
       - tbpsite-static:/app/static
       - ./media:/media
+      - ./update_virtual_domains.py:/etc/postfix_conf/update_virtual_domains.py
+      - ./virtual_static:/etc/postfix_conf/virtual_static
       - ./postfix_conf:/etc/postfix_conf
     depends_on:
       - db

@@ -219,7 +219,5 @@ tbpsite_dump*.sql
 media.tar.gz
 setup.tar.gz
 
-postfix_conf/virtual
-postfix_conf/restrict_classes/houseleaders
-postfix_conf/restrict_classes/tbponly
-
+postfix_conf
+virtual_static
