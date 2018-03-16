@@ -33,20 +33,18 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse" style="min-width:230px">
           <ul class="nav navbar-nav">
             <li class="dropdown">
-	    <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Events & Programs<span class="caret"></span></a>
+	    <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Activities <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'event.views.events' %}">Events</a></li>
+              <li><a href="{% url 'event.views.events' %}">Upcoming Events</a></li>
 	      {% for event in events %}
               <li><a href="/events/{{ event.url }}">{{ event.name }}</a></li>
               {% endfor %}
               <li><a href="{% url 'web.views.emcc' %}">EMCC</a></li>
-              <li><a href="{% url 'web.views.fe' %}">FE Test Preparation Materials</a></li>
             </ul>
             </li>
             <li class="dropdown">
             <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutoring <span class="caret"></span></a>
             <ul class="dropdown-menu">
-	      <li><a href="{% url 'web.views.tutoring' %}">Info</a></li>
               <li><a href="{% url 'tutoring.views.schedule' %}">Schedule</a></li>
               <li><a href="{% url 'tutoring.views.feedback' %}">Feedback</a></li>
 	      <li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li>
@@ -56,29 +54,13 @@
             </ul>
             </li>
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Candidates <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'web.views.requirements' %}">Requirements</a></li>
-			  <!-- <li><a href="{% url 'main.views.houses' %}">Houses</a></li> -->
-              <!-- <li><a href="{{ eligibility_list }}">Eligibility List</a></li> -->
-			  <!-- <li><a href="../media/files/Eligibility List for Sp14.pdf">Eligibility List</a></li> -->
-			  <li><a href="../media/files/Candidate Packet F17.pdf">Candidate Packet</a></li>
-			  <li><a href="../media/files/TBPCandidateOrientation_F16.pptx">Orientation Presentation</a></li>
-	      <!-- {% if user.is_authenticated %}
-	      <li><a href="../media/files/eventsF16.pdf">Fall Events</a></li>
-	      {% endif %}-->
-            </ul>
-            </li>
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About Us <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
             <ul class="dropdown-menu">
 	      <li><a href="{% url 'web.views.about' %}">Overview</a></li>
-              <li><a href="https://www.facebook.com/tbp.ucla/">Facebook Page</a></li>
-	      <li><a href="../media/files/Officer-Positions.pdf">Officer Positions</a></li>
-              <li><a href="{% url 'web.views.awards' %}">Awards</a></li>
+	      <li><a href="{% url 'web.views.requirements' %}">Candidates/Actives</a></li>
+              <li><a href="../media/files/Officer-Positions.pdf">Officer Positions</a></li>
               <li><a href="{% url 'web.views.officers' %}">Contact Officers</a></li>
               <li><a href="{% url 'web.views.faculty' %}">Advisors and Faculty</a></li>
-              <li><a href="{% url 'web.views.sponsor' %}">Sponsors</a></li>
             </ul>
             </li>
 	    
@@ -102,10 +84,14 @@
             </ul>
             </li>
             {% endif %}
-            <li><a class="navigation-font" href="{% url 'main.views.profile_view' %}">{{ user.username }}</a></li>
-            <li><a class="navigation-font" href="/testbank">Test Bank</a></li>
-	    <!---<li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li> -->
-            <li><a class="navigation-font" href="{% url 'main.views.logout' %}?next={{ next }}">Logout</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Member Services<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a class="navigation-font" href="{% url 'main.views.profile_view' %}">{{ user.username }}</a></li>
+              <li><a class="navigation-font" href="/testbank">Test Bank</a></li>
+              <!---<li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li> -->
+              <li><a class="navigation-font" href="{% url 'main.views.logout' %}?next={{ next }}">Logout</a></li>
+            </ul>
             {% else %}
 	    <li class="dropdown">
               <a href="#" class="dropdown-toggle navigation-font" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign In <span class="caret"></span></a>
