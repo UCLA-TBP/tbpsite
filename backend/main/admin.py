@@ -146,6 +146,9 @@ class RequirementAdmin(admin.ModelAdmin):
     list_display = ('name', 'requirement_choice', 'event_hours', 'term')
     list_editable = ('requirement_choice', 'event_hours')
 
+class ReviewSheetAdmin(admin.ModelAdmin):
+    list_displayable = ('__str__', 'course', ' file_link')
+    #readonly_fields = ('file_link',)
 
 class TestAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'profile', 'course', 'test_type', 'professor', 'origin_term', 'file_link')
@@ -167,4 +170,5 @@ admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(Officer, OfficerAdmin)
 admin.site.register(PeerTeaching, PeerAdmin)
 admin.site.register(Requirement, RequirementAdmin)
+admin.site.register(ReviewSheet, ReviewSheetAdmin)
 admin.site.register(Test_Upload, TestAdmin)

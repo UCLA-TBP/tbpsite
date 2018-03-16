@@ -18,9 +18,10 @@ from django.core.urlresolvers import reverse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.db.models import Q
+from django.views.decorators.cache import never_cache
 
-from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement, Test_Upload
-from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm
+from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement, Test_Upload, ReviewSheet
+from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm, ReviewSheetForm, TestQueryForm
 from tutoring.models import Tutoring, Class, TutoringPreferencesForm
 from common import render
 from sendfile import sendfile
@@ -263,6 +264,19 @@ def upload(request):
         #term_form = TermForm()
         #class_form = ClassForm()
         return render_profile_page(request, 'upload_test.html',{'test_form': test_form})#, 'term_form': term_form, 'class_form': class_form})#HttpResponse("OK")
+
+def upload_review_sheet(request):
+    if request.method == 'POST':
+        reviewsheetform = ReviewSheetForm(request.POST, request.FILES)
+
+        if reviewsheetform.is_valid():
+            newReviewSheet = reviewsheetform.save(commit=False)
+            newReviewSheet.save()
+            return redirect(reviewsheetbank)
+        return render(request, 'upload_reviewsheet.html', {'reviewsheetform': reviewsheetform})
+    else:
+        reviewsheetform = ReviewSheetForm()
+        return render(request, 'upload_reviewsheet.html', {'reviewsheetform': reviewsheetform})
 
 @login_required(login_url=login)
 def edit(request):
@@ -548,6 +562,34 @@ class FileView(View):
     def get(self, request, *args, **kwargs):
 
         obj = self.get_object(request, kwargs.get('id'))
+
+        if not obj:
+            raise Http404
+
+        try:
+            f = open(obj.path)
+        except IOError:
+            raise Http404
+
+        path, ext = os.path.splitext(obj.path)
+        content_type = {'.pdf': 'application/pdf', '.doc': 'application/msword', '.jpg': 'image/jpeg',
+                        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}[ext.lower()]
+        filename = 'filename={}{}'.format(self.field, ext)
+
+        response = HttpResponse(FileWrapper(f), content_type=content_type)
+        response['Content-Disposition'] = filename
+        return response
+
+    def get_object(self, request, id):
+        raise NotImplementedError
+
+class FileViewNoAuth(View):
+    field = ''
+
+    def get(self, request, *args, **kwargs):
+
+        obj = self.get_object(request, kwargs.get('id'))
+
         if not obj:
             raise Http404
 
@@ -593,10 +635,42 @@ class TestFileView(FileView):
         test = get_object_or_404(Test_Upload, id=id)
         return test.test_upload
 
+class ReviewSheetsView(FileViewNoAuth):
+    def get_object(self, request, id, filename=''):
+        review_sheet = get_object_or_404(ReviewSheet, id=id)
+        return review_sheet.reviewSheetFile
+
+
+def reviewsheetbank(request):
+    sheets = ReviewSheet.objects.all()
+
+    class_sheets = {}
+    for sheet in sheets:
+        subject = str(sheet.course).split()[0]
+        class_sheets.setdefault(subject,[])
+        class_sheets[subject].append(sheet)
+
+    ordered_class_sheets = []
+
+    for subject in sorted(class_sheets.keys()):
+        ordered_class_sheets.append((subject,class_sheets[subject]))
+
+    return render(request, 'reviewsheets.html', {'reviewsheetlist': ordered_class_sheets,})
+
 @login_required
 def testbank(request):
     tests = Test_Upload.objects.all()
-
+    
+    def is_relevant(test, search_terms):
+        for search_term in search_terms:
+            if search_term not in str(test.professor).lower() and search_term not in str(test.course).lower() and search_term not in str(test.origin_term).lower() and search_term != str(test.test_type).lower():
+               return False
+        return True
+    if request.method == 'POST' and len(request.POST['search_params']) > 0:
+        search_params = request.POST.get('search_params')
+        search_terms = [search_term.lower() for search_term in search_params.split(' ')]
+        tests = [test for test in tests if is_relevant(test, search_terms)]
+ 
     class_tests = {}
     for test in tests:
         class_tests.setdefault(str(test.course), [])
@@ -633,6 +707,7 @@ resume_word = ProfileFileView.as_view(field='resume_word')
 interview = CandidateFileView.as_view(field='professor_interview')
 proof = CandidateFileView.as_view(field='community_service_proof')
 test_file = TestFileView.as_view()
+reviewsheets = ReviewSheetsView.as_view()
 
 proof = CandidateFileView.as_view(field='community_service_proof')
 
