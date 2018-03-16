@@ -38,6 +38,4 @@ Check out the `backend` folder
     - backs up the database
 - `make install_package pkg=$PACKAGE_NAME`
     - installs a package into the `backend` container and adds it to the requirements file
-- `make update_virtual_domains`
-    - outputs the virtual alias and domain mappings into the `postfix_conf` folder 
 
