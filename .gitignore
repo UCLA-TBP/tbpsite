@@ -218,6 +218,4 @@ init_db.sql
 tbpsite_dump*.sql
 media.tar.gz
 setup.tar.gz
-
-postfix_conf
-virtual_static
+tbpsite.media.tar*

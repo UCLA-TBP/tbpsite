@@ -37,5 +37,3 @@ install_package:
 				docker-compose exec backend pip install $(pkg)
 				docker-compose exec backend pip freeze | tail -n +1 > backend/requirements.txt
 
-update_virtual_domains:
-				docker-compose exec backend python /etc/postfix_conf/update_virtual_domains.py
