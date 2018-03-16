@@ -6,10 +6,31 @@
 
 {% load extras %}
 
+<div class="panel-group">
+<div class="panel panel-default">
+<div class="panel-body">
 <h1>TBP Test Bank</h1>
 <div class="row" style="margin-bottom: 10px">
   <div class="col-md-12">
-      <a href="/upload">Upload your own here</a>
+      <div class="panel-group">
+      <div class="panel panel-default">
+      <div class="panel-body">
+      <a href="/upload">Upload your own tests here</a>
+      </div>
+      </div>
+      </div>
+      <div class="panel-group">
+      <div class="panel panel-default">
+      <div class="panel-body">
+      <form action="/testbank/" method="post">
+          {% csrf_token %}
+          <label for="search_params">Filter by key words. Can search with any combination of professor, class name, test type (M1, M2, F), quarter, and year: </label>
+          <input class="form-control" id="search_params" type="text" name="search_params" placeholder="eg: CHEM 20A Scerri" value="{{ search_params }}">
+          <input type="submit" value="Search" class="btn">
+      </form>
+      </div>
+      </div>
+      </div>
       <table class="table table-striped">
         <thead>
           <tr class="table-head">
@@ -53,5 +74,7 @@
       </table>
   </div>
 </div>
-
+</div>
+</div>
+</div>
 {% endblock %}
