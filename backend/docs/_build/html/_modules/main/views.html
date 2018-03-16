@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>main.views &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for main.views</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">cStringIO</span> <span class="kn">as</span> <span class="nn">StringIO</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+
+<span class="kn">from</span> <span class="nn">django.forms.models</span> <span class="kn">import</span> <span class="n">model_to_dict</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">auth</span>
+<span class="kn">from</span> <span class="nn">django.contrib.admin.views.decorators</span> <span class="kn">import</span> <span class="n">staff_member_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">django.core.servers.basehttp</span> <span class="kn">import</span> <span class="n">FileWrapper</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">Http404</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.views.generic.base</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+
+<span class="kn">from</span> <span class="nn">main.models</span> <span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Candidate</span><span class="p">,</span> <span class="n">ActiveMember</span><span class="p">,</span> <span class="n">House</span><span class="p">,</span> <span class="n">HousePoints</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">MAJOR_CHOICES</span>
+<span class="kn">from</span> <span class="nn">main.forms</span> <span class="kn">import</span> <span class="n">LoginForm</span><span class="p">,</span> <span class="n">RegisterForm</span><span class="p">,</span> <span class="n">UserAccountForm</span><span class="p">,</span> <span class="n">UserPersonalForm</span><span class="p">,</span> <span class="n">ProfileForm</span><span class="p">,</span> <span class="n">CandidateForm</span><span class="p">,</span> \
+    <span class="n">MemberForm</span><span class="p">,</span> <span class="n">ShirtForm</span><span class="p">,</span> \
+    <span class="n">FirstProfileForm</span>
+<span class="kn">from</span> <span class="nn">tutoring.models</span> <span class="kn">import</span> <span class="n">Tutoring</span><span class="p">,</span> <span class="n">Class</span><span class="p">,</span> <span class="n">TutoringPreferencesForm</span>
+<span class="kn">from</span> <span class="nn">common</span> <span class="kn">import</span> <span class="n">render</span>
+
+<span class="n">MAJOR_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;0&#39;</span><span class="p">:</span> <span class="s">&#39;AeroE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;1&#39;</span><span class="p">:</span> <span class="s">&#39;BE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;2&#39;</span><span class="p">:</span> <span class="s">&#39;ChemE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;3&#39;</span><span class="p">:</span> <span class="s">&#39;CivilE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;4&#39;</span><span class="p">:</span> <span class="s">&#39;CS&#39;</span><span class="p">,</span>
+    <span class="s">&#39;5&#39;</span><span class="p">:</span> <span class="s">&#39;CSE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;6&#39;</span><span class="p">:</span> <span class="s">&#39;EE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;7&#39;</span><span class="p">:</span> <span class="s">&#39;MatE&#39;</span><span class="p">,</span>
+    <span class="s">&#39;8&#39;</span><span class="p">:</span> <span class="s">&#39;MechE&#39;</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="update_professor_interview_and_resume"><a class="viewcode-back" href="../../main.html#main.views.update_professor_interview_and_resume">[docs]</a><span class="k">def</span> <span class="nf">update_professor_interview_and_resume</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">candidate</span><span class="o">.</span><span class="n">resume</span><span class="p">()</span> <span class="ow">and</span> <span class="n">candidate</span><span class="o">.</span><span class="n">professor_interview</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span><span class="o">.</span><span class="n">due_date</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span>
+                                                                 <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span><span class="o">.</span><span class="n">due_date</span><span class="p">):</span>
+        <span class="n">candidate</span><span class="o">.</span><span class="n">professor_interview_and_resume</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">candidate</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="render_profile_page"><a class="viewcode-back" href="../../main.html#main.views.render_profile_page">[docs]</a><span class="k">def</span> <span class="nf">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">template_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function that looks up the links for the profile tabs</span>
+
+<span class="sd">    :param request: The request object used to generate this response.</span>
+<span class="sd">    :param template: The full name of a template to use or sequence of template names.</span>
+<span class="sd">    :param template_args: Variables to pass to the template</span>
+<span class="sd">    :returns: Rendered template</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">template_args</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">template_args</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># if no template_args were passed, initialize to empty dictionary</span>
+
+    <span class="n">tabs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.profile_view&#39;</span><span class="p">),</span> <span class="s">&#39;Profile&#39;</span><span class="p">),</span>  <span class="c"># tuples of the url for the view and the tab label</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.edit&#39;</span><span class="p">),</span> <span class="s">&#39;Edit Profile&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.add&#39;</span><span class="p">),</span> <span class="s">&#39;Modify Classes&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.requirements_view&#39;</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">get_position_display</span><span class="p">())]</span>
+
+    <span class="n">template_args</span><span class="p">[</span><span class="s">&#39;profile_tabs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabs</span>  <span class="c"># add the tab tuples to the variables to pass to the template</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">additional</span><span class="o">=</span><span class="n">template_args</span><span class="p">)</span>  <span class="c"># render the template</span>
+
+</div>
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../../main.html#main.views.login">[docs]</a><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">auth</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;user&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;next&#39;</span><span class="p">,</span> <span class="s">&#39;home&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;login.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+</div>
+<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../../main.html#main.views.logout">[docs]</a><span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">auth</span><span class="o">.</span><span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;next&#39;</span><span class="p">,</span> <span class="s">&#39;home&#39;</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="register"><a class="viewcode-back" href="../../main.html#main.views.register">[docs]</a><span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RegisterForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">username</span><span class="p">,</span> <span class="n">new_password</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;new_password&#39;</span><span class="p">))</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">new_password</span><span class="p">)</span>
+            <span class="n">auth</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">auth</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">new_password</span><span class="p">))</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">edit</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RegisterForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;register.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+</div>
+<div class="viewcode-block" id="houses"><a class="viewcode-back" href="../../main.html#main.views.houses">[docs]</a><span class="k">def</span> <span class="nf">houses</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+    <span class="n">house_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">HousePoints</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">house</span><span class="o">=</span><span class="n">house</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">House</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;houses.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;houses&#39;</span><span class="p">:</span> <span class="n">house_points</span><span class="p">})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">)</span>
+<div class="viewcode-block" id="account"><a class="viewcode-back" href="../../main.html#main.views.account">[docs]</a><span class="k">def</span> <span class="nf">account</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserAccountForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;new_password&#39;</span><span class="p">]:</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;new_password&#39;</span><span class="p">])</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">UserAccountForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;account.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">)</span>
+<div class="viewcode-block" id="profile_view"><a class="viewcode-back" href="../../main.html#main.views.profile_view">[docs]</a><span class="k">def</span> <span class="nf">profile_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>  <span class="c"># user object associated with the user requesting the webpage</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>  <span class="c"># lookup profile object associated with the user</span>
+    <span class="k">except</span> <span class="n">Profile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>  <span class="c"># if the profile does not exist, create a user</span>
+
+    <span class="c"># If profile isn&#39;t complete, redirect to edit profile page</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">year</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">edit</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>  <span class="c"># if profile belongs to a candidate, grab information about the candidate</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span>
+        <span class="n">requirements</span> <span class="o">=</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">requirement</span> <span class="k">else</span> <span class="s">&#39;Not Completed&#39;</span><span class="p">)</span>  <span class="c"># a candidate&#39;s requirements</span>
+                        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span> <span class="n">candidate</span><span class="o">.</span><span class="n">requirements</span><span class="p">())</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># extra profile information</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c"># otherwise the profile belongs to an active member</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">requirements</span> <span class="o">=</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">requirement</span> <span class="k">else</span> <span class="s">&#39;Not Completed&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span>
+                            <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">requirements</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="n">requirements</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="p">((</span><span class="n">active</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">active</span><span class="o">.</span><span class="n">completed</span> <span class="k">else</span> <span class="s">&#39;In Progress&#39;</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">active</span> <span class="ow">in</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">))</span>
+
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span>  <span class="c"># grab the user/profile information to render</span>
+        <span class="p">(</span><span class="s">&#39;Email&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;First Name&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Middle Name&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">middle_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Last Name&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Nickname&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">nickname</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;House&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">house</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_gender_display</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s">&#39;Birthday&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">birthday</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Phone Number&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">phone_number</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Major&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_major_display</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s">&#39;Graduation Term&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span>  <span class="c"># render the profile.html template with these variables</span>
+        <span class="n">request</span><span class="p">,</span> <span class="s">&#39;profile.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;profile&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="p">,</span> <span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+            <span class="s">&#39;resume_pdf&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span><span class="o">.</span><span class="n">path</span><span class="p">))</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;resume_word&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span><span class="o">.</span><span class="n">path</span><span class="p">))</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;requirements&#39;</span><span class="p">:</span> <span class="n">requirements</span><span class="p">,</span> <span class="s">&#39;details&#39;</span><span class="p">:</span> <span class="n">details</span>
+        <span class="p">})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">)</span>
+<div class="viewcode-block" id="edit"><a class="viewcode-back" href="../../main.html#main.views.edit">[docs]</a><span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+    <span class="n">first_time</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="s">&#39;candidate&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span><span class="o">.</span><span class="n">tutoring</span> <span class="ow">is</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">personal_dict</span> <span class="o">=</span> <span class="n">model_to_dict</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">personal_dict</span><span class="p">[</span><span class="s">&#39;middle_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">middle_name</span>
+        <span class="n">user_personal_form</span> <span class="o">=</span> <span class="n">UserPersonalForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">personal_dict</span><span class="p">)</span>
+
+        <span class="n">profile_dict</span> <span class="o">=</span> <span class="n">model_to_dict</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">profile_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s">&#39;graduation_quarter&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">quarter</span><span class="p">,</span>
+                <span class="s">&#39;graduation_year&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">year</span>
+            <span class="p">})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">first_time</span><span class="p">:</span>
+            <span class="n">profile_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">profile_dict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">profile_form</span> <span class="o">=</span> <span class="n">FirstProfileForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">profile_dict</span><span class="p">)</span>
+            <span class="n">tutoring_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">()</span>
+            <span class="n">shirt_form</span> <span class="o">=</span> <span class="n">ShirtForm</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">user_personal_form</span> <span class="o">=</span> <span class="n">UserPersonalForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">first_time</span><span class="p">:</span>
+            <span class="n">profile_form</span> <span class="o">=</span> <span class="n">ProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">profile</span><span class="p">)</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="p">[</span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="p">(</span><span class="n">user_personal_form</span><span class="p">,</span> <span class="n">profile_form</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">profile_form</span> <span class="o">=</span> <span class="n">FirstProfileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">profile</span><span class="p">)</span>
+            <span class="n">tutoring_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="n">shirt_form</span> <span class="o">=</span> <span class="n">ShirtForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">candidate</span><span class="p">)</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="p">[</span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="p">(</span><span class="n">user_personal_form</span><span class="p">,</span> <span class="n">profile_form</span><span class="p">,</span> <span class="n">tutoring_form</span><span class="p">,</span> <span class="n">shirt_form</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">valid_forms</span><span class="p">):</span>
+            <span class="n">term</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">quarter</span><span class="o">=</span><span class="n">profile_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;graduation_quarter&#39;</span><span class="p">],</span>
+                                                       <span class="n">year</span><span class="o">=</span><span class="n">profile_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;graduation_year&#39;</span><span class="p">])</span>
+
+            <span class="n">user_personal_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">profile</span><span class="o">.</span><span class="n">middle_name</span> <span class="o">=</span> <span class="n">user_personal_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;middle_name&#39;</span><span class="p">]</span>
+            <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span> <span class="o">=</span> <span class="n">term</span>
+            <span class="n">profile_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">first_time</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>
+                    <span class="n">update_professor_interview_and_resume</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">candidate</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">profile_view</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span>
+                <span class="n">candidate</span><span class="o">.</span><span class="n">tutoring</span> <span class="o">=</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">with_weeks</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+                <span class="n">tutoring_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">candidate</span><span class="o">.</span><span class="n">tutoring</span><span class="p">)</span>
+                <span class="n">tutoring_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">shirt_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">first_time</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;edit.html&#39;</span><span class="p">,</span>
+                                   <span class="p">{</span><span class="s">&#39;user_personal_form&#39;</span><span class="p">:</span> <span class="n">user_personal_form</span><span class="p">,</span> <span class="s">&#39;profile_form&#39;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;first_edit.html&#39;</span><span class="p">,</span>
+                                   <span class="p">{</span><span class="s">&#39;user_personal_form&#39;</span><span class="p">:</span> <span class="n">user_personal_form</span><span class="p">,</span> <span class="s">&#39;profile_form&#39;</span><span class="p">:</span> <span class="n">profile_form</span><span class="p">,</span>
+                                    <span class="s">&#39;tutoring_form&#39;</span><span class="p">:</span> <span class="n">tutoring_form</span><span class="p">,</span> <span class="s">&#39;shirt_form&#39;</span><span class="p">:</span> <span class="n">shirt_form</span><span class="p">})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">)</span>
+<div class="viewcode-block" id="add"><a class="viewcode-back" href="../../main.html#main.views.add">[docs]</a><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">departments</span> <span class="o">=</span> <span class="p">(</span><span class="n">department</span> <span class="k">for</span> <span class="n">department</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">Class</span><span class="o">.</span><span class="n">DEPT_CHOICES</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;add&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">dept</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;dept&#39;</span><span class="p">)</span>
+            <span class="n">cnums</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cnum&#39;</span><span class="p">)</span>
+
+            <span class="n">cnums</span> <span class="o">=</span> <span class="n">cnums</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r&#39;^[A-Z]*[1-9][0-9]*[A-Z]*(,\s*[A-Z]*[1-9][0-9]*[A-Z]*)*$&#39;</span><span class="p">,</span> <span class="n">cnums</span><span class="p">):</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="s">&#39;Invalid format for course number. Please use the format in the provided examples.&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">cnum</span> <span class="ow">in</span> <span class="n">cnums</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">):</span>
+                    <span class="n">profile</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">department</span><span class="o">=</span><span class="n">dept</span><span class="p">,</span> <span class="n">course_number</span><span class="o">=</span><span class="n">cnum</span><span class="o">.</span><span class="n">strip</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="s">&#39;remove&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="n">cls</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
+                    <span class="n">dept</span><span class="p">,</span> <span class="n">cnum</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">cls</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">department</span><span class="o">=</span><span class="n">dept</span><span class="p">,</span> <span class="n">course_number</span><span class="o">=</span><span class="n">cnum</span><span class="p">)</span>
+                        <span class="n">profile</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="n">Class</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                        <span class="k">pass</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span>
+
+    <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;add.html&#39;</span><span class="p">,</span>
+                               <span class="p">{</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">,</span> <span class="s">&#39;departments&#39;</span><span class="p">:</span> <span class="n">departments</span><span class="p">,</span> <span class="s">&#39;classes&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">all</span><span class="p">()})</span>
+
+</div>
+<span class="nd">@login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">)</span>
+<div class="viewcode-block" id="requirements_view"><a class="viewcode-back" href="../../main.html#main.views.requirements_view">[docs]</a><span class="k">def</span> <span class="nf">requirements_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+
+    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">CandidateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">candidate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">update_professor_interview_and_resume</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">CandidateForm</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;candidate_requirements.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span> <span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">signup_term</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">member</span> <span class="o">=</span> <span class="n">ActiveMember</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+            <span class="n">member_form</span> <span class="o">=</span> <span class="n">MemberForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">member</span><span class="p">)</span>
+            <span class="n">tutoring_preferences_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="p">[</span><span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="p">(</span><span class="n">member_form</span><span class="p">,</span> <span class="n">tutoring_preferences_form</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">valid_forms</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">member_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;requirement_choice&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">TUTORING</span><span class="p">:</span>
+                    <span class="n">member</span><span class="o">.</span><span class="n">tutoring</span> <span class="o">=</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">with_weeks</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+                    <span class="n">tutoring_preferences_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">tutoring</span><span class="p">)</span>
+                    <span class="n">tutoring_preferences_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="n">member_form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">member_form</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">tutoring_preferences_form</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">member</span> <span class="o">=</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+                <span class="n">member_form</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">tutoring_preferences_form</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">except</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="n">member</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">member_form</span> <span class="o">=</span> <span class="n">MemberForm</span><span class="p">()</span>
+                <span class="n">tutoring_preferences_form</span> <span class="o">=</span> <span class="n">TutoringPreferencesForm</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="s">&#39;member_requirements.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="s">&#39;term&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span> <span class="s">&#39;requirement&#39;</span><span class="p">:</span> <span class="n">member</span><span class="o">.</span><span class="n">get_requirement_choice_display</span><span class="p">()</span> <span class="k">if</span> <span class="n">member</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;member_form&#39;</span><span class="p">:</span> <span class="n">member_form</span><span class="p">,</span> <span class="s">&#39;tutoring_preferences_form&#39;</span><span class="p">:</span> <span class="n">tutoring_preferences_form</span>
+            <span class="p">})</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="candidates"><a class="viewcode-back" href="../../main.html#main.views.candidates">[docs]</a><span class="k">def</span> <span class="nf">candidates</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">terms_list</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">quarter</span><span class="o">=</span><span class="s">&#39;1&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">quarter</span><span class="o">=</span><span class="s">&#39;3&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">term_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;term&#39;</span><span class="p">])</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">term_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;all_candidate_requirements.html&#39;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s">&#39;candidate_list&#39;</span><span class="p">:</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">),</span> <span class="s">&#39;terms&#39;</span><span class="p">:</span> <span class="n">terms_list</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;all_candidate_requirements.html&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s">&#39;candidate_list&#39;</span><span class="p">:</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">),</span> <span class="s">&#39;terms&#39;</span><span class="p">:</span> <span class="n">terms_list</span><span class="p">})</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="active_members"><a class="viewcode-back" href="../../main.html#main.views.active_members">[docs]</a><span class="k">def</span> <span class="nf">active_members</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">terms_list</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">term_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;term&#39;</span><span class="p">])</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">Term</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">term_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;active_members.html&#39;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s">&#39;member_list&#39;</span><span class="p">:</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">),</span> <span class="s">&#39;terms&#39;</span><span class="p">:</span> <span class="n">terms_list</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;active_members.html&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s">&#39;member_list&#39;</span><span class="p">:</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">),</span> <span class="s">&#39;terms&#39;</span><span class="p">:</span> <span class="n">terms_list</span><span class="p">})</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="pending_community_service"><a class="viewcode-back" href="../../main.html#main.views.pending_community_service">[docs]</a><span class="k">def</span> <span class="nf">pending_community_service</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
+                <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">community_service</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span> <span class="s">&#39;pending_community_service.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;candidates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">candidate</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span>
+                           <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="n">community_service</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">)</span>
+                           <span class="k">if</span> <span class="ow">not</span> <span class="n">candidate</span><span class="o">.</span><span class="n">community_service_complete</span><span class="p">()</span> <span class="ow">and</span> <span class="n">candidate</span><span class="o">.</span><span class="n">community_service_proof</span><span class="p">]</span>
+        <span class="p">})</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="tutoring_hours"><a class="viewcode-back" href="../../main.html#main.views.tutoring_hours">[docs]</a><span class="k">def</span> <span class="nf">tutoring_hours</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;tutoring_hours.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;tutoring_list&#39;</span><span class="p">:</span> <span class="n">Tutoring</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">)})</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="downloads"><a class="viewcode-back" href="../../main.html#main.views.downloads">[docs]</a><span class="k">def</span> <span class="nf">downloads</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&#39;downloads.html&#39;</span><span class="p">)</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="spreadsheet"><a class="viewcode-back" href="../../main.html#main.views.spreadsheet">[docs]</a><span class="k">def</span> <span class="nf">spreadsheet</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;First Name,Middle Name,Last Name,Email,Nickname,Gender,Birthday,Phone Number,Major,&#39;</span>
+                      <span class="s">&#39;Initiation Term,Graduation Term&#39;</span><span class="p">]</span> <span class="o">+</span>
+                     <span class="p">[</span><span class="n">profile</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span> <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/csv&#39;</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;attachment; filename=spreadsheet.csv&#39;</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<div class="viewcode-block" id="create_zipfile"><a class="viewcode-back" href="../../main.html#main.views.create_zipfile">[docs]</a><span class="k">def</span> <span class="nf">create_zipfile</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+    <span class="nb">buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="nb">buffer</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">major</span> <span class="ow">in</span> <span class="n">MAJOR_CHOICES</span><span class="p">:</span>
+            <span class="n">z</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span><span class="p">(</span><span class="s">&#39;resumes/{}/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">major</span><span class="p">)),</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">profile</span><span class="p">,</span> <span class="n">resume</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;resumes/{}/{} {}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">get_major_display</span><span class="p">(),</span>
+                                               <span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                                               <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">resume</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">z</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resume</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="nb">buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;application/x-zip-compressed&#39;</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;attachment; filename=resumes.zip&#39;</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="resumes_pdf"><a class="viewcode-back" href="../../main.html#main.views.resumes_pdf">[docs]</a><span class="k">def</span> <span class="nf">resumes_pdf</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">resumes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">profile</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">create_zipfile</span><span class="p">(</span><span class="n">resumes</span><span class="p">)</span>
+
+</div>
+<span class="nd">@staff_member_required</span>
+<div class="viewcode-block" id="resumes_word"><a class="viewcode-back" href="../../main.html#main.views.resumes_word">[docs]</a><span class="k">def</span> <span class="nf">resumes_word</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">resumes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">profile</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">profile</span> <span class="ow">in</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">create_zipfile</span><span class="p">(</span><span class="n">resumes</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="FileView"><a class="viewcode-back" href="../../main.html#main.views.FileView">[docs]</a><span class="k">class</span> <span class="nc">FileView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+    <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">(</span><span class="n">login_url</span><span class="o">=</span><span class="n">login</span><span class="p">))</span>
+<div class="viewcode-block" id="FileView.get"><a class="viewcode-back" href="../../main.html#main.views.FileView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+
+        <span class="n">path</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;.pdf&#39;</span><span class="p">:</span> <span class="s">&#39;application/pdf&#39;</span><span class="p">,</span> <span class="s">&#39;.doc&#39;</span><span class="p">:</span> <span class="s">&#39;application/msword&#39;</span><span class="p">,</span> <span class="s">&#39;.jpg&#39;</span><span class="p">:</span> <span class="s">&#39;image/jpeg&#39;</span><span class="p">,</span>
+                        <span class="s">&#39;.docx&#39;</span><span class="p">:</span> <span class="s">&#39;application/vnd.openxmlformats-officedocument.wordprocessingml.document&#39;</span><span class="p">}[</span><span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;filename={}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">FileWrapper</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="FileView.get_object"><a class="viewcode-back" href="../../main.html#main.views.FileView.get_object">[docs]</a>    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="ProfileFileView"><a class="viewcode-back" href="../../main.html#main.views.ProfileFileView">[docs]</a><span class="k">class</span> <span class="nc">ProfileFileView</span><span class="p">(</span><span class="n">FileView</span><span class="p">):</span>
+<div class="viewcode-block" id="ProfileFileView.get_object"><a class="viewcode-back" href="../../main.html#main.views.ProfileFileView.get_object">[docs]</a>    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">Http404</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Profile</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CandidateFileView"><a class="viewcode-back" href="../../main.html#main.views.CandidateFileView">[docs]</a><span class="k">class</span> <span class="nc">CandidateFileView</span><span class="p">(</span><span class="n">FileView</span><span class="p">):</span>
+<div class="viewcode-block" id="CandidateFileView.get_object"><a class="viewcode-back" href="../../main.html#main.views.CandidateFileView.get_object">[docs]</a>    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Candidate</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">Http404</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Candidate</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+
+</div></div>
+<span class="n">resume_pdf</span> <span class="o">=</span> <span class="n">ProfileFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s">&#39;resume_pdf&#39;</span><span class="p">)</span>
+<span class="n">resume_word</span> <span class="o">=</span> <span class="n">ProfileFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s">&#39;resume_word&#39;</span><span class="p">)</span>
+<span class="n">interview</span> <span class="o">=</span> <span class="n">CandidateFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s">&#39;professor_interview&#39;</span><span class="p">)</span>
+<span class="n">proof</span> <span class="o">=</span> <span class="n">CandidateFileView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s">&#39;community_service_proof&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

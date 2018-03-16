@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tutoring.models &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for tutoring.models</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">ModelForm</span>
+<span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">TUTORING_HOUR_CHOICES</span><span class="p">,</span> <span class="n">TWO_HOUR_CHOICES</span>
+
+<span class="kn">from</span> <span class="nn">main.models</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">TermManager</span>
+<span class="kn">from</span> <span class="nn">points</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+
+<div class="viewcode-block" id="Class"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Class">[docs]</a><span class="k">class</span> <span class="nc">Class</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">DEPT_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;BE&#39;</span><span class="p">,</span> <span class="s">&#39;BE&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;CEE&#39;</span><span class="p">,</span> <span class="s">&#39;CEE&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;CHEM&#39;</span><span class="p">,</span> <span class="s">&#39;CHEM&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;CHEME&#39;</span><span class="p">,</span> <span class="s">&#39;CHEME&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;CS&#39;</span><span class="p">,</span> <span class="s">&#39;CS&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ECON&#39;</span><span class="p">,</span> <span class="s">&#39;ECON&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;EE&#39;</span><span class="p">,</span> <span class="s">&#39;EE&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ENGR&#39;</span><span class="p">,</span> <span class="s">&#39;ENGR&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;LS&#39;</span><span class="p">,</span> <span class="s">&#39;LS&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;MAE&#39;</span><span class="p">,</span> <span class="s">&#39;MAE&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;MATH&#39;</span><span class="p">,</span> <span class="s">&#39;MATH&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;MGMT&#39;</span><span class="p">,</span> <span class="s">&#39;MGMT&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;MSE&#39;</span><span class="p">,</span> <span class="s">&#39;MSE&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;PHYSICS&#39;</span><span class="p">,</span> <span class="s">&#39;PHYSICS&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;STATS&#39;</span><span class="p">,</span> <span class="s">&#39;STATS&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">department</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">DEPT_CHOICES</span><span class="p">)</span>
+    <span class="n">course_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">display</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;department&#39;</span><span class="p">,</span> <span class="s">&#39;course_number&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Classes&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">department</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_number</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BaseTutoring"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.BaseTutoring">[docs]</a><span class="k">class</span> <span class="nc">BaseTutoring</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;main.Term&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+    <span class="n">day_1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">hour_1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_HOUR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">day_2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">hour_2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_HOUR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseTutoring.Meta"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.BaseTutoring.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="BaseTutoring.get_classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.BaseTutoring.get_classes">[docs]</a>    <span class="k">def</span> <span class="nf">get_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        implement in child class</span>
+<span class="sd">        :raise NotImplementedError:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BaseTutoring.display_classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.BaseTutoring.display_classes">[docs]</a>    <span class="k">def</span> <span class="nf">display_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:    list of all classes for tutoring object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classes</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BaseTutoring.get_class_ids"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.BaseTutoring.get_class_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_class_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return:    list of class ids for each class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">department</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="n">course_number</span> <span class="o">+</span> <span class="s">&#39;_1&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classes</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Tutoring"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring">[docs]</a><span class="k">class</span> <span class="nc">Tutoring</span><span class="p">(</span><span class="n">BaseTutoring</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;main.Profile&#39;</span><span class="p">)</span>
+
+    <span class="n">best_day</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Best Day&quot;</span><span class="p">)</span>
+    <span class="n">best_hour</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TWO_HOUR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Best Hour&quot;</span><span class="p">)</span>
+    <span class="n">second_best_day</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">,</span>
+                                       <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Second Best Day&quot;</span><span class="p">)</span>
+    <span class="n">second_best_hour</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TWO_HOUR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;2&#39;</span><span class="p">,</span>
+                                        <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Second Best Hour&quot;</span><span class="p">)</span>
+    <span class="n">third_best_day</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TUTORING_DAY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">,</span>
+                                      <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Third Best Day&quot;</span><span class="p">)</span>
+    <span class="n">third_best_hour</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TWO_HOUR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;4&#39;</span><span class="p">,</span>
+                                       <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Third Best Hour&quot;</span><span class="p">)</span>
+
+    <span class="n">week_3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week3&#39;</span><span class="p">)</span>
+    <span class="n">week_4</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week4&#39;</span><span class="p">)</span>
+    <span class="n">week_5</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week5&#39;</span><span class="p">)</span>
+    <span class="n">week_6</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week6&#39;</span><span class="p">)</span>
+    <span class="n">week_7</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week7&#39;</span><span class="p">)</span>
+    <span class="n">week_8</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week8&#39;</span><span class="p">)</span>
+    <span class="n">week_9</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Week9&#39;</span><span class="p">)</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">TermManager</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+
+    <span class="n">frozen</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">is_tutoring</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">last_start</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">auto_now_add</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                      <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;-term&#39;</span><span class="p">,</span> <span class="s">&#39;profile&#39;</span><span class="p">)</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Tutoring&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Tutoring.get_classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.get_classes">[docs]</a>    <span class="k">def</span> <span class="nf">get_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Tutoring.get_weeks"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.get_weeks">[docs]</a>    <span class="k">def</span> <span class="nf">get_weeks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">week_3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_8</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">week_9</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Tutoring.complete"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">week</span><span class="o">.</span><span class="n">complete</span><span class="p">()</span> <span class="k">for</span> <span class="n">week</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_weeks</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Tutoring.points"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">week</span><span class="o">.</span><span class="n">points</span><span class="p">()</span> <span class="k">for</span> <span class="n">week</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_weeks</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Tutoring.preferences"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.preferences">[docs]</a>    <span class="k">def</span> <span class="nf">preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">two_hour</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param two_hour:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">logical_hours</span><span class="p">(</span><span class="n">hour_choice</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">            :param hour_choice:</span>
+<span class="sd">            :return:</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">two_hour</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">hour_choice</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">hour_choice</span><span class="p">)</span> <span class="o">+</span> <span class="mi">11</span>
+
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">hour_choice</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
+
+        <span class="k">return</span> <span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_day</span><span class="p">),</span> <span class="n">logical_hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_hour</span><span class="p">)),</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">second_best_day</span><span class="p">),</span> <span class="n">logical_hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">second_best_hour</span><span class="p">)),</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">third_best_day</span><span class="p">),</span> <span class="n">logical_hours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">third_best_hour</span><span class="p">)))</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Tutoring.with_weeks"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Tutoring.with_weeks">[docs]</a>    <span class="k">def</span> <span class="nf">with_weeks</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param profile:</span>
+<span class="sd">        :param term:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tutoring_weeks</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;week_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="nb">globals</span><span class="p">()[</span><span class="s">&#39;Week{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">,</span> <span class="o">**</span><span class="n">tutoring_weeks</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="WeekManager"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.WeekManager">[docs]</a><span class="k">class</span> <span class="nc">WeekManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+<div class="viewcode-block" id="WeekManager.get_query_set"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.WeekManager.get_query_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_all_terms</span><span class="p">():</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">term</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">WeekManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tutoring__term</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">WeekManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Week"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week">[docs]</a><span class="k">class</span> <span class="nc">Week</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">tutees</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;Class&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">no_makeup</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">WeekManager</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Week.Meta"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;tutoring__day_1&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring__hour_1&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;tutoring__day_2&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring__hour_2&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring__profile&#39;</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">()</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Week.complete"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours</span> <span class="o">&gt;=</span> <span class="n">MIN_TUTORING_HOURS</span>
+</div>
+<div class="viewcode-block" id="Week.points"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hours</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">MIN_TUTORING_HOURS</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">+=</span> <span class="n">EXTRA_TUTORING_POINTS</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="n">MIN_TUTORING_HOURS</span><span class="p">,</span> <span class="n">MAX_TUTORING_HOURS</span> <span class="o">-</span> <span class="n">MIN_TUTORING_HOURS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_makeup</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">+=</span> <span class="n">TUTORING_POINTS</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">MIN_TUTORING_HOURS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">points</span>
+</div>
+<div class="viewcode-block" id="Week.day_1"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.day_1">[docs]</a>    <span class="k">def</span> <span class="nf">day_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">get_day_1_display</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Week.day_2"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.day_2">[docs]</a>    <span class="k">def</span> <span class="nf">day_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">get_day_2_display</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Week.hour_1"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.hour_1">[docs]</a>    <span class="k">def</span> <span class="nf">hour_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">get_hour_1_display</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Week.hour_2"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.hour_2">[docs]</a>    <span class="k">def</span> <span class="nf">hour_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">get_hour_2_display</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Week.profile"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.profile">[docs]</a>    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">profile</span>
+</div>
+<div class="viewcode-block" id="Week.term"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week.term">[docs]</a>    <span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">term</span>
+
+</div></div>
+<div class="viewcode-block" id="Week3"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week3">[docs]</a><span class="k">class</span> <span class="nc">Week3</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 3&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week4"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week4">[docs]</a><span class="k">class</span> <span class="nc">Week4</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 4&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week5"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week5">[docs]</a><span class="k">class</span> <span class="nc">Week5</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 5&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week6"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week6">[docs]</a><span class="k">class</span> <span class="nc">Week6</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 6&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week7"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week7">[docs]</a><span class="k">class</span> <span class="nc">Week7</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 7&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week8"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week8">[docs]</a><span class="k">class</span> <span class="nc">Week8</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 8&quot;</span>
+
+</div>
+<div class="viewcode-block" id="Week9"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.Week9">[docs]</a><span class="k">class</span> <span class="nc">Week9</span><span class="p">(</span><span class="n">Week</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Week</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Week 9&quot;</span>
+
+</div>
+<div class="viewcode-block" id="ForeignTutoring"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.ForeignTutoring">[docs]</a><span class="k">class</span> <span class="nc">ForeignTutoring</span><span class="p">(</span><span class="n">BaseTutoring</span><span class="p">):</span>
+    <span class="n">ORG_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="s">&#39;(UPE)&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;(HKN)&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span>
+    <span class="n">organization</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ORG_CHOICES</span><span class="p">)</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">TermManager</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;-term&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Foreign Tutoring&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="ForeignTutoring.get_classes"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.ForeignTutoring.get_classes">[docs]</a>    <span class="k">def</span> <span class="nf">get_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="TutoringPreferencesForm"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.TutoringPreferencesForm">[docs]</a><span class="k">class</span> <span class="nc">TutoringPreferencesForm</span><span class="p">(</span><span class="n">ModelForm</span><span class="p">):</span>
+<div class="viewcode-block" id="TutoringPreferencesForm.Meta"><a class="viewcode-back" href="../../tutoring.html#tutoring.models.TutoringPreferencesForm.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Tutoring</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;best_day&#39;</span><span class="p">,</span> <span class="s">&#39;best_hour&#39;</span><span class="p">,</span> <span class="s">&#39;second_best_day&#39;</span><span class="p">,</span> <span class="s">&#39;second_best_hour&#39;</span><span class="p">,</span> <span class="s">&#39;third_best_day&#39;</span><span class="p">,</span> <span class="s">&#39;third_best_hour&#39;</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

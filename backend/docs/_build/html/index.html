@@ -1,0 +1,679 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to tbpsite’s documentation! &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="#" />
+    <link rel="next" title="web package" href="web.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="web.html" title="web package"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-tbpsite-s-documentation">
+<h1>Welcome to tbpsite&#8217;s documentation!<a class="headerlink" href="#welcome-to-tbpsite-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<p>Main Django directories:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="web.html">web package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="web.html#module-web.views">web.views module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#module-main.admin">main.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#module-main.forms">main.forms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main-models-module">main.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#module-main.templatetags.extras">main.templatetags.extras module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#module-main.views">main.views module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="event.html">event package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event.html#module-event.admin">event.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html#event-models-module">event.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html#module-event.views">event.views module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutoring.html">tutoring package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutoring.html#module-tutoring.admin">tutoring.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutoring.html#tutoring-management-commands-module">tutoring.management.commands module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutoring.html#tutoring-models-module">tutoring.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutoring.html#module-tutoring.views">tutoring.views module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Other files:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="common.html">common module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">constants module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">points module</a></li>
+</ul>
+</div>
+<p>Other directories:</p>
+<ul class="simple">
+<li>tbpsite: settings and url configuration</li>
+<li>templates: Django HTML template files</li>
+<li>static: CSS/JS and image files to display on the website<ul>
+<li>If static files aren&#8217;t updating, run ./manage.py collectstatic</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>This documentation uses sphinx to convert the .rst files to .html.</p>
+<p>The commands to update the docs from the root directory of the project are:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>docs
+make html
+</pre></div>
+</div>
+<p>The commands to generate the .rst files are:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sphinx-quickstart
+sphinx-autodoc -o docs .
+</pre></div>
+</div>
+</div>
+<div class="section" id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start from the top. Say the user wants to look at their profile and they click on the link <a class="reference external" href="https://tbp.seas.ucla.edu/profile/">https://tbp.seas.ucla.edu/profile/</a>.
+Django will receive the request and will pass it to a function that takes a request and returns HTML (a view). Django will look in the tbpsite/urls.py file to see what function to call.</p>
+<p>tbpsite/urls.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">autodiscover</span><span class="p">()</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;web.views&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^$&#39;</span><span class="p">,</span> <span class="s">&#39;home&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;home&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^about/$&#39;</span><span class="p">,</span> <span class="s">&#39;about&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^awards/$&#39;</span><span class="p">,</span> <span class="s">&#39;awards&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^candidates/$&#39;</span><span class="p">,</span> <span class="s">&#39;candidates&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^contact/$&#39;</span><span class="p">,</span> <span class="s">&#39;officers&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^emcc/$&#39;</span><span class="p">,</span> <span class="s">&#39;emcc&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^fe/$&#39;</span><span class="p">,</span> <span class="s">&#39;fe&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^programs/$&#39;</span><span class="p">,</span> <span class="s">&#39;programs&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^requirements/$&#39;</span><span class="p">,</span> <span class="s">&#39;requirements&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tutoring/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring&#39;</span><span class="p">),</span>
+
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^donate/$&#39;</span><span class="p">,</span> <span class="s">&#39;donate&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^sponsor/$&#39;</span><span class="p">,</span> <span class="s">&#39;sponsor&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^officers/$&#39;</span><span class="p">,</span> <span class="s">&#39;officers&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^faculty/$&#39;</span><span class="p">,</span> <span class="s">&#39;faculty&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="hll"><span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;main.views&#39;</span><span class="p">,</span>
+</span>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tutoring_hours/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring_hours&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^houses/$&#39;</span><span class="p">,</span> <span class="s">&#39;houses&#39;</span><span class="p">),</span>
+
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^profile_requirements/$&#39;</span><span class="p">,</span> <span class="s">&#39;requirements_view&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^candidate_requirements/$&#39;</span><span class="p">,</span> <span class="s">&#39;candidates&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^pending_community_service/$&#39;</span><span class="p">,</span> <span class="s">&#39;pending_community_service&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^active_members/$&#39;</span><span class="p">,</span> <span class="s">&#39;active_members&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^downloads/$&#39;</span><span class="p">,</span> <span class="s">&#39;downloads&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^spreadsheet/$&#39;</span><span class="p">,</span> <span class="s">&#39;spreadsheet&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resumes_pdf/$&#39;</span><span class="p">,</span> <span class="s">&#39;resumes_pdf&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resumes_word/$&#39;</span><span class="p">,</span> <span class="s">&#39;resumes_word&#39;</span><span class="p">),</span>
+
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^logout/$&#39;</span><span class="p">,</span> <span class="s">&#39;logout&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^login/$&#39;</span><span class="p">,</span> <span class="s">&#39;login&#39;</span><span class="p">),</span>
+<span class="hll">    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^profile/$&#39;</span><span class="p">,</span> <span class="s">&#39;profile_view&#39;</span><span class="p">),</span>
+</span>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^edit/$&#39;</span><span class="p">,</span> <span class="s">&#39;edit&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^add/$&#39;</span><span class="p">,</span> <span class="s">&#39;add&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^register/$&#39;</span><span class="p">,</span> <span class="s">&#39;register&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^account/$&#39;</span><span class="p">,</span> <span class="s">&#39;account&#39;</span><span class="p">),</span>
+
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resume_pdf/$&#39;</span><span class="p">,</span> <span class="s">&#39;resume_pdf&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resume_pdf/(?P&lt;id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s">&#39;resume_pdf&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resume_word/$&#39;</span><span class="p">,</span> <span class="s">&#39;resume_word&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^resume_word/(?P&lt;id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s">&#39;resume_word&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^interview/$&#39;</span><span class="p">,</span> <span class="s">&#39;interview&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^interview/(?P&lt;id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s">&#39;interview&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^proof/$&#39;</span><span class="p">,</span> <span class="s">&#39;proof&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^proof/(?P&lt;id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s">&#39;proof&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;event.views&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^events/$&#39;</span><span class="p">,</span> <span class="s">&#39;events&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^events/(?P&lt;url&gt;\w+)/$&#39;</span><span class="p">,</span> <span class="s">&#39;event&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^cb_race/$&#39;</span><span class="p">,</span> <span class="s">&#39;event_redirect&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;event_url&#39;</span><span class="p">:</span> <span class="s">&#39;cb_race&#39;</span><span class="p">}),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^scholarship/$&#39;</span><span class="p">,</span> <span class="s">&#39;event_redirect&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;event_url&#39;</span><span class="p">:</span> <span class="s">&#39;scholarship&#39;</span><span class="p">}),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^rubegoldberg/$&#39;</span><span class="p">,</span> <span class="s">&#39;event_redirect&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;event_url&#39;</span> <span class="p">:</span> <span class="s">&#39;RG2014&#39;</span><span class="p">}),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^charitypoker/$&#39;</span><span class="p">,</span> <span class="s">&#39;event_redirect&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;event_url&#39;</span> <span class="p">:</span> <span class="s">&#39;CharityPoker&#39;</span><span class="p">}),</span>
+<span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^schedule/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring.views.schedule&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^classes/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring.views.classes&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^expanded_schedule/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring.views.expanded_schedule&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tutoring/feedback/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring.views.feedback&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tutoring/log_hours/$&#39;</span><span class="p">,</span> <span class="s">&#39;tutoring.views.tutoring_logging&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^admin/doc/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">&#39;django.contrib.admindocs.urls&#39;</span><span class="p">)),</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^admin/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Django will match the profile portion of the url with r&#8217;^profile/$&#8217; and will call the profile_view function in the main.views module.</p>
+<div class="section" id="view">
+<h3>View<a class="headerlink" href="#view" title="Permalink to this headline">¶</a></h3>
+<p>main/views.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">profile_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>  <span class="c"># user object associated with the user requesting the webpage</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>  <span class="c"># lookup profile object associated with the user</span>
+    <span class="k">except</span> <span class="n">Profile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>  <span class="c"># if the profile does not exist, create a user</span>
+
+    <span class="c"># If profile isn&#39;t complete, redirect to edit profile page</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">year</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">edit</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>  <span class="c"># if profile belongs to a candidate, grab information about the candidate</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidate</span>
+        <span class="n">requirements</span> <span class="o">=</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">requirement</span> <span class="k">else</span> <span class="s">&#39;Not Completed&#39;</span><span class="p">)</span>  <span class="c"># a candidate&#39;s requirements</span>
+                        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span> <span class="n">candidate</span><span class="o">.</span><span class="n">requirements</span><span class="p">())</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># extra profile information</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c"># otherwise the profile belongs to an active member</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">requirements</span> <span class="o">=</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">requirement</span> <span class="k">else</span> <span class="s">&#39;Not Completed&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span>
+                            <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">requirements</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="n">requirements</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="p">((</span><span class="n">active</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="s">&#39;Completed&#39;</span> <span class="k">if</span> <span class="n">active</span><span class="o">.</span><span class="n">completed</span> <span class="k">else</span> <span class="s">&#39;In Progress&#39;</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">active</span> <span class="ow">in</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">))</span>
+
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span>  <span class="c"># grab the user/profile information to render</span>
+        <span class="p">(</span><span class="s">&#39;Email&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;First Name&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Middle Name&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">middle_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Last Name&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Nickname&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">nickname</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;House&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">house</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_gender_display</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s">&#39;Birthday&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">birthday</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Phone Number&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">phone_number</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Major&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_major_display</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s">&#39;Graduation Term&#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">graduation_term</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_profile_page</span><span class="p">(</span>  <span class="c"># render the profile.html template with these variables</span>
+        <span class="n">request</span><span class="p">,</span> <span class="s">&#39;profile.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;profile&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="p">,</span> <span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="n">fields</span><span class="p">,</span>
+            <span class="s">&#39;resume_pdf&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span><span class="o">.</span><span class="n">path</span><span class="p">))</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;resume_word&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span><span class="o">.</span><span class="n">path</span><span class="p">))</span> <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;requirements&#39;</span><span class="p">:</span> <span class="n">requirements</span><span class="p">,</span> <span class="s">&#39;details&#39;</span><span class="p">:</span> <span class="n">details</span>
+        <span class="p">})</span>
+</pre></div>
+</div>
+<p>The view calls this helper function to inject tab information that is used to render the tabs on the profile page.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">render_profile_page</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">template_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function that looks up the links for the profile tabs</span>
+
+<span class="sd">    :param request: The request object used to generate this response.</span>
+<span class="sd">    :param template: The full name of a template to use or sequence of template names.</span>
+<span class="sd">    :param template_args: Variables to pass to the template</span>
+<span class="sd">    :returns: Rendered template</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">template_args</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">template_args</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># if no template_args were passed, initialize to empty dictionary</span>
+
+    <span class="n">tabs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.profile_view&#39;</span><span class="p">),</span> <span class="s">&#39;Profile&#39;</span><span class="p">),</span>  <span class="c"># tuples of the url for the view and the tab label</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.edit&#39;</span><span class="p">),</span> <span class="s">&#39;Edit Profile&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.add&#39;</span><span class="p">),</span> <span class="s">&#39;Modify Classes&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">&#39;main.views.requirements_view&#39;</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">get_position_display</span><span class="p">())]</span>
+
+    <span class="n">template_args</span><span class="p">[</span><span class="s">&#39;profile_tabs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabs</span>  <span class="c"># add the tab tuples to the variables to pass to the template</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">additional</span><span class="o">=</span><span class="n">template_args</span><span class="p">)</span>  <span class="c"># render the template</span>
+</pre></div>
+</div>
+<p>This helper function calls a similar function to inject navbar information. This function should be called by every view.</p>
+<p>common/views.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">additional</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s">&#39;next&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;events&#39;</span><span class="p">:</span> <span class="n">Event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">dropdown</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                  <span class="s">&#39;houses&#39;</span><span class="p">:</span> <span class="n">HousePoints</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="s">&#39;eligibility_list&#39;</span><span class="p">:</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_eligibility_list</span><span class="p">()</span><span class="o">.</span><span class="n">url</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">additional</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dictionary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">additional</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">django_render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which finally renders the template file.</p>
+</div>
+<div class="section" id="template">
+<h3>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h3>
+<p>The values of the variables are inserted into the template.
+We use <a class="reference external" href="http://getbootstrap.com/">Bootstrap</a> to style the website.</p>
+<div class="highlight-python"><pre>{% extends "profile_base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block tabcontent %}
+
+&lt;div class="row"&gt;
+  &lt;div class="col-lg-6"&gt;
+    &lt;form class="form-horizontal"&gt;
+      &lt;fieldset&gt;
+        &lt;legend&gt;Profile&lt;/legend&gt;
+        {% for field in fields %}
+        &lt;div class="form-group"&gt;
+          &lt;label class="col-lg-4 control-label"&gt;{{ field.0 }}&lt;/label&gt;
+          &lt;div class="col-lg-8"&gt;
+            &lt;p class="form-control-static"&gt;{{ field.1 }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        {% endfor %}
+        &lt;div class="form-group"&gt;
+          &lt;label class="col-lg-4 control-label" for="resume_pdf"&gt;Resume (pdf)&lt;/label&gt;
+          &lt;div class="col-lg-8"&gt;
+            {% if resume_pdf %}
+            &lt;a href="{% url 'main.views.resume_pdf' %}"&gt;&lt;p class="form-control-static"&gt;{{ resume_pdf }}&lt;/p&gt;&lt;/a&gt;
+            {% else %}
+            &lt;p class="form-control-static"&gt;None&lt;/p&gt;
+            {% endif %}
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="form-group"&gt;
+          &lt;label class="col-lg-4 control-label" for="resume_word"&gt;Resume (word)&lt;/label&gt;
+          &lt;div class="col-lg-8"&gt;
+            {% if resume_word %}
+            &lt;a href="{% url 'main.views.resume_word' %}"&gt;&lt;p class="form-control-static"&gt;{{ resume_word }}&lt;/p&gt;&lt;/a&gt;
+            {% else %}
+            &lt;p class="form-control-static"&gt;None&lt;/p&gt;
+            {% endif %}
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="form-group"&gt;
+          &lt;label class="col-lg-4 control-label"&gt;Tutoring Classes&lt;/label&gt;
+          &lt;div class="col-lg-8"&gt;
+            &lt;ul class="list-unstyled"&gt;
+              {% for class in profile.classes.all %}
+              &lt;li&gt;{{ class }}&lt;/li&gt;
+              {% endfor %}
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/fieldset&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="col-lg-6"&gt;
+    &lt;h4&gt;{{ profile.get_position_display }}&lt;/h4&gt;
+    {% if requirements %}
+    &lt;p&gt;Requirements:&lt;/p&gt;
+    &lt;table class="table"&gt;
+      {% for requirement in requirements %}
+      &lt;tr&gt;
+        &lt;td&gt;{{ requirement.0 }}&lt;/td&gt;
+        &lt;td&gt;{{ requirement.1 }}&lt;/td&gt;
+      &lt;/tr&gt;
+      {% endfor %}
+    &lt;/table&gt;
+    {% endif %}
+    {% if profile.position == "1"%}
+    &lt;p&gt;Distinguished Active Terms:&lt;/p&gt;
+    &lt;table class="table"&gt;
+      {% for detail in details %}
+      &lt;tr&gt;
+        &lt;td&gt;{{ detail.0 }}&lt;/td&gt;
+        &lt;td&gt;{{ detail.1 }}&lt;/td&gt;
+      &lt;/tr&gt;
+      {% endfor %}
+    &lt;/table&gt;
+    {% endif %}
+  &lt;/div&gt;
+&lt;/div&gt;
+
+{% endblock %}
+</pre>
+</div>
+<p>profile.html extends profile_base.html which inserts the HTML for the profile tabs.</p>
+<div class="highlight-python"><pre>{% extends "base.html" %}
+
+{% block content %}
+
+&lt;ul class="nav nav-tabs"&gt;
+  {% for tab in profile_tabs %}
+  {% if tab.0 == next %}
+  &lt;li class="active"&gt;&lt;a href="#"&gt;{{ tab.1 }}&lt;/a&gt;&lt;/li&gt;
+  {% else %}
+  &lt;li&gt;&lt;a href="{{ tab.0 }}"&gt;{{ tab.1 }}&lt;/a&gt;&lt;/li&gt;
+  {% endif %}
+  {% endfor %}
+&lt;/ul&gt;
+
+{% block tabcontent %} 
+{% endblock %}
+
+{% endblock %}
+</pre>
+</div>
+<p>base.html is the base file that contains the Bootstrap files and layout.
+The blocks are filled in by template files that extend this file.</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;{% block title %}UCLA Tau Beta Pi{% endblock %}&lt;/title&gt;
+    &lt;!-- Bootstrap --&gt;
+    &lt;link href="/static/dist/css/bootstrap.min.css" rel="stylesheet" media="screen"&gt;
+    &lt;link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet"&gt;
+    &lt;link href="/static/css/style.css" rel="stylesheet"&gt;
+    &lt;link href="/favicon.ico" rel="shortcut icon"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="navbar navbar-inverse navbar-static-top" role="navigation"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class=navbar-header"&gt;
+          &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"&gt;
+            &lt;span class="icon-bar"&gt;&lt;/span&gt;
+            &lt;span class="icon-bar"&gt;&lt;/span&gt;
+            &lt;span class="icon-bar"&gt;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;a class="navbar-brand" href="{% url 'web.views.home' %}"&gt;&lt;strong&gt;UCLA Tau Beta Pi&lt;/strong&gt;&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="navbar-collapse collapse navbar-responsive-collapse"&gt;
+          &lt;ul class="nav navbar-nav"&gt;
+            &lt;li class="dropdown"&gt;
+            &lt;a href="{% url 'event.views.events' %}"&gt;Events&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              {% for event in events %}
+              &lt;li&gt;&lt;a href="/events/{{ event.url }}"&gt;{{ event.name }}&lt;/a&gt;&lt;/li&gt;
+              {% endfor %}
+            &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li class="dropdown"&gt;
+            &lt;a href="{% url 'web.views.tutoring' %}"&gt;Tutoring&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="{% url 'tutoring.views.schedule' %}"&gt;Schedule&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'tutoring.views.feedback' %}"&gt;Feedback&lt;/a&gt;&lt;/li&gt;
+              {% if user.is_authenticated %}
+              &lt;li&gt;&lt;a href="{% url 'tutoring.views.tutoring_logging' %}"&gt;Log Hours&lt;/a&gt;&lt;/li&gt;
+              {% endif %}
+            &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li class="dropdown"&gt;
+            &lt;a href="{% url 'web.views.programs' %}" class="dropdown-toggle"&gt;Programs&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.emcc' %}"&gt;EMCC&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.fe' %}"&gt;FE Test Preparation Materials&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li class="dropdown"&gt;
+            &lt;a href="{% url 'web.views.candidates' %}" class="dropdown-toggle"&gt;Candidates&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.requirements' %}"&gt;Requirements&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.houses' %}"&gt;Houses&lt;/a&gt;&lt;/li&gt;
+              &lt;!-- &lt;li&gt;&lt;a href="{{ eligibility_list }}"&gt;Eligibility List&lt;/a&gt;&lt;/li&gt; --&gt;
+              &lt;li&gt;&lt;a href="../media/files/Eligibility List for Sp14.pdf"&gt;Eligibility List&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li class="dropdown"&gt;
+            &lt;a href="{% url 'web.views.about' %}" class="dropdown-toggle"&gt;About Us&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="https://www.facebook.com/tbp.epsilon.ucla/photos_stream"&gt;Photos&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.awards' %}"&gt;Awards&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.officers' %}"&gt;Contact Officers&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.faculty' %}"&gt;Faculty&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'web.views.sponsor' %}"&gt;Sponsors&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+          {% if user.is_authenticated %}
+          &lt;ul class="nav navbar-nav pull-right"&gt;
+            {% if user.is_staff %}
+            &lt;li class="dropdown"&gt;
+            &lt;a href="/admin" class="dropdown-toggle"&gt;Admin&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.candidates' %}"&gt;Candidates&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.active_members' %}"&gt;Active Members&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.pending_community_service' %}"&gt;Pending Community Service&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.tutoring_hours' %}"&gt;Tutoring Hours&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="{% url 'main.views.downloads' %}"&gt;Downloads&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="https://sites.google.com/site/tbpcaeofficers/"&gt;Wiki&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;/li&gt;
+            {% endif %}
+            &lt;li&gt;&lt;a href="{% url 'main.views.profile_view' %}"&gt;{{ user.username }}&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="{% url 'main.views.logout' %}?next={{ next }}"&gt;Logout&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+          {% else %}
+          &lt;form class="navbar-form pull-right" method="post" action="{% url 'main.views.login' %}?next={{ next }}"&gt;
+            {% csrf_token %}
+            {% if request.GET.error %}
+            &lt;span class="help-inline" style="color:white;"&gt;Invalid login&lt;/span&gt;
+            {% endif %}
+            &lt;input type="text" class="form-control" placeholder="Username" name="username" style="width: 200px;"&gt;
+            &lt;input type="password" class="form-control" placeholder="Password" name="password" style="width: 200px;"&gt;
+            &lt;button type="submit" class="btn"&gt;Sign in&lt;/button&gt;
+          &lt;/form&gt;
+          {% endif %}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="main" class="container"&gt;
+      {% block content %}{% endblock %}
+    &lt;/div&gt;
+    &lt;footer class="footer"&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="row"&gt;
+          &lt;div class="col-lg-12"&gt;
+            UCLA Tau Beta Pi | 
+            &lt;a href="{% url 'web.views.home' %}"&gt;Home&lt;/a&gt; | 
+            &lt;a href="{% url 'web.views.officers' %}"&gt;Contact&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/footer&gt;
+    &lt;script src="https://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="/static/dist/js/bootstrap.min.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-45540915-1', 'ucla.edu');
+      ga('send', 'pageview');
+
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+</div>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<p>This is the Profile model that we have been using.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+    <span class="n">middle_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Middle Name&quot;</span><span class="p">)</span>
+    <span class="n">nickname</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Preferred Name (optional)&quot;</span><span class="p">)</span>
+    <span class="n">GENDER_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="s">&#39;Male&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span> <span class="s">&#39;Female&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENDER_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Birthday (mm/dd/yyyy)&quot;</span><span class="p">)</span>
+    <span class="n">phone_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Phone Number (xxx-xxx-xxxx)&quot;</span><span class="p">,</span>
+                                    <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">validate_re</span><span class="p">(</span><span class="s">r&#39;^\d{3}-\d{3}-\d{4}$&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
+                                                                      <span class="s">&#39;Please enter a valid phone number&#39;</span><span class="p">)])</span>
+    <span class="n">CANDIDATE</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
+    <span class="n">MEMBER</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span>
+    <span class="n">POSITION_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">CANDIDATE</span><span class="p">,</span> <span class="s">&#39;Candidate&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">MEMBER</span><span class="p">,</span> <span class="s">&#39;Member&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">POSITION_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">house</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;House&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">major</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">MAJOR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">initiation_term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;profile_initiation_term&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+    <span class="n">graduation_term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;profile_graduation_term&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">resume_pdf</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">resume_pdf_fs</span><span class="p">,</span>
+                                  <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Resume (PDF)&quot;</span><span class="p">)</span>
+    <span class="n">resume_word</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">resume_word_fs</span><span class="p">,</span>
+                                   <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Resume (word)&quot;</span><span class="p">)</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;tutoring.Class&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;user__last_name&#39;</span><span class="p">,</span> <span class="s">&#39;user__first_name&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_username</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Requirement object associated with current term</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">candidate</span><span class="o">.</span><span class="n">tutoring</span>
+            <span class="k">except</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">MEMBER</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+            <span class="k">except</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Comma delimited fields of profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">middle_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">house</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%x</span><span class="s">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phone_number</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">get_major_display</span><span class="p">(),</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">initiation_term</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initiation_term</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graduation_term</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to tbpsite&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#contents">Contents</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#tutorial">Tutorial</a><ul>
+<li><a class="reference internal" href="#view">View</a></li>
+<li><a class="reference internal" href="#template">Template</a></li>
+<li><a class="reference internal" href="#model">Model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="web.html"
+                        title="next chapter">web package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="web.html" title="web package"
+             >next</a> |</li>
+        <li><a href="#">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

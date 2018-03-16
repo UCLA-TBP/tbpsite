@@ -1,0 +1,553 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>main.models &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for main.models</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">MAJOR_CHOICES</span><span class="p">,</span> <span class="n">DEPT_CHOICES</span><span class="p">,</span> <span class="n">resume_word_fs</span><span class="p">,</span> <span class="n">resume_pdf_fs</span><span class="p">,</span> <span class="n">community_service_fs</span><span class="p">,</span> \
+    <span class="n">professor_interview_fs</span>
+
+<span class="kn">from</span> <span class="nn">points</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="validate_re"><a class="viewcode-back" href="../../main.html#main.models.validate_re">[docs]</a><span class="k">def</span> <span class="nf">validate_re</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="upload_to_path"><a class="viewcode-back" href="../../main.html#main.models.upload_to_path">[docs]</a><span class="k">def</span> <span class="nf">upload_to_path</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rename files that are uploaded</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="Term"><a class="viewcode-back" href="../../main.html#main.models.Term">[docs]</a><span class="k">class</span> <span class="nc">Term</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">QUARTER_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="s">&#39;Winter&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;Spring&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;Summer&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;Fall&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">quarter</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">QUARTER_CHOICES</span><span class="p">)</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">due_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-year&#39;</span><span class="p">,</span> <span class="s">&#39;-quarter&#39;</span><span class="p">]</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;quarter&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_quarter_display</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Term.get_week"><a class="viewcode-back" href="../../main.html#main.models.Term.get_week">[docs]</a>    <span class="k">def</span> <span class="nf">get_week</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Current week of term</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">week</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mi">7</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">week</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">week</span> <span class="o">&gt;</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">9</span>
+        <span class="k">return</span> <span class="n">week</span>
+
+</div></div>
+<div class="viewcode-block" id="SettingsManager"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager">[docs]</a><span class="k">class</span> <span class="nc">SettingsManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+<div class="viewcode-block" id="SettingsManager.settings"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.settings">[docs]</a>    <span class="k">def</span> <span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Singleton Settings object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SettingsManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.term"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.term">[docs]</a>    <span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">term</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.signup_term"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.signup_term">[docs]</a>    <span class="k">def</span> <span class="nf">signup_term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">signup_term</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.display_all_terms"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.display_all_terms">[docs]</a>    <span class="k">def</span> <span class="nf">display_all_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">display_all_terms</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.display_tutoring"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.display_tutoring">[docs]</a>    <span class="k">def</span> <span class="nf">display_tutoring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">display_tutoring</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.get_registration_code"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.get_registration_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_registration_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">registration_code</span>
+</div>
+<div class="viewcode-block" id="SettingsManager.get_eligibility_list"><a class="viewcode-back" href="../../main.html#main.models.SettingsManager.get_eligibility_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_eligibility_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span><span class="o">.</span><span class="n">eligibility_list</span>
+
+</div></div>
+<div class="viewcode-block" id="Settings"><a class="viewcode-back" href="../../main.html#main.models.Settings">[docs]</a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;current&#39;</span><span class="p">)</span>
+    <span class="n">signup_term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;signup&#39;</span><span class="p">)</span>
+    <span class="n">display_all_terms</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">display_tutoring</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">registration_code</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">eligibility_list</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&#39;files&#39;</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">SettingsManager</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Settings&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Settings&#39;</span>
+
+</div>
+<div class="viewcode-block" id="TermManager"><a class="viewcode-back" href="../../main.html#main.models.TermManager">[docs]</a><span class="k">class</span> <span class="nc">TermManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+<div class="viewcode-block" id="TermManager.get_query_set"><a class="viewcode-back" href="../../main.html#main.models.TermManager.get_query_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Current term if display_all_terms is not set in Settings and term is set, otherwise all terms</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">display_all_terms</span><span class="p">():</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">term</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TermManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TermManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="House"><a class="viewcode-back" href="../../main.html#main.models.House">[docs]</a><span class="k">class</span> <span class="nc">House</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">HOUSE_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="s">&#39;Tau&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;Beta&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;Pi&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;Epsilon&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">house</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">HOUSE_CHOICES</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_house_display</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="HousePoints"><a class="viewcode-back" href="../../main.html#main.models.HousePoints">[docs]</a><span class="k">class</span> <span class="nc">HousePoints</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">house</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;House&#39;</span><span class="p">)</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">)</span>
+
+    <span class="n">professor_interview_and_resume</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">PLACE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">FOURTH</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">TermManager</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;-term&#39;</span><span class="p">,</span> <span class="s">&#39;house&#39;</span><span class="p">)</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;house&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;House Points&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HousePoints.member_list"><a class="viewcode-back" href="../../main.html#main.models.HousePoints.member_list">[docs]</a>    <span class="k">def</span> <span class="nf">member_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Candidates and members in the house for the term</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile__house</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">))</span> <span class="o">+</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile__house</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)))</span>
+</div>
+<div class="viewcode-block" id="HousePoints.professor_interview_and_resume_points"><a class="viewcode-back" href="../../main.html#main.models.HousePoints.professor_interview_and_resume_points">[docs]</a>    <span class="k">def</span> <span class="nf">professor_interview_and_resume_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: N points for each person depending on the house ranking</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DOCUMENT_POINTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">professor_interview_and_resume</span><span class="p">]</span> <span class="o">*</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">profile__house</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HousePoints.points"><a class="viewcode-back" href="../../main.html#main.models.HousePoints.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Total number of points for the house, including members</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">(</span><span class="n">member</span><span class="o">.</span><span class="n">points</span><span class="p">()</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">member_list</span><span class="p">()),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">professor_interview_and_resume_points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">])</span>
+
+</div></div>
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../main.html#main.models.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+    <span class="n">middle_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Middle Name&quot;</span><span class="p">)</span>
+    <span class="n">nickname</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Preferred Name (optional)&quot;</span><span class="p">)</span>
+    <span class="n">GENDER_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="s">&#39;Male&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;F&#39;</span><span class="p">,</span> <span class="s">&#39;Female&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">GENDER_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Birthday (mm/dd/yyyy)&quot;</span><span class="p">)</span>
+    <span class="n">phone_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Phone Number (xxx-xxx-xxxx)&quot;</span><span class="p">,</span>
+                                    <span class="n">validators</span><span class="o">=</span><span class="p">[</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">validate_re</span><span class="p">(</span><span class="s">r&#39;^\d{3}-\d{3}-\d{4}$&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
+                                                                      <span class="s">&#39;Please enter a valid phone number&#39;</span><span class="p">)])</span>
+    <span class="n">CANDIDATE</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
+    <span class="n">MEMBER</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span>
+    <span class="n">POSITION_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">CANDIDATE</span><span class="p">,</span> <span class="s">&#39;Candidate&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">MEMBER</span><span class="p">,</span> <span class="s">&#39;Member&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">POSITION_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">house</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;House&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">major</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">MAJOR_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">initiation_term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;profile_initiation_term&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+    <span class="n">graduation_term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;profile_graduation_term&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">resume_pdf</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">resume_pdf_fs</span><span class="p">,</span>
+                                  <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Resume (PDF)&quot;</span><span class="p">)</span>
+    <span class="n">resume_word</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">resume_word_fs</span><span class="p">,</span>
+                                   <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Resume (word)&quot;</span><span class="p">)</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;tutoring.Class&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;user__last_name&#39;</span><span class="p">,</span> <span class="s">&#39;user__first_name&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_username</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Profile.current"><a class="viewcode-back" href="../../main.html#main.models.Profile.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Requirement object associated with current term</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">candidate</span><span class="o">.</span><span class="n">tutoring</span>
+            <span class="k">except</span> <span class="n">Candidate</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">Profile</span><span class="o">.</span><span class="n">MEMBER</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ActiveMember</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+            <span class="k">except</span> <span class="n">ActiveMember</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Profile.dump"><a class="viewcode-back" href="../../main.html#main.models.Profile.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Comma delimited fields of profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">middle_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">house</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">house</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%x</span><span class="s">&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phone_number</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">get_major_display</span><span class="p">(),</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">initiation_term</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initiation_term</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">graduation_term</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graduation_term</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">])</span>
+
+</div></div>
+<div class="viewcode-block" id="Member"><a class="viewcode-back" href="../../main.html#main.models.Member">[docs]</a><span class="k">class</span> <span class="nc">Member</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Term&#39;</span><span class="p">)</span>
+
+    <span class="n">tutoring</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;tutoring.Tutoring&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">completed</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">TermManager</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">__unicode__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Member.Meta"><a class="viewcode-back" href="../../main.html#main.models.Member.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;term&#39;</span><span class="p">,</span> <span class="s">&#39;profile__user__last_name&#39;</span><span class="p">,</span> <span class="s">&#39;profile__user__first_name&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Member.social_count"><a class="viewcode-back" href="../../main.html#main.models.Member.social_count">[docs]</a>    <span class="k">def</span> <span class="nf">social_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">Event</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">Event</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">attendees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="n">event_type</span><span class="o">=</span><span class="n">Event</span><span class="o">.</span><span class="n">SOCIAL</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">+</span>
+                <span class="n">Event</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">attendees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="n">event_type</span><span class="o">=</span><span class="n">Event</span><span class="o">.</span><span class="n">HOUSE</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+    <span class="c"># REQUIREMENTS</span></div>
+<div class="viewcode-block" id="Member.tutoring_complete"><a class="viewcode-back" href="../../main.html#main.models.Member.tutoring_complete">[docs]</a>    <span class="k">def</span> <span class="nf">tutoring_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">complete</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span> <span class="k">else</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Member.social_complete"><a class="viewcode-back" href="../../main.html#main.models.Member.social_complete">[docs]</a>    <span class="k">def</span> <span class="nf">social_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">social_count</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">MIN_SOCIALS</span>
+</div>
+<div class="viewcode-block" id="Member.requirements"><a class="viewcode-back" href="../../main.html#main.models.Member.requirements">[docs]</a>    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="Member.complete"><a class="viewcode-back" href="../../main.html#main.models.Member.complete">[docs]</a>    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">requirement</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirements</span><span class="p">())</span>
+
+    <span class="c"># POINTS</span></div>
+<div class="viewcode-block" id="Member.tutoring_points"><a class="viewcode-back" href="../../main.html#main.models.Member.tutoring_points">[docs]</a>    <span class="k">def</span> <span class="nf">tutoring_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">points</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span> <span class="k">else</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Member.social_points"><a class="viewcode-back" href="../../main.html#main.models.Member.social_points">[docs]</a>    <span class="k">def</span> <span class="nf">social_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">social_count</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">MIN_SOCIALS</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SOCIAL_POINTS</span> <span class="o">*</span> <span class="n">MIN_SOCIALS</span> <span class="o">+</span> <span class="n">EXTRA_SOCIAL_POINTS</span> <span class="o">*</span> <span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="n">MIN_SOCIALS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SOCIAL_POINTS</span> <span class="o">*</span> <span class="n">count</span>
+</div>
+<div class="viewcode-block" id="Member.points"><a class="viewcode-back" href="../../main.html#main.models.Member.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">tutoring_points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">social_points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="Candidate"><a class="viewcode-back" href="../../main.html#main.models.Candidate">[docs]</a><span class="k">class</span> <span class="nc">Candidate</span><span class="p">(</span><span class="n">Member</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;Profile&#39;</span><span class="p">)</span>
+
+    <span class="n">SHIRT_SIZES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;S&#39;</span><span class="p">,</span> <span class="s">&#39;S&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="s">&#39;M&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;XL&#39;</span><span class="p">,</span> <span class="s">&#39;XL&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">shirt_size</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">SHIRT_SIZES</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;T-Shirt Size&quot;</span><span class="p">)</span>
+    <span class="n">bent_polish</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">candidate_quiz</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">candidate_meet_and_greet</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">signature_book</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">community_service_proof</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">community_service_fs</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                               <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Community Service Proof&quot;</span><span class="p">)</span>
+    <span class="n">community_service</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">initiation_fee</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="c">#required events</span>
+    <span class="n">engineering_futures</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">candidate_sorting</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">professor_interview</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="n">upload_to_path</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">professor_interview_fs</span><span class="p">,</span>
+                                           <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Professor Interview&quot;</span><span class="p">)</span>
+    <span class="n">tbp_event</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Candidate.resume"><a class="viewcode-back" href="../../main.html#main.models.Candidate.resume">[docs]</a>    <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_pdf</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">resume_word</span>
+
+    <span class="c"># REQUIREMENTS</span></div>
+<div class="viewcode-block" id="Candidate.community_service_complete"><a class="viewcode-back" href="../../main.html#main.models.Candidate.community_service_complete">[docs]</a>    <span class="k">def</span> <span class="nf">community_service_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_service</span> <span class="o">&gt;=</span> <span class="n">MIN_COMMUNITY_SERVICE</span>
+</div>
+<div class="viewcode-block" id="Candidate.tbp_event_complete"><a class="viewcode-back" href="../../main.html#main.models.Candidate.tbp_event_complete">[docs]</a>    <span class="k">def</span> <span class="nf">tbp_event_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">professor_interview</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tbp_event</span>
+</div>
+<div class="viewcode-block" id="Candidate.requirements"><a class="viewcode-back" href="../../main.html#main.models.Candidate.requirements">[docs]</a>    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s">&#39;Tutoring&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring_complete</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;Bent Polish&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bent_polish</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Candidate Quiz&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_quiz</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Candidate Meet and Greet&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_meet_and_greet</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Signature Book&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_book</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Community Service&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_service_complete</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;Initiation Fee&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initiation_fee</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Engineering Futures&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engineering_futures</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Social&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">social_complete</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;Resume&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resume</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;TBP event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tbp_event_complete</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;Candidate Sorting&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">candidate_sorting</span><span class="p">),</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Candidate.requirement_count"><a class="viewcode-back" href="../../main.html#main.models.Candidate.requirement_count">[docs]</a>    <span class="k">def</span> <span class="nf">requirement_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="bp">None</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">requirement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirements</span><span class="p">()</span> <span class="k">if</span> <span class="n">requirement</span><span class="p">])</span>
+
+    <span class="c"># POINTS</span></div>
+    <span class="n">professor_interview_on_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">resume_on_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">quiz_first_try</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Candidate.community_service_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.community_service_points">[docs]</a>    <span class="k">def</span> <span class="nf">community_service_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_service</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">MIN_COMMUNITY_SERVICE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">COMMUNITY_SERVICE_POINTS</span> <span class="o">*</span> <span class="n">MIN_COMMUNITY_SERVICE</span> <span class="o">+</span>
+                    <span class="n">COMMUNITY_SERVICE_POINTS</span> <span class="o">*</span> <span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="n">MIN_COMMUNITY_SERVICE</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">COMMUNITY_SERVICE_POINTS</span> <span class="o">*</span> <span class="n">count</span>
+
+    <span class="c">#not used anymore, added TBP event!</span></div>
+<div class="viewcode-block" id="Candidate.professor_interview_on_time_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.professor_interview_on_time_points">[docs]</a>    <span class="k">def</span> <span class="nf">professor_interview_on_time_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ON_TIME_POINTS</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">professor_interview_on_time</span> <span class="k">else</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="Candidate.tbp_event_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.tbp_event_points">[docs]</a>    <span class="k">def</span> <span class="nf">tbp_event_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tbp_event</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">Event</span>
+
+            <span class="n">count</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">attendees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">TBP_EVENT_POINTS</span> <span class="o">+</span> <span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">EXTRA_TBP_EVENT_POINTS</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ON_TIME_POINTS</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">professor_interview_on_time</span> <span class="k">else</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="Candidate.resume_on_time_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.resume_on_time_points">[docs]</a>    <span class="k">def</span> <span class="nf">resume_on_time_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ON_TIME_POINTS</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resume_on_time</span> <span class="k">else</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="Candidate.bent_polish_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.bent_polish_points">[docs]</a>    <span class="k">def</span> <span class="nf">bent_polish_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BENT_POLISH_POINTS</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bent_polish</span> <span class="k">else</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="Candidate.quiz_first_try_points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.quiz_first_try_points">[docs]</a>    <span class="k">def</span> <span class="nf">quiz_first_try_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QUIZ_FIRST_TRY_POINTS</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quiz_first_try</span> <span class="k">else</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="Candidate.points"><a class="viewcode-back" href="../../main.html#main.models.Candidate.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">((</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Candidate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">community_service_points</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tbp_event_points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">resume_on_time_points</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bent_polish_points</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quiz_first_try_points</span><span class="p">(),</span> <span class="n">quiz_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">candidate_quiz</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">,</span>
+        <span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="ActiveMember"><a class="viewcode-back" href="../../main.html#main.models.ActiveMember">[docs]</a><span class="k">class</span> <span class="nc">ActiveMember</span><span class="p">(</span><span class="n">Member</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Profile&#39;</span><span class="p">)</span>
+
+    <span class="n">EMCC</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
+    <span class="n">TUTORING</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span>
+    <span class="n">HOUSE_LEADER</span> <span class="o">=</span> <span class="s">&#39;2&#39;</span>
+    <span class="n">COMMITTEE</span> <span class="o">=</span> <span class="s">&#39;3&#39;</span>  <span class="c"># RG</span>
+    <span class="n">POKER</span> <span class="o">=</span> <span class="s">&#39;4&#39;</span>
+    <span class="n">CBR</span> <span class="o">=</span> <span class="s">&#39;5&#39;</span>
+    <span class="n">ACAD_OUTREACH</span> <span class="o">=</span> <span class="s">&#39;6&#39;</span>
+    <span class="n">REQUIREMENT_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">EMCC</span><span class="p">,</span> <span class="s">&#39;EMCC&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">TUTORING</span><span class="p">,</span> <span class="s">&#39;Tutoring&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">HOUSE_LEADER</span><span class="p">,</span> <span class="s">&#39;House Leader&#39;</span><span class="p">),</span>
+        <span class="c"># (POKER, &#39;Poker Tournament Committee&#39;),</span>
+        <span class="c"># TODO: comment as necessary</span>
+        <span class="c"># (COMMITTEE, &#39;Rube Goldberg Committee&#39;),</span>
+        <span class="p">(</span><span class="n">CBR</span><span class="p">,</span> <span class="s">&#39;Cardboard Boat Race Committee&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">ACAD_OUTREACH</span><span class="p">,</span> <span class="s">&#39;Academic Outreach Committee&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">requirement_choice</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">REQUIREMENT_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">requirement_complete</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">Member</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">,</span> <span class="s">&#39;term&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ActiveMember.social_count"><a class="viewcode-back" href="../../main.html#main.models.ActiveMember.social_count">[docs]</a>    <span class="k">def</span> <span class="nf">social_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">Event</span>
+
+        <span class="k">return</span> <span class="n">Event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">attendees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ActiveMember.requirement"><a class="viewcode-back" href="../../main.html#main.models.ActiveMember.requirement">[docs]</a>    <span class="k">def</span> <span class="nf">requirement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#allow for override in requirement</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirement_complete</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span><span class="o">.</span><span class="n">complete</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tutoring</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ActiveMember.requirements"><a class="viewcode-back" href="../../main.html#main.models.ActiveMember.requirements">[docs]</a>    <span class="k">def</span> <span class="nf">requirements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_requirement_choice_display</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirement</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s">&#39;Events&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">social_complete</span><span class="p">()),</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ActiveMember.points"><a class="viewcode-back" href="../../main.html#main.models.ActiveMember.points">[docs]</a>    <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_staff</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirement_choice</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOUSE_LEADER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ActiveMember</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Officer"><a class="viewcode-back" href="../../main.html#main.models.Officer">[docs]</a><span class="k">class</span> <span class="nc">Officer</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s">&#39;Profile&#39;</span><span class="p">)</span>
+
+    <span class="n">position</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">mail_alias</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Officer.list_profiles"><a class="viewcode-back" href="../../main.html#main.models.Officer.list_profiles">[docs]</a>    <span class="k">def</span> <span class="nf">list_profiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span>
+</div>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;rank&#39;</span><span class="p">,)</span>
+
+</div>
+<div class="viewcode-block" id="Faculty"><a class="viewcode-back" href="../../main.html#main.models.Faculty">[docs]</a><span class="k">class</span> <span class="nc">Faculty</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">dept</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">DEPT_CHOICES</span><span class="p">)</span>
+    <span class="n">chapter</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">graduation</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s">&quot;Faculty Members&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">tbpsite 1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

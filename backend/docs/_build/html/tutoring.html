@@ -1,0 +1,1195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tutoring package &mdash; tbpsite 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="tbpsite 1.0 documentation" href="index.html" />
+    <link rel="next" title="common module" href="common.html" />
+    <link rel="prev" title="event package" href="event.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="common.html" title="common module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="event.html" title="event package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-tutoring">
+<span id="tutoring-package"></span><h1>tutoring package<a class="headerlink" href="#module-tutoring" title="Permalink to this headline">¶</a></h1>
+<p>This directory manages tutoring hours and requirements and the schedule.</p>
+<div class="section" id="module-tutoring.admin">
+<span id="tutoring-admin-module"></span><h2>tutoring.admin module<a class="headerlink" href="#module-tutoring.admin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tutoring.admin.ClassAdmin">
+<em class="property">class </em><tt class="descclassname">tutoring.admin.</tt><tt class="descname">ClassAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#ClassAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.ClassAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="tutoring.admin.ClassAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'department', 'display')</em><a class="headerlink" href="#tutoring.admin.ClassAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ClassAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('display',)</em><a class="headerlink" href="#tutoring.admin.ClassAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ClassAdmin.list_filter">
+<tt class="descname">list_filter</tt><em class="property"> = ('display',)</em><a class="headerlink" href="#tutoring.admin.ClassAdmin.list_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ClassAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.admin.ClassAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.admin.ForeignTutoringAdmin">
+<em class="property">class </em><tt class="descclassname">tutoring.admin.</tt><tt class="descname">ForeignTutoringAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#ForeignTutoringAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.ForeignTutoringAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="tutoring.admin.ForeignTutoringAdmin.filter_horizontal">
+<tt class="descname">filter_horizontal</tt><em class="property"> = ('classes',)</em><a class="headerlink" href="#tutoring.admin.ForeignTutoringAdmin.filter_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ForeignTutoringAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'day_1', 'hour_1', 'day_2', 'hour_2')</em><a class="headerlink" href="#tutoring.admin.ForeignTutoringAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ForeignTutoringAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('day_1', 'hour_1', 'day_2', 'hour_2')</em><a class="headerlink" href="#tutoring.admin.ForeignTutoringAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.ForeignTutoringAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.admin.ForeignTutoringAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.admin.TutoringAdmin">
+<em class="property">class </em><tt class="descclassname">tutoring.admin.</tt><tt class="descname">TutoringAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#TutoringAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.TutoringAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="tutoring.admin.TutoringAdmin.actions">
+<tt class="descname">actions</tt><em class="property"> = ('import_tutoring_times',)</em><a class="headerlink" href="#tutoring.admin.TutoringAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.TutoringAdmin.fields">
+<tt class="descname">fields</tt><em class="property"> = ('day_1', 'hour_1', 'day_2', 'hour_2', 'best_day', 'best_hour', 'second_best_day', 'second_best_hour', 'third_best_day', 'third_best_hour', 'frozen')</em><a class="headerlink" href="#tutoring.admin.TutoringAdmin.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.admin.TutoringAdmin.import_tutoring_times">
+<tt class="descname">import_tutoring_times</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#TutoringAdmin.import_tutoring_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.TutoringAdmin.import_tutoring_times" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.TutoringAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'day_1', 'hour_1', 'day_2', 'hour_2', 'best_day', 'best_hour', 'second_best_day', 'second_best_hour', 'third_best_day', 'third_best_hour', 'frozen')</em><a class="headerlink" href="#tutoring.admin.TutoringAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.TutoringAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('day_1', 'hour_1', 'day_2', 'hour_2')</em><a class="headerlink" href="#tutoring.admin.TutoringAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.TutoringAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.admin.TutoringAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.admin.WeekAdmin">
+<em class="property">class </em><tt class="descclassname">tutoring.admin.</tt><tt class="descname">WeekAdmin</tt><big>(</big><em>model</em>, <em>admin_site</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#WeekAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.WeekAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></tt></p>
+<dl class="attribute">
+<dt id="tutoring.admin.WeekAdmin.actions">
+<tt class="descname">actions</tt><em class="property"> = ('fill_hours',)</em><a class="headerlink" href="#tutoring.admin.WeekAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.admin.WeekAdmin.fill_hours">
+<tt class="descname">fill_hours</tt><big>(</big><em>request</em>, <em>queryset</em><big>)</big><a class="reference internal" href="_modules/tutoring/admin.html#WeekAdmin.fill_hours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.admin.WeekAdmin.fill_hours" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.WeekAdmin.list_display">
+<tt class="descname">list_display</tt><em class="property"> = ('__unicode__', 'term', 'day_1', 'hour_1', 'day_2', 'hour_2', 'hours', 'tutees')</em><a class="headerlink" href="#tutoring.admin.WeekAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.WeekAdmin.list_editable">
+<tt class="descname">list_editable</tt><em class="property"> = ('hours', 'tutees')</em><a class="headerlink" href="#tutoring.admin.WeekAdmin.list_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.admin.WeekAdmin.media">
+<tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.admin.WeekAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tutoring-management-commands-module">
+<h2>tutoring.management.commands module<a class="headerlink" href="#tutoring-management-commands-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-tutoring.management.commands.updateschedule"></span><dl class="class">
+<dt id="tutoring.management.commands.updateschedule.Command">
+<em class="property">class </em><tt class="descclassname">tutoring.management.commands.updateschedule.</tt><tt class="descname">Command</tt><a class="reference internal" href="_modules/tutoring/management/commands/updateschedule.html#Command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.management.commands.updateschedule.Command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.management.base.NoArgsCommand</span></tt></p>
+<dl class="method">
+<dt id="tutoring.management.commands.updateschedule.Command.handle_noargs">
+<tt class="descname">handle_noargs</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/management/commands/updateschedule.html#Command.handle_noargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.management.commands.updateschedule.Command.handle_noargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tutoring-models-module">
+<h2>tutoring.models module<a class="headerlink" href="#tutoring-models-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-tutoring.models"></span><dl class="class">
+<dt id="tutoring.models.BaseTutoring">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">BaseTutoring</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#BaseTutoring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.BaseTutoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<dl class="class">
+<dt id="tutoring.models.BaseTutoring.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/tutoring/models.html#BaseTutoring.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.BaseTutoring.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="tutoring.models.BaseTutoring.Meta.abstract">
+<tt class="descname">abstract</tt><em class="property"> = False</em><a class="headerlink" href="#tutoring.models.BaseTutoring.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.display_classes">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">display_classes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#BaseTutoring.display_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.BaseTutoring.display_classes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of all classes for tutoring object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_class_ids">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_class_ids</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#BaseTutoring.get_class_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.BaseTutoring.get_class_ids" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of class ids for each class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_classes">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_classes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#BaseTutoring.get_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.BaseTutoring.get_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>implement in child class
+:raise NotImplementedError:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_day_1_display">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_day_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.BaseTutoring.get_day_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_day_2_display">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_day_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.BaseTutoring.get_day_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_hour_1_display">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_hour_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.BaseTutoring.get_hour_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.BaseTutoring.get_hour_2_display">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">get_hour_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.BaseTutoring.get_hour_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.BaseTutoring.term">
+<tt class="descclassname">BaseTutoring.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.BaseTutoring.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Class">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Class</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Class(id, department, course_number, display)</p>
+<dl class="attribute">
+<dt id="tutoring.models.Class.DEPT_CHOICES">
+<tt class="descname">DEPT_CHOICES</tt><em class="property"> = (('BE', 'BE'), ('CEE', 'CEE'), ('CHEM', 'CHEM'), ('CHEME', 'CHEME'), ('CS', 'CS'), ('ECON', 'ECON'), ('EE', 'EE'), ('ENGR', 'ENGR'), ('LS', 'LS'), ('MAE', 'MAE'), ('MATH', 'MATH'), ('MGMT', 'MGMT'), ('MSE', 'MSE'), ('PHYSICS', 'PHYSICS'), ('STATS', 'STATS'))</em><a class="headerlink" href="#tutoring.models.Class.DEPT_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Class.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Class.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Class.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Class.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Class.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.foreigntutoring_set">
+<tt class="descclassname">Class.</tt><tt class="descname">foreigntutoring_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.foreigntutoring_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Class.get_department_display">
+<tt class="descclassname">Class.</tt><tt class="descname">get_department_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Class.get_department_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.objects">
+<tt class="descclassname">Class.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xafeebcc&gt;</em><a class="headerlink" href="#tutoring.models.Class.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.profile_set">
+<tt class="descclassname">Class.</tt><tt class="descname">profile_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.profile_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week3_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week3_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week3_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week4_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week4_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week4_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week5_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week5_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week5_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week6_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week6_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week6_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week7_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week7_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week7_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week8_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week8_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week8_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Class.week9_set">
+<tt class="descclassname">Class.</tt><tt class="descname">week9_set</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Class.week9_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.ForeignTutoring">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">ForeignTutoring</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#ForeignTutoring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.ForeignTutoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.BaseTutoring" title="tutoring.models.BaseTutoring"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.BaseTutoring</span></tt></a></p>
+<p>ForeignTutoring(id, term_id, day_1, hour_1, day_2, hour_2, name, organization)</p>
+<dl class="exception">
+<dt id="tutoring.models.ForeignTutoring.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.ForeignTutoring.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.ForeignTutoring.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">ForeignTutoring.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.ForeignTutoring.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.ForeignTutoring.ORG_CHOICES">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">ORG_CHOICES</tt><em class="property"> = (('0', '(UPE)'), ('1', '(HKN)'), ('2', ''))</em><a class="headerlink" href="#tutoring.models.ForeignTutoring.ORG_CHOICES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.ForeignTutoring.classes">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.ForeignTutoring.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.ForeignTutoring.current">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xb0e0f6c&gt;</em><a class="headerlink" href="#tutoring.models.ForeignTutoring.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_classes">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_classes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#ForeignTutoring.get_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_day_1_display">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_day_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_day_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_day_2_display">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_day_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_day_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_hour_1_display">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_hour_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_hour_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_hour_2_display">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_hour_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_hour_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.ForeignTutoring.get_organization_display">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">get_organization_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.ForeignTutoring.get_organization_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.ForeignTutoring.objects">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xb0e0fac&gt;</em><a class="headerlink" href="#tutoring.models.ForeignTutoring.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.ForeignTutoring.term">
+<tt class="descclassname">ForeignTutoring.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.ForeignTutoring.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Tutoring">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Tutoring</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.BaseTutoring" title="tutoring.models.BaseTutoring"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.BaseTutoring</span></tt></a></p>
+<p>Tutoring(id, term_id, day_1, hour_1, day_2, hour_2, profile_id, best_day, best_hour, second_best_day, second_best_hour, third_best_day, third_best_hour, week_3_id, week_4_id, week_5_id, week_6_id, week_7_id, week_8_id, week_9_id, frozen, is_tutoring, last_start)</p>
+<dl class="exception">
+<dt id="tutoring.models.Tutoring.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Tutoring.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Tutoring.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Tutoring.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Tutoring.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.activemember">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">activemember</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.activemember" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.candidate">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">candidate</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.candidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.complete">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.complete" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.current">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">current</tt><em class="property"> = &lt;main.models.TermManager object at 0xaffac4c&gt;</em><a class="headerlink" href="#tutoring.models.Tutoring.current" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_best_day_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_best_day_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_best_day_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_best_hour_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_best_hour_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_best_hour_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_classes">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_classes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.get_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.get_classes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_day_1_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_day_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_day_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_day_2_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_day_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_day_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_hour_1_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_hour_1_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_hour_1_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_hour_2_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_hour_2_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_hour_2_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_next_by_last_start">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_next_by_last_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_next_by_last_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_previous_by_last_start">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_previous_by_last_start</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_previous_by_last_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_second_best_day_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_second_best_day_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_second_best_day_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_second_best_hour_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_second_best_hour_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_second_best_hour_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_third_best_day_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_third_best_day_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_third_best_day_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_third_best_hour_display">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_third_best_hour_display</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#tutoring.models.Tutoring.get_third_best_hour_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.get_weeks">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">get_weeks</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.get_weeks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.get_weeks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.objects">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0xaffafcc&gt;</em><a class="headerlink" href="#tutoring.models.Tutoring.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.points">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.points" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Tutoring.preferences">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">preferences</tt><big>(</big><em>two_hour=False</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.preferences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.preferences" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>two_hour</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.profile">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">profile</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.term">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">term</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_3">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_3</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_4">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_4</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_5">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_5</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_6">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_6</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_7">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_7</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_8">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_8</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Tutoring.week_9">
+<tt class="descclassname">Tutoring.</tt><tt class="descname">week_9</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Tutoring.week_9" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="tutoring.models.Tutoring.with_weeks">
+<em class="property">classmethod </em><tt class="descclassname">Tutoring.</tt><tt class="descname">with_weeks</tt><big>(</big><em>profile</em>, <em>term</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Tutoring.with_weeks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Tutoring.with_weeks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>profile</strong> &#8211; </li>
+<li><strong>term</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.TutoringPreferencesForm">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">TutoringPreferencesForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#TutoringPreferencesForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="tutoring.models.TutoringPreferencesForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/tutoring/models.html#TutoringPreferencesForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="tutoring.models.TutoringPreferencesForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['best_day', 'best_hour', 'second_best_day', 'second_best_hour', 'third_best_day', 'third_best_hour']</em><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.TutoringPreferencesForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#tutoring.models.Tutoring" title="tutoring.models.Tutoring"><tt class="xref py py-class docutils literal"><span class="pre">Tutoring</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.TutoringPreferencesForm.base_fields">
+<tt class="descclassname">TutoringPreferencesForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'best_day': &lt;django.forms.fields.TypedChoiceField object at 0xb0e4eac&gt;, 'best_hour': &lt;django.forms.fields.TypedChoiceField object at 0xb0e4fcc&gt;, 'second_best_day': &lt;django.forms.fields.TypedChoiceField object at 0xb0e810c&gt;, 'second_best_hour': &lt;django.forms.fields.TypedChoiceField object at 0xb0e822c&gt;, 'third_best_day': &lt;django.forms.fields.TypedChoiceField object at 0xb0e834c&gt;, 'third_best_hour': &lt;django.forms.fields.TypedChoiceField object at 0xb0e846c&gt;}</em><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.TutoringPreferencesForm.declared_fields">
+<tt class="descclassname">TutoringPreferencesForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.TutoringPreferencesForm.media">
+<tt class="descclassname">TutoringPreferencesForm.</tt><tt class="descname">media</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.TutoringPreferencesForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<dl class="class">
+<dt id="tutoring.models.Week.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="_modules/tutoring/models.html#Week.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="tutoring.models.Week.Meta.abstract">
+<tt class="descname">abstract</tt><em class="property"> = False</em><a class="headerlink" href="#tutoring.models.Week.Meta.abstract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week.Meta.ordering">
+<tt class="descname">ordering</tt><em class="property"> = ('tutoring__day_1', 'tutoring__hour_1', 'tutoring__day_2', 'tutoring__hour_2', 'tutoring__profile')</em><a class="headerlink" href="#tutoring.models.Week.Meta.ordering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week.classes">
+<tt class="descclassname">Week.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.complete">
+<tt class="descclassname">Week.</tt><tt class="descname">complete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.complete" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.day_1">
+<tt class="descclassname">Week.</tt><tt class="descname">day_1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.day_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.day_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.day_2">
+<tt class="descclassname">Week.</tt><tt class="descname">day_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.day_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.day_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.hour_1">
+<tt class="descclassname">Week.</tt><tt class="descname">hour_1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.hour_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.hour_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.hour_2">
+<tt class="descclassname">Week.</tt><tt class="descname">hour_2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.hour_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.hour_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.points">
+<tt class="descclassname">Week.</tt><tt class="descname">points</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.points" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.profile">
+<tt class="descclassname">Week.</tt><tt class="descname">profile</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tutoring.models.Week.term">
+<tt class="descclassname">Week.</tt><tt class="descname">term</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week.term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week.term" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week3">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week3</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week3(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week3.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week3.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week3.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week3.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week3.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week3.classes">
+<tt class="descclassname">Week3.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week3.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week3.objects">
+<tt class="descclassname">Week3.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0d53cc&gt;</em><a class="headerlink" href="#tutoring.models.Week3.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week3.tutoring">
+<tt class="descclassname">Week3.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week3.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week4">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week4</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week4(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week4.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week4.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week4.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week4.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week4.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week4.classes">
+<tt class="descclassname">Week4.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week4.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week4.objects">
+<tt class="descclassname">Week4.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0d702c&gt;</em><a class="headerlink" href="#tutoring.models.Week4.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week4.tutoring">
+<tt class="descclassname">Week4.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week4.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week5">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week5</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week5(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week5.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week5.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week5.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week5.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week5.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week5.classes">
+<tt class="descclassname">Week5.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week5.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week5.objects">
+<tt class="descclassname">Week5.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0d7b6c&gt;</em><a class="headerlink" href="#tutoring.models.Week5.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week5.tutoring">
+<tt class="descclassname">Week5.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week5.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week6">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week6</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week6" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week6(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week6.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week6.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week6.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week6.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week6.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week6.classes">
+<tt class="descclassname">Week6.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week6.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week6.objects">
+<tt class="descclassname">Week6.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0d87ec&gt;</em><a class="headerlink" href="#tutoring.models.Week6.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week6.tutoring">
+<tt class="descclassname">Week6.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week6.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week7">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week7</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week7" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week7(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week7.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week7.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week7.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week7.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week7.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week7.classes">
+<tt class="descclassname">Week7.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week7.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week7.objects">
+<tt class="descclassname">Week7.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0db44c&gt;</em><a class="headerlink" href="#tutoring.models.Week7.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week7.tutoring">
+<tt class="descclassname">Week7.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week7.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week8">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week8</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week8(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week8.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week8.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week8.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week8.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week8.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week8.classes">
+<tt class="descclassname">Week8.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week8.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week8.objects">
+<tt class="descclassname">Week8.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0e006c&gt;</em><a class="headerlink" href="#tutoring.models.Week8.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week8.tutoring">
+<tt class="descclassname">Week8.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week8.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.Week9">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">Week9</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#Week9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.Week9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tutoring.models.Week" title="tutoring.models.Week"><tt class="xref py py-class docutils literal"><span class="pre">tutoring.models.Week</span></tt></a></p>
+<p>Week9(id, hours, tutees, no_makeup)</p>
+<dl class="exception">
+<dt id="tutoring.models.Week9.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#tutoring.models.Week9.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="tutoring.models.Week9.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">Week9.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#tutoring.models.Week9.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week9.classes">
+<tt class="descclassname">Week9.</tt><tt class="descname">classes</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week9.classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week9.objects">
+<tt class="descclassname">Week9.</tt><tt class="descname">objects</tt><em class="property"> = &lt;tutoring.models.WeekManager object at 0xb0e0b4c&gt;</em><a class="headerlink" href="#tutoring.models.Week9.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tutoring.models.Week9.tutoring">
+<tt class="descclassname">Week9.</tt><tt class="descname">tutoring</tt><em class="property"> None</em><a class="headerlink" href="#tutoring.models.Week9.tutoring" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tutoring.models.WeekManager">
+<em class="property">class </em><tt class="descclassname">tutoring.models.</tt><tt class="descname">WeekManager</tt><a class="reference internal" href="_modules/tutoring/models.html#WeekManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.WeekManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<dl class="method">
+<dt id="tutoring.models.WeekManager.get_query_set">
+<tt class="descname">get_query_set</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/models.html#WeekManager.get_query_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.models.WeekManager.get_query_set" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tutoring.views">
+<span id="tutoring-views-module"></span><h2>tutoring.views module<a class="headerlink" href="#module-tutoring.views" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="tutoring.views.classes">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">classes</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.classes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.expanded_schedule">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">expanded_schedule</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#expanded_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.expanded_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.feedback">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">feedback</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#feedback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.feedback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.get_classes">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">get_classes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#get_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.get_classes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.get_tutors">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">get_tutors</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#get_tutors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.get_tutors" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.schedule">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">schedule</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tutoring.views.tutoring_logging">
+<tt class="descclassname">tutoring.views.</tt><tt class="descname">tutoring_logging</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/tutoring/views.html#tutoring_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tutoring.views.tutoring_logging" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">tutoring package</a><ul>
+<li><a class="reference internal" href="#module-tutoring.admin">tutoring.admin module</a></li>
+<li><a class="reference internal" href="#tutoring-management-commands-module">tutoring.management.commands module</a></li>
+<li><a class="reference internal" href="#tutoring-models-module">tutoring.models module</a></li>
+<li><a class="reference internal" href="#module-tutoring.views">tutoring.views module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="event.html"
+                        title="previous chapter">event package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="common.html"
+                        title="next chapter">common module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutoring.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="common.html" title="common module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="event.html" title="event package"
+             >previous</a> |</li>
+        <li><a href="index.html">tbpsite 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Bryan Ngo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>
