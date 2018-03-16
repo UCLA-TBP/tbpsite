@@ -166,3 +166,5 @@ class PeerTeachingForm(ModelForm):
         model = PeerTeaching
         fields = ['requirement_choice']
 
+class TestQueryForm(forms.Form):
+    search_params = forms.CharField(label='Search Parameters')

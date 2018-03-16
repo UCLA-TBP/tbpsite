@@ -21,7 +21,7 @@ from django.db.models import Q
 from django.views.decorators.cache import never_cache
 
 from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement, Test_Upload, ReviewSheet
-from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm, ReviewSheetForm
+from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm, ReviewSheetForm, TestQueryForm
 from tutoring.models import Tutoring, Class, TutoringPreferencesForm
 from common import render
 from sendfile import sendfile
@@ -660,7 +660,17 @@ def reviewsheetbank(request):
 @login_required
 def testbank(request):
     tests = Test_Upload.objects.all()
-
+    
+    def is_relevant(test, search_terms):
+        for search_term in search_terms:
+            if search_term not in str(test.professor).lower() and search_term not in str(test.course).lower() and search_term not in str(test.origin_term).lower() and search_term != str(test.test_type).lower():
+               return False
+        return True
+    if request.method == 'POST' and len(request.POST['search_params']) > 0:
+        search_params = request.POST.get('search_params')
+        search_terms = [search_term.lower() for search_term in search_params.split(' ')]
+        tests = [test for test in tests if is_relevant(test, search_terms)]
+ 
     class_tests = {}
     for test in tests:
         class_tests.setdefault(str(test.course), [])
