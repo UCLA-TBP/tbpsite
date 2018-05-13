@@ -6,10 +6,23 @@
 
 body
 {
-    background-color: white;
+    background-color: #F8F8F8;
 }
 
 /* class styles */
+.cover {
+    margin-top: 2em;
+}
+
+.home-button {
+    width: 24%;
+}
+
+.home-buttons {
+    margin-top: 2em;
+    text-align: center;
+}
+
 .navigation-font
 {
     font-size: 1em !important;

@@ -17,6 +17,7 @@
     <link href="/static/css/component-style.css" rel="stylesheet"/>
     <link href="/static/css/custom-styles.css" rel="stylesheet" />
     <link href="/static/img/favicon.ico?v=2" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     {% block headContent %} {% endblock %}
   </head>
   <body>
@@ -131,7 +132,41 @@
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $('.btn').on('click', function() {
+            var $this = $(this);
+            $this.button('loading');
+          });
+      });
+
+      $('.center-slick').slick({
+  centerMode: true,
+  centerPadding: '60px',
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]
+});
+      </script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <!-- Carousel -->
       <script language="JavaScript" type="text/javascript">
 	$(document).ready(function(){
@@ -140,6 +175,7 @@
 	})
 	});
       </script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="/static/js/material.min.js"></script>
     <script src="/static/js/material-kit.js" type="text/javascript"></script>
     <script>
