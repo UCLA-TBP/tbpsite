@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'web',
     'main',
     'tutoring',
+    'tutoring_questions',
     'event',
 )
 
