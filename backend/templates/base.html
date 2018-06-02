@@ -17,13 +17,7 @@
     <link href="/static/css/component-style.css" rel="stylesheet"/>
     <link href="/static/css/custom-styles.css" rel="stylesheet" />
     <link href="/static/img/favicon.ico?v=2" rel="shortcut icon">
-    <!-- Latest compiled and minified JavaScript -->
     {% block headContent %} {% endblock %}
-    <script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="navbar navbar-info" role="navigation">
@@ -53,7 +47,7 @@
             <ul class="dropdown-menu">
               <li><a href="{% url 'tutoring.views.schedule' %}">Schedule</a></li>
               <li><a href="{% url 'tutoring.views.feedback' %}">Feedback</a></li>
-	      <li><a href="/reviewsheets">Review Sheets</a></li>
+	      <li><a class="navigation-font" href="/reviewsheets">Review Sheets</a></li>
               {% if user.is_authenticated %}
               <li><a href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a></li>
               {% endif %}
@@ -64,8 +58,8 @@
             <ul class="dropdown-menu">
 	      <li><a href="{% url 'web.views.about' %}">Overview</a></li>
 	      <li><a href="{% url 'web.views.requirements' %}">Candidates/Actives</a></li>
-              <!--<li><a href="../media/files/Officer-Positions.pdf">Officer Positions</a></li>-->
-              <li><a href="{% url 'web.views.officers' %}">Officers</a></li>
+              <li><a href="../media/files/Officer-Positions.pdf">Officer Positions</a></li>
+              <li><a href="{% url 'web.views.officers' %}">Contact Officers</a></li>
               <li><a href="{% url 'web.views.faculty' %}">Advisors and Faculty</a></li>
             </ul>
             </li>
@@ -132,19 +126,17 @@
         </div>
       </div>
     </footer>
-      <script type="text/javascript">
-        $(document).ready(function () {
-          $('.btn').on('click', function() {
-            var $this = $(this);
-            $this.button('loading');
-          });
-      });
-      </script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <!-- Carousel -->
       <script language="JavaScript" type="text/javascript">
 	$(document).ready(function(){
 	$('.carousel').carousel({
-	interval: 6000
+	interval: 4000
 	})
 	});
       </script>

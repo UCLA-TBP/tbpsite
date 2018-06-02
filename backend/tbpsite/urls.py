@@ -84,7 +84,6 @@ urlpatterns += patterns('',
     url(r'^tutoring/feedback/$', 'tutoring.views.feedback'),
     url(r'^tutoring/log_hours/$', 'tutoring.views.tutoring_logging'),
     url(r'^tutoring_admin/csvdump/$', 'tutoring.views.getTutoringCsv'),
-    url(r'^tutoring_admin/update_schedule/$', 'tutoring.views.update_schedule'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 #    url(r'', include('tbpsite.urls'))
