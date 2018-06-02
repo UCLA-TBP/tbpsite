@@ -52,6 +52,8 @@ for ls in data.values():
     if subject not in subjects:
       subjects.add(subject)
 
+pdb.set_trace()
+
 currentTime = None
 fields = {}
 for item in sortedData:
