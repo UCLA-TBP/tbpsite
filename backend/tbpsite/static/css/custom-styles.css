@@ -190,3 +190,8 @@ a, a:hover, a:focus
 {
     z-index: -1;
 }
+
+.normal-row {
+  margin-right: 0px;
+  margin-left: 0px;
+}

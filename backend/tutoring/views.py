@@ -15,7 +15,8 @@ from common import render
 from main.models import Settings, Profile
 from tutoring.models import Tutoring, ForeignTutoring, Class
 from constants import TUTORING_HOUR_CHOICES, TUTORING_DAY_CHOICES
-
+from django.template.loader import render_to_string
+from collections import OrderedDict
 
 number = re.compile(r'\d+')
 numbers = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen']
@@ -134,12 +135,18 @@ def schedule(request):
                 'department_classes': department_classes,
             },
         )
-    except templatedoesnotexist:
+    except:
+        # save cache
+        tutors = get_tutors()
+        classes = get_classes()
+        content = render_to_string('schedule_snippet.html', {'tutors':tutors,'classes':classes})
+        with open('cached_templates/cached_schedule_snippet.html', 'w') as static_file:
+            static_file.write(content)
         return render(
             request,
             'schedule.html',
             {
-                'schedule_block': 'schedule_snippet.html',
+                'schedule_block': 'cached_schedule_snippet.html',
                 'term': term,
                 'display': should_display,
                 'display_current_tutors': display_current_tutors,
@@ -147,7 +154,6 @@ def schedule(request):
                 'department_classes': department_classes,
             },
         )
-
 
 @login_required()
 def classes(request):
@@ -334,7 +340,6 @@ def getTutoringCsv(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="tutoring.csv"'
-
     tutoringHours = {}
     for d in TUTORING_DAY_CHOICES:
         for h in TUTORING_HOUR_CHOICES:
@@ -360,17 +365,20 @@ def getTutoringCsv(request):
 
     # utility function
     def format_classes(classes_lst):
-        formatted_classes_lst = [','.join(sorted([class_str.split(' ')[1] for class_str in classes_lst if subject in class_str])) for subject in subjects]
-        return formatted_classes_lst
-
+        class_map = OrderedDict()
+        for class_str in sorted(classes_lst):
+            department, class_num = class_str.split(' ')
+            class_map.setdefault(department, [])
+            class_map[department].append(class_num)
+        hour_day_classes = ''
+        for department, class_nums in class_map.items():
+            hour_day_classes += "%s: %s\n" % (department, ','.join(class_nums))
+        return hour_day_classes
     writer = csv.writer(response)
-    writer.writerow(['Hour', 'Class'] + days.values())
+    writer.writerow(['Hour'] + days.values())
     for hour in range(TUTORING_START, TUTORING_END + 1):
         classes = []
         for day in days:
             classes.append(format_classes(data[(day, hour)]))
-        rows = zip(*classes)
-        for index, row in enumerate(rows):
-            writer.writerow([str(hour) if not index else '', subjects[index]] + list(row))
-
+        writer.writerow([str(hour)] + classes)
     return response
