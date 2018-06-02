@@ -739,14 +739,18 @@ class Requirement(models.Model):
     SOCIAL = '0'
     SERVICE = '1'
     CHAPTER = '2'
-    ELECTIVE = '3'
+    ELECTIVE = '2'
+    PUBLICITY = '3'
+    HOUSE = '4'
     CATEGORY_CHOICES = (
         (SOCIAL, 'Social'),
         (SERVICE, 'Service'), 
         (CHAPTER, 'Chapter'),
         (ELECTIVE, 'Elective'),
+        (PUBLICITY, 'Publicity'),
+        (HOUSE, 'House')
     )
-    POINTS_NEEDED = {'Social':2, 'Service': 4, 'Chapter':2, 'Elective': 3}
+    POINTS_NEEDED = {'Social':2, 'Service': 6, 'Chapter': 0, 'Elective': 3, 'Publicity': 3, 'House': 2}
     name = models.CharField(max_length=40)
     requirement_choice = models.CharField(max_length=1, choices=CATEGORY_CHOICES, default='0')
     event_hours = models.IntegerField(default=0)
