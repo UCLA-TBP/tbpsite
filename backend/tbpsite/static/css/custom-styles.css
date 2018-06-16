@@ -4,6 +4,11 @@
         box-shadow: none;
 }
 
+.no-margin
+{
+    margin: 0;
+}
+
 body
 {
     background-color: #F8F8F8;
