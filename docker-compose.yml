@@ -30,6 +30,7 @@ services:
       - ./media:/media
       - /etc/letsencrypt/archive/tbp.marktai.com/:/etc/certs/tbp.marktai.com
       - /etc/letsencrypt/archive/tbp.seas.ucla.edu/:/etc/certs/tbp.seas.ucla.edu
+      - ./../edss_frontend/:/edss_frontend
     depends_on:
       - backend
 
