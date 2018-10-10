@@ -3,9 +3,13 @@ default: build
 build: 
 				docker-compose build
 
-run: 
+run-dev: 
 				-docker-compose down
-				docker-compose up
+				docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+run-prod:
+				-docker-compose down
+				docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 restart:
 				docker-compose restart backend
@@ -22,7 +26,7 @@ collect_static:
 init_db: clean_db 
 				docker cp init_db.sql "$(shell docker-compose ps -q db)":/init_db.sql
 				docker-compose exec db mysql -uroot -pCAEpsilon -e "CREATE DATABASE tbpsite;"
-				docker-compose exec db /bin/sh -c "mysql -uroot -pCAEpsilon tbpsite < /init_db.sql" 
+				docker-compose exec db sh -c "mysql -uroot -pCAEpsilon tbpsite < /init_db.sql" 
 				-docker-compose exec backend /app/manage.py migrate --noinput --merge
 
 untar_setup:
