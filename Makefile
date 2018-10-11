@@ -9,7 +9,7 @@ run-dev:
 
 run-prod:
 				-docker-compose down
-				docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+				docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d 
 
 restart:
 				docker-compose restart backend
