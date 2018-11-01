@@ -593,16 +593,16 @@ class Candidate(Member):
         return (
             # ('Peer Teaching', self.peer_teaching_complete()),
             ('Bent Polish', self.bent_polish),
-            ('Candidate Quiz', self.candidate_quiz),
+            ('Candidate Quiz + Fee', self.candidate_quiz),
             # ('Candidate Meet and Greet', self.candidate_meet_and_greet),
             # ('Signature Book', self.signature_book),
             # ('Community Service', self.community_service_complete()),
-            ('Initiation Fee', self.initiation_fee),
-            ('Engineering Futures', self.engineering_futures),
+            #('Engineering Futures', self.engineering_futures),
             # ('Social', self.social_complete()),
-            # ('Resume', self.resume()),
+            ('Resume Submission', self.resume()),
+            ('Initiation', self.initiation_fee),
             # ('TBP event', self.tbp_event_complete()),
-            ('Candidate Sorting', self.candidate_sorting),
+            #('Candidate Sorting', self.candidate_sorting),
         )
 
     def requirement_count(self):
@@ -738,18 +738,18 @@ class Requirement(models.Model):
     SOCIAL = '0'
     SERVICE = '1'
     CHAPTER = '2'
-    ELECTIVE = '2'
-    PUBLICITY = '3'
-    HOUSE = '4'
+    ELECTIVE = '3'
+    PUBLICITY = '4'
+    #HOUSE = '4'
     CATEGORY_CHOICES = (
         (SOCIAL, 'Social'),
         (SERVICE, 'Service'), 
         (CHAPTER, 'Chapter'),
         (ELECTIVE, 'Elective'),
         (PUBLICITY, 'Publicity'),
-        (HOUSE, 'House')
+        #(HOUSE, 'House')
     )
-    POINTS_NEEDED = {'Social':2, 'Service': 6, 'Chapter': 0, 'Elective': 3, 'Publicity': 1, 'House': 2}
+    POINTS_NEEDED = {'Social':2, 'Service': 6, 'Chapter': 0, 'Elective': 2, 'Publicity': 1}
     name = models.CharField(max_length=40)
     requirement_choice = models.CharField(max_length=1, choices=CATEGORY_CHOICES, default='0')
     event_hours = models.IntegerField(default=0)
