@@ -290,7 +290,8 @@ class Profile(models.Model):
         name = self.user.get_full_name()
         if self.nickname:
             name += ' (%s)' % (self.nickname)
-        return name if name else self.user.get_username()
+        name = name if name else self.user.get_username()
+        return name + (' - ' + self.user.email if self.position == Profile.CANDIDATE else '')
 
     def active(self):
         """
