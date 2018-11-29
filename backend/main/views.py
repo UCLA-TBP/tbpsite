@@ -504,7 +504,7 @@ def pending_community_service(request):
 
 @staff_member_required
 def tutoring_admin(request):
-    tutoring_objects = Tutoring.current.order_by('profile')
+    tutoring_objects = Tutoring.current.filter(hidden=False).order_by('profile')
     for tutoring_object in tutoring_objects:
         tutoring_object.total_hours = int(sum([week.hours for week in tutoring_object.get_weeks()]))
     return render(request, 'tutoring_hours.html', {'tutoring_list': tutoring_objects})
