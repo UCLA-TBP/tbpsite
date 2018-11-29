@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Tutoring Hours{% endblock %}
 
+{% block title %}Tutoring Hours{% endblock %}
 {% block content %}
+<div class="panel-group">
+<div class="panel panel-default">
+<div class="panel-body">
 <h1 style>Tutoring</h1>
 <a href="csvdump" class="btn btn-large btn-warning">Download Classes Available CSV</a>
+<a href="update_schedule" class="btn btn-large btn-warning" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Updating...">Update Schedule</a>
+<p><strong>Use "Update Schedule" after manual updates to the schedule. Note it may take a few seconds.</strong></p>
 <table class="table">
   <thead>
     <tr>
@@ -16,6 +21,7 @@
       <th>Week 7 Hours</th>
       <th>Week 8 Hours</th>
       <th>Week 9 Hours</th>
+      <th>Total Hours</th>
     </tr>
   </thead>
   <tbody>
@@ -25,9 +31,12 @@
       {% for week in tutoring.get_weeks %}
       <td>{{ week.hours }}</td>
       {% endfor %}
+      <td>{{ tutoring.total_hours }}</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-
+</div>
+</div>
+</div>
 {% endblock %}

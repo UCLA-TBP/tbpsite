@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.template import TemplateDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from common import render
 from main.models import Settings, Profile
@@ -17,6 +17,7 @@ from tutoring.models import Tutoring, ForeignTutoring, Class
 from constants import TUTORING_HOUR_CHOICES, TUTORING_DAY_CHOICES
 from django.template.loader import render_to_string
 from collections import OrderedDict
+import subprocess
 
 number = re.compile(r'\d+')
 numbers = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen']
@@ -154,6 +155,13 @@ def schedule(request):
                 'department_classes': department_classes,
             },
         )
+
+@login_required(login_url='/login')
+def update_schedule(request):
+    """ updates the schedule by removing the cache and rerendering the page
+    """
+    subprocess.call(["rm", "-f", "cached_templates/cached_schedule_snippet.html"])
+    return HttpResponseRedirect('/schedule/')
 
 @login_required()
 def classes(request):

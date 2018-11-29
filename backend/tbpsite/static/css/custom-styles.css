@@ -4,12 +4,63 @@
         box-shadow: none;
 }
 
+.no-margin
+{
+    margin: 0;
+}
+
 body
 {
-    background-color: white;
+    background-color: #F8F8F8;
+}
+
+.carousel-inner>.item>a>img, .carousel-inner>.item>img {
+    border-radius: 0;
 }
 
 /* class styles */
+.form-group.is-focused label, .form-group.is-focused label.control-label {
+    color: #03a9f4;
+}
+
+.navbar .navbar-form .form-group .form-control, .navbar .navbar-form .form-control {
+    color: white;
+}
+
+.navbar .navbar-nav > li.open > .dropdown-menu {
+    background-color: #03a9f4;
+}
+
+.dropdown-menu li > a {
+    color: white !important;
+}
+
+.cover {
+    margin-top: 2em;
+    border-radius: 0;
+    margin-top: -70px;
+}
+
+.carousel-custom {
+    z-index: -1;
+    border-radius: 0px;
+    border-bottom: 4px solid #03a9f4;
+}
+
+.carousel-inner-custom {
+    border-radius: 0;
+    max-height: 85vh;
+}
+
+.home-button {
+    width: 100%;
+}
+
+.home-buttons {
+    margin-top: 2em;
+    text-align: center;
+}
+
 .navigation-font
 {
     font-size: 1em !important;
@@ -20,6 +71,7 @@ body
     height: 100%;
     display: inline !important;
     margin-right: 0.3em;
+    filter: invert(1);
 }
 .padding-4
 {
@@ -52,7 +104,7 @@ body
 .btn-warning
 {
     color: black !important;
-    background-color: #FFA000 !important;
+    border: 1px solid grey;
 }
 
 .btn-submit
@@ -89,7 +141,7 @@ a, a:hover, a:focus
 {
     color: grey;
     border: 0;
-    background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#D2D2D2, #D2D2D2) !important;
+    background-image: linear-gradient(#03a9f4, #03a9f4), linear-gradient(#D2D2D2, #D2D2D2) !important;
     background-size: 0 2px, 100% 1px;
     background-repeat: no-repeat;
     background-position: center bottom, center calc(100% - 1px);
@@ -127,6 +179,11 @@ a, a:hover, a:focus
 .navbar.navbar-info
 {
     border-radius: 0;
+    margin-bottom: 0;
+    z-index: 1;
+    background-color: white;
+    color: black;
+    border-bottom: 4px solid #03a9f4;
 }
 
 @media (max-width: 1000px) {
@@ -181,8 +238,7 @@ a, a:hover, a:focus
 }
 
 .navbar.navbar-info .dropdown-menu li > a:hover, .navbar.navbar-info .dropdown-menu li > a:focus {
-    color: black;
-    background-color: lightgrey;
+    background-color: deepskyblue;
     box-shadow: none;
 }
 /* id */
@@ -194,4 +250,18 @@ a, a:hover, a:focus
 .normal-row {
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.test-bank {
+  display: inline;
+}
+
+.upload-button {
+  margin-top: 0;
+  margin-left: 2em;
+  top: -10px;
+}
+
+.upload-icon {
+  margin-left: 0.5em;
 }
