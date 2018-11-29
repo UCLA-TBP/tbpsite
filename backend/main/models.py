@@ -599,11 +599,11 @@ class Candidate(Member):
             # ('Signature Book', self.signature_book),
             # ('Community Service', self.community_service_complete()),
             ('Initiation Fee', self.initiation_fee),
-            ('Engineering Futures', self.engineering_futures),
+            # ('Engineering Futures', self.engineering_futures),
             # ('Social', self.social_complete()),
             # ('Resume', self.resume()),
             # ('TBP event', self.tbp_event_complete()),
-            ('Candidate Sorting', self.candidate_sorting),
+            # ('Candidate Sorting', self.candidate_sorting),
         )
 
     def requirement_count(self):
@@ -750,7 +750,7 @@ class Requirement(models.Model):
         (PUBLICITY, 'Publicity'),
         (HOUSE, 'House')
     )
-    POINTS_NEEDED = {'Social':2, 'Service': 6, 'Chapter': 0, 'Elective': 3, 'Publicity': 3, 'House': 2}
+    POINTS_NEEDED = {'Social':2, 'Service': 6, 'Chapter': 0, 'Elective': 3, 'Publicity': 1, 'House': 2}
     name = models.CharField(max_length=40)
     requirement_choice = models.CharField(max_length=1, choices=CATEGORY_CHOICES, default='0')
     event_hours = models.IntegerField(default=0)
