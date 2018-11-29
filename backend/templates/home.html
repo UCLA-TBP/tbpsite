@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+	{% extends "base.html" %}
 
 {% load cache %}
 {% cache 600 home %}
@@ -9,10 +9,9 @@
       padding-bottom:30px;
     }
   </style>
-  <div class="jumbotron">
     <div class="row">
-    <div class="col-md-8">
-      <div id="carousel" class="carousel card card-raised card-carousel carousel slide">
+    <div class="col-md-12 cover">
+      <div id="carousel" class="carousel card-carousel carousel slide carousel-custom">
         <!-- Indicators -->
         <ol class="carousel-indicators">
           <li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -21,30 +20,21 @@
         </ol>
 
         <!-- Wrapper for slides -->
-        <div class="carousel-inner">
+        <div class="carousel-inner carousel-inner-custom">
           <div class="item active">
             <a href="{% url 'web.views.about' %}">
               <img src="https://tbp.seas.ucla.edu/static/img/about.jpg" alt="" class="img-rounded img-responsive img-raised" />
             </a>
-            <div class="carousel-caption">
-              <a href="{% url 'web.views.about' %}" style="color:white"><h4>About Us</h4></a>
-            </div>
           </div>
           <div class="item">
             <a href="{% url 'web.views.tutoring' %}">
               <img src="https://tbp.seas.ucla.edu/static/img/tutoring.jpg" alt="" class="img-rounded img-responsive img-raised" />
             </a>
-            <div class="carousel-caption">
-              <a href="{% url 'web.views.tutoring' %}" style="color:white"><h4>Tutoring</h4></a>
-            </div>
           </div>
           <div class="item">
             <a href="{% url 'event.views.events' %}">
               <img src="https://tbp.seas.ucla.edu/static/img/events.jpg" alt="" class="img-rounded img-responsive img-raised" />
             </a>
-            <div class="carousel-caption">
-              <a href="{% url 'event.views.events' %}" style="color:white"><h4>Events</h4></a>
-            </div>
           </div>
         </div>
 
@@ -61,32 +51,36 @@
 
 
 
-    </div>
-    <div class="col-md-4 visible-xs visible-sm visible-md visible-lg">
+      </div>
+      <div
+ 	class="col-md-10 text-align:center col-md-offset-1 visible-xs visible-sm visible-md visible-lg home-buttons">
+      <!--
       <h2>TBP California Epsilon Chapter</h2>
       <hr>
-      <h4>Announcements</h4>
-      <a href="{% url 'event.views.events' %}" class="btn btn-large btn-warning">Upcoming Events</a>
-      {% if user.is_authenticated %}
-      <a href="{% url 'tutoring.views.tutoring_logging' %}" class="btn btn-large btn-warning">Log Tutoring Hours</a>
-      <br/>
-      {% endif %}
-      {% if display %}<a href="{% url 'tutoring.views.schedule' %}" class="btn btn-large btn-warning">Tutoring Schedule</a>{% endif %}
-	  {% if upcoming_events %}
-		  <h4>Upcoming Events</h4>
-		  {% for event in upcoming_events %}
-			<dl>
-			  <dd><a href="/events/{{ event.url }}">{{ event.name }}</a></dd>
-			  <dd>{{ event.location }}</dd>
-			  <dd>{{ event.get_date }}</dd>
-			  <dd>{{ event.get_time }}</dd>
-			</dl>
-		  {% endfor %}
-	  {% endif %}
-	<a href="{% url 'main.views.reviewsheetbank' %}" class="btn btn-large btn-warning">Review Sheets</a>
-	  <!-- {% include "house_points_snippet.html" %} -->
+      -->
+      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'event.views.events' %}" class="btn btn-large btn-warning home-button">Upcoming Events</a>
     </div>
+	 {% if user.is_authenticated %}
+      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'tutoring.views.tutoring_logging' %}" class="btn btn-large btn-warning home-button">Log Tutoring Hours</a>
+      </div>
+	{% endif %}
+      {% if display %}
+	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'tutoring.views.schedule' %}" class="btn btn-large btn-warning home-button">Tutoring Schedule</a>
+	</div>
+	{% endif %}
+	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">	
+	<a href="{% url 'main.views.reviewsheetbank' %}" class="btn btn-large btn-warning home-button">Review Sheets</a>
+   </div>
+	 </div>
   </div>
 </div>
+<script>
+  $( document ).ready(function() {
+    $("#main").addClass('flex-container').removeClass('container');
+  });
+</script>
 {% endblock %}
 {% endcache %}
