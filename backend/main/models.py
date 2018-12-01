@@ -100,6 +100,7 @@ class Settings(models.Model):
     display_tutoring = models.BooleanField(default=False)
     registration_code = models.CharField(max_length=10, default='')
     eligibility_list = models.FileField(upload_to='files')
+    candidate_packet_url = models.TextField(max_length=100)
     objects = SettingsManager()
 
     class Meta:
