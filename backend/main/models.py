@@ -92,6 +92,8 @@ class SettingsManager(models.Manager):
     def get_eligibility_list(self):
         return self.settings().eligibility_list
 
+class Links(models.Model):
+    candidate_packet_url = models.CharField(max_length=200, default='')
 
 class Settings(models.Model):
     term = models.ForeignKey('Term', blank=True, null=True, related_name='current')
@@ -100,7 +102,6 @@ class Settings(models.Model):
     display_tutoring = models.BooleanField(default=False)
     registration_code = models.CharField(max_length=10, default='')
     eligibility_list = models.FileField(upload_to='files')
-    candidate_packet_url = models.TextField(max_length=100)
     objects = SettingsManager()
 
     class Meta:
