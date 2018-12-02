@@ -157,6 +157,9 @@ class TestAdmin(admin.ModelAdmin):
  
 class TermAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'start_date', 'due_date')
+
+class LinksAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url')
        
 admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
@@ -172,3 +175,4 @@ admin.site.register(PeerTeaching, PeerAdmin)
 admin.site.register(Requirement, RequirementAdmin)
 admin.site.register(ReviewSheet, ReviewSheetAdmin)
 admin.site.register(Test_Upload, TestAdmin)
+admin.site.register(Link, LinksAdmin)

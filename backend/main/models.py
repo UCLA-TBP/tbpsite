@@ -92,8 +92,9 @@ class SettingsManager(models.Manager):
     def get_eligibility_list(self):
         return self.settings().eligibility_list
 
-class Links(models.Model):
-    candidate_packet_url = models.CharField(max_length=200, default='')
+class Link(models.Model):
+    name = models.CharField(max_length=50, default='')
+    url = models.CharField(max_length=200, default='')
 
 class Settings(models.Model):
     term = models.ForeignKey('Term', blank=True, null=True, related_name='current')
