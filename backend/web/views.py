@@ -66,4 +66,4 @@ faculty = MyTemplateView.as_view(template_name='faculty.html',
 officers = MyTemplateView.as_view(template_name='officers.html', 
                                   additional={'term': Settings.objects.term(), 'positions': get_officers})
 requirements = MyTemplateView.as_view(template_name='requirements.html',
-                                      additional={'candidatePacketURL': Link.objects.filter(name='candidate_packet_url')})
+                                      additional={'candidatePacketURL': Link.objects.filter(name='candidate_packet_url')[0].url})
