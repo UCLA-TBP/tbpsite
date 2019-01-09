@@ -95,7 +95,8 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'xa1i4ojb0usw@jz(+7dlciwx^n#b03_k$gir5t99i8pq84o%p1'
 
-EMAIL_PASSWORD = 'x9zmy5ksea48'
+EMAIL_HOST_USER = 'president'
+EMAIL_HOST_PASSWORD = 'x9zmy5ksea48'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -183,8 +184,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         'django.core.context_processors.request',
         )
 
-EMAIL_HOST = 'smtp.seas.ucla.edu'
-EMAIL_PORT = 587
+EMAIL_HOST = 'tbp.seas.ucla.edu'
+EMAIL_PORT = 25
 CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',

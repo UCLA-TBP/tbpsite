@@ -110,6 +110,7 @@
 		  <input type="text" class="form-control" id="form" placeholder="Username" name="username" style="width: 200px; margin-top: 1em; margin-bottom: 0.5em;" autocomplete="off">
 		  <input type="password" class="form-control" id="form" placeholder="Password" name="password" style="width: 200px;" autocomplete="off">
 		  <button type="submit" class="btn btn-warning btn-submit" style="margin-top:1em; margin-bottom:1em;">Sign in</button>
+      <a href="{% url 'main.views.password_reset' %}" class="btn btn-warning btn-submit" style="margin-bottom:1em;">Forgot Password?</a>
 		</form>
 	      </ul>
 	    </li>
