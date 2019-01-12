@@ -35,7 +35,7 @@ untar_setup:
 init: untar_setup init_db collect_static
 
 backup_db:
-				docker-compose exec db mysqldump -uroot -pCAEpsilon tbpsite > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+				docker-compose exec -T db mysqldump -uroot -pCAEpsilon tbpsite > tbpsite_dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
 
 install_package:
 				docker-compose exec backend pip install $(pkg)
