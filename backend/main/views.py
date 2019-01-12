@@ -3,6 +3,7 @@ import datetime
 import os, re
 import time
 import zipfile
+import base64
 
 from django.forms.models import model_to_dict
 from django.forms.models import inlineformset_factory
@@ -10,18 +11,23 @@ from django.contrib import auth
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
+from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_bytes
 from django.db.models import Q
+from django.template import loader
 from django.views.decorators.cache import never_cache
 
 from main.models import Profile, Term, Candidate, ActiveMember, House, HousePoints, Settings, MAJOR_CHOICES, PeerTeaching, Requirement, Test_Upload, ReviewSheet
-from main.forms import LoginForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm, ReviewSheetForm, TestQueryForm
+from main.forms import LoginForm, PasswordResetForm, PasswordSetForm, RegisterForm, UserAccountForm, UserPersonalForm, ProfileForm, CandidateForm, MemberForm, ShirtForm, FirstProfileForm, PeerTeachingForm, TestForm, TermForm, ClassForm, ReviewSheetForm, TestQueryForm
 from tutoring.models import Tutoring, Class, TutoringPreferencesForm
 from common import render
 from sendfile import sendfile
@@ -88,6 +94,79 @@ def logout(request):
     auth.logout(request)
     return redirect(request.GET.get('next', 'home'))
 
+#Initate password reset email
+def password_reset(request):
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['user']
+            email = form.cleaned_data['user'].email
+            email_context = {
+                'domain': 'tbp.seas.ucla.edu',
+                'token': default_token_generator.make_token(user),
+                'uid': base64.urlsafe_b64encode(force_bytes(user.pk)).rstrip(b'\n='),
+            }
+            body = loader.render_to_string("password_reset_email.html", email_context)
+
+            email_message = EmailMultiAlternatives("[TBP] Password Reset", body, "no-reply@tbp.seas.ucla.edu", [email])
+            email_message.send()
+            return password_reset_done(request)
+    else:
+        form = PasswordResetForm()
+    return render(request, "password_reset.html", {'form': form})
+
+#After password reset email sent
+def password_reset_done(request):
+    return render(request, "password_reset_done.html")
+
+#Changing password for password reset
+def password_reset_confirm(request, **kwargs):
+    INTERNAL_RESET_URL_TOKEN = 'set-password'
+    INTERNAL_RESET_SESSION_TOKEN = '_password_reset_token'
+
+    try:
+        uid = force_bytes(kwargs['uid'])
+        decoded = base64.urlsafe_b64decode(uid.ljust(len(uid) + len(uid) % 4, b'=')).decode()
+        user = User.objects.get(pk=decoded)
+    except:
+        user = None
+
+    #No user found for given key
+    if user == None:
+        return redirect('home')
+
+    token = kwargs['token']
+    #Tokenless URL specific to session
+    if token == INTERNAL_RESET_URL_TOKEN:
+        session_token = request.session.get(INTERNAL_RESET_SESSION_TOKEN)
+        if session_token == None or not default_token_generator.check_token(user, session_token):
+            return redirect('home')
+    #Redirect to session-specific URL without token
+    else:
+        #Token check fails if more than one reset attempted, time limit elapses, or user logs in after token generation
+        if default_token_generator.check_token(user, token):
+            request.session[INTERNAL_RESET_SESSION_TOKEN] = token
+            session_url = request.path.replace(token, INTERNAL_RESET_URL_TOKEN)
+            return redirect(session_url)
+        else:
+            return redirect('home')
+
+    if request.method == "POST":
+        form = PasswordSetForm(request.POST)
+        if form.is_valid():
+            #Session URL can only be used for one reset
+            del request.session[INTERNAL_RESET_SESSION_TOKEN]
+            password = form.cleaned_data['new_pw']
+            user.set_password(password)
+            user.save()
+            return password_reset_complete(request)
+    else:
+        form = PasswordSetForm()
+    return render(request, "password_reset_confirm.html", {'form': form})
+
+#After password changed from password reset
+def password_reset_complete(request):
+    return render(request, "password_reset_complete.html")
 
 def register(request):
     if request.method == "POST":

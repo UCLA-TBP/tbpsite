@@ -143,6 +143,42 @@ class LoginForm(forms.Form):
             cleaned_data['user'] = user
         return cleaned_data
 
+class PasswordResetForm(forms.Form):
+    identity = forms.CharField()
+
+    def clean(self):
+        cleaned_data = super(PasswordResetForm, self).clean()
+        if '@' in cleaned_data.get('identity'):
+            try:
+                user = User.objects.get(email=cleaned_data.get('identity'))
+            except:
+                user = None
+        else:
+            try:
+                user = User.objects.get(username=cleaned_data.get('identity'))
+            except:
+                user = None
+
+        if user is None:
+            self._errors['identity'] = self.error_class(["Account not found."])
+        else:
+            cleaned_data['user'] = user
+        return cleaned_data
+
+class PasswordSetForm(forms.Form):
+    new_password = forms.CharField(widget=forms.widgets.PasswordInput, label="New Password")
+    confirm_password = forms.CharField(widget=forms.widgets.PasswordInput, label="Confirm Password")
+
+    def clean(self):
+        cleaned_data = super(PasswordSetForm, self).clean()
+
+        new_pw = self.cleaned_data.get('new_password')
+        confirm_pw = self.cleaned_data.get('confirm_password')
+        if new_pw and confirm_pw and new_pw == confirm_pw:
+            cleaned_data['new_pw'] = new_pw
+        else:
+            self._errors['new_pw'] = self.error_class(["Passwords not identical."])
+        return cleaned_data
 
 class CandidateForm(ModelForm):
     class Meta:
