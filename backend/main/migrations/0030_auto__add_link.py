@@ -8,9 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'Links'
-        db.delete_table(u'main_links')
-
         # Adding model 'Link'
         db.create_table(u'main_link', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -21,13 +18,6 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Adding model 'Links'
-        db.create_table(u'main_links', (
-            ('candidate_packet_url', self.gf('django.db.models.fields.CharField')(default='', max_length=200)),
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-        ))
-        db.send_create_signal(u'main', ['Links'])
-
         # Deleting model 'Link'
         db.delete_table(u'main_link')
 
@@ -234,7 +224,7 @@ class Migration(SchemaMigration):
             'hour_2': ('django.db.models.fields.CharField', [], {'default': "'0'", 'max_length': '1'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_tutoring': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_start': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2018, 12, 1, 0, 0)'}),
+            'last_start': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2019, 1, 11, 0, 0)'}),
             'profile': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['main.Profile']"}),
             'second_best_day': ('django.db.models.fields.CharField', [], {'default': "'0'", 'max_length': '1'}),
             'second_best_hour': ('django.db.models.fields.CharField', [], {'default': "'2'", 'max_length': '1'}),
