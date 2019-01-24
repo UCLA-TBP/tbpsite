@@ -7,6 +7,7 @@ In order to set up docker containers for local development, the following steps 
 2. Run `make build` to set up the initial Docker images.
 3. Run `make run-dev` to bring up Docker containers for the backend, database, and nginx.
 4. Run `make init_db` with a relevant `init.sql` file (made with `mysqldump`).
+* note some changes might need to be made with the database for this to work. Namely, you may need to fake some migrations.
 5. Run `make collect_static` to collect static files into STATIC_ROOT.
 6. Optionally, move any desired media files into the media folder (tests, resumes, etc.). 
 
