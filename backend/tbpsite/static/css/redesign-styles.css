@@ -230,6 +230,10 @@ html {
     top: 20%;
   }
 
+  .landing-title {
+    font-size: 350%;
+  }
+
   .landing-text {
     width: 100%;
     padding: 2em;
