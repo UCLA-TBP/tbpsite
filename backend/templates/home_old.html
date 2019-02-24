@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load cache %}
+{% cache 600 home %}
+{% block content %}
+  <style>
+    .carousel-caption
+    {
+      padding-bottom:30px;
+    }
+  </style>
+    <div class="row">
+    <div class="col-md-12 cover">
+      <div id="carousel" class="carousel card-carousel carousel slide carousel-custom">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel" data-slide-to="1"></li>
+          <li data-target="#carousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner carousel-inner-custom">
+          <div class="item active">
+            <a href="{% url 'web.views.about' %}">
+              <img src="https://tbp.seas.ucla.edu/static/img/about.jpg" alt="" class="img-rounded img-responsive img-raised" />
+            </a>
+          </div>
+          <div class="item">
+            <a href="{% url 'web.views.tutoring' %}">
+              <img src="https://tbp.seas.ucla.edu/static/img/tutoring.jpg" alt="" class="img-rounded img-responsive img-raised" />
+            </a>
+          </div>
+          <div class="item">
+            <a href="{% url 'event.views.events' %}">
+              <img src="https://tbp.seas.ucla.edu/static/img/events.jpg" alt="" class="img-rounded img-responsive img-raised" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel" data-slide="prev">
+          <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel" data-slide="next">
+          <span class="icon-next"></span>
+        </a>
+      </div>
+
+
+
+
+
+      </div>
+      <div
+ 	class="col-md-10 text-align:center col-md-offset-1 visible-xs visible-sm visible-md visible-lg home-buttons">
+      <!--
+      <h2>TBP California Epsilon Chapter</h2>
+      <hr>
+      -->
+      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'event.views.events' %}" class="btn btn-large btn-warning home-button">Upcoming Events</a>
+    </div>
+	 {% if user.is_authenticated %}
+      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'tutoring.views.tutoring_logging' %}" class="btn btn-large btn-warning home-button">Log Tutoring Hours</a>
+      </div>
+	{% endif %}
+      {% if display %}
+	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'tutoring.views.schedule' %}" class="btn btn-large btn-warning home-button">Tutoring Schedule</a>
+	</div>
+	{% endif %}
+	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
+	<a href="{% url 'main.views.reviewsheetbank' %}" class="btn btn-large btn-warning home-button">Review Sheets</a>
+   </div>
+	 </div>
+  </div>
+</div>
+<script>
+  $( document ).ready(function() {
+    $("#main").addClass('flex-container').removeClass('container');
+  });
+</script>
+{% endblock %}
+{% endcache %}

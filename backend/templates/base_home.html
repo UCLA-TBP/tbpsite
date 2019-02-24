@@ -1,0 +1,150 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tau Beta Pi | UCLA{% endblock %}</title>
+    <link href="/static/img/favicon.ico?v=2" rel="shortcut icon">
+    <!-- Bootstrap -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!-- Fonts and Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- Other Styles -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+
+    <link href="/static/css/redesign-styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="uk-section-secondary uk-preserve-color bg" id="top">
+      <div class="uk-text-right uk-text-middle landing-text landing-middle">
+        <h1 class="landing-title">The Honor Society for<br><tg-highlight>All Engineers</tg-highlight> at UCLA</h1>
+      </div>
+      <section id="scroll_down" class="scroll-down">
+        <a href="/#intro" uk-scroll><span></span></a>
+      </section>
+      <div uk-sticky="animation: uk-animation-slide-top; sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-light; top: 200">
+        <nav class="uk-navbar-container" uk-navbar>
+            <div class="uk-navbar-right uk-margin-right">
+              <ul class="uk-navbar-nav navfont">
+                <li class="uk-active">
+                  <a href="#top" uk-scroll>
+                    <img class="logo-bent uk-margin-small-right" src="{% static "img/tbp-logo.png" %}" alt="">
+                    <span class="uk-visible@s">Tau Beta Pi | UCLA</span>
+                  </a>
+                </li>
+                <li>
+                  <a>More
+                    <span uk-icon="more-vertical"></span>
+                  </a>
+                  <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                      <li class="uk-nav-header white">Home</li>
+                      <li><a href="/#intro" uk-scroll>Who We Are</a></li>
+                      <li><a href="/#member" uk-scroll>Becoming a Member</a></li>
+                      <li><a href="/#activities" uk-scroll>Activities</a></li>
+                      <li><a href="/#tutoring" uk-scroll>Tutoring</a></li>
+                      <li><a href="/#contact" uk-scroll>Contact</a></li>
+                      <li class="uk-nav-header white">Tutoring Quicklinks</li>
+                      <li><a href="{% url 'tutoring.views.schedule' %}">Schedule</a></li>
+                      <li><a href="/reviewsheets">Review Sheets</a></li>
+                      <li><a href="{% url 'tutoring.views.feedback' %}">Feedback</a></li>
+                      {% if user.is_authenticated %}
+                      <li><a href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a></li>
+                      {% endif %}
+                      <li class="uk-nav-header white">Contact Quicklinks</li>
+                      <li><a href="{% url 'web.views.officers' %}">Officers</a></li>
+                      <li><a href="{% url 'web.views.faculty' %}">Advisors and Faculty</a></li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a>
+                  {% if user.is_authenticated %}
+                    {{ user.username }} <span uk-icon="user"></span>
+                  {% else %}
+                    Log in <span uk-icon="sign-in"></span>
+                  {% endif %}
+                  </a>
+                  <div class="uk-navbar-dropdown login-wrapper">
+                    {% if user.is_authenticated %}
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                      {% if user.is_staff %}
+                        <li class="uk-nav-header white">Admin</li>
+                        <li><a href="/admin">Admin Panel</a></li>
+                        <li><a href="{% url 'main.views.candidates' %}">Candidates</a></li>
+                        <li><a href="{% url 'main.views.active_members' %}">Active Members</a></li>
+                	      <li><a href="{% url 'main.views.add_requirement' %}">Requirement Attendance</a></li>
+                        <li><a href="{% url 'main.views.all_profiles' %}">All Profiles</a></li>
+                        <li><a href="{% url 'main.views.tutoring_admin' %}">Tutoring</a></li>
+                        <li><a href="{% url 'main.views.downloads' %}">Downloads</a></li>
+                        <li><a href="https://sites.google.com/site/tbpcaeofficers/">Wiki</a></li>
+                      {% endif %}
+                        <li class="uk-nav-header white">Member Services</li>
+                        <li><a href="{% url 'main.views.profile_view' %}">Profile</a></li>
+                        <li><a href="/testbank">Testbank</a></li>
+                        <li><a href="{% url 'main.views.logout' %}?next={{ next }}">Log out</a></li>
+                    {% else %}
+                    <!-- login form -->
+                    <form method="post" action="{% url 'main.views.login' %}?next={{ next }}" autocomplete="off" id="form" >
+                      {% csrf_token %}
+                      {% if request.GET.error %}
+                      <span class="help-inline" style="color:white;">Invalid login</span>
+                      {% endif %}
+                      <div class="uk-inline">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input type="text" class="uk-input" placeholder="Username" name="username">
+                      </div>
+                      <div class="uk-inline">
+                        <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                        <input type="password" class="uk-input" placeholder="Password" name="password" autocomplete="off">
+                      </div>
+                      <button type="submit" class="uk-button uk-button-secondary" style="margin-top:1em; margin-bottom:1em;">Sign in</button>
+                      <a href="{% url 'main.views.password_reset' %}" class="uk-button uk-button-secondary" style="margin-bottom:1em;">Forgot Password?</a>
+                    </form>
+                    {% endif %}
+                  </div>
+                </li>
+              </ul>
+            </div>
+        </nav>
+      </div>
+    </div>
+    <div class="uk-section-secondary">
+      {% block content %}{% endblock %}
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('.btn').on('click', function() {
+          var $this = $(this);
+          $this.button('loading');
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    $(function() {
+      $('a[href*=#]').on('click', function(e) {
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
+      });
+      });
+    </script>
+  </body>
+</html>
