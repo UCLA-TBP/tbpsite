@@ -11,7 +11,7 @@ candidates = MyTemplateView.as_view(template_name='candidates.html')
 contact = MyTemplateView.as_view(template_name='contact.html')
 emcc = MyTemplateView.as_view(template_name='emcc.html')
 fe = MyTemplateView.as_view(template_name='fe.html')
-home = MyTemplateView.as_view(template_name='home.html', 
+home = MyTemplateView.as_view(template_name='home.html',
                               additional={'upcoming_events': [event for event in Event.objects.filter(
                                   dropdown=True, end__gt=datetime.datetime.today) if event.event_type != Event.SOCIAL],
                                   'display': Settings.objects.display_tutoring()})
@@ -61,9 +61,9 @@ def get_officers():
     positions.append(('Faculty Advisor', None, ['Bill Goodin']))
     return positions
 
-faculty = MyTemplateView.as_view(template_name='faculty.html', 
+faculty = MyTemplateView.as_view(template_name='faculty.html',
                                  additional={'faculty': get_faculty_by_dept, 'facultyAdvisor': 'Ann R. Karagozian'})
-officers = MyTemplateView.as_view(template_name='officers.html', 
+officers = MyTemplateView.as_view(template_name='officers.html',
                                   additional={'term': Settings.objects.term(), 'positions': get_officers})
 requirements = MyTemplateView.as_view(template_name='requirements.html',
-                                      additional={'candidatePacketURL': Link.objects.filter(name='candidate_packet_url')[0].url})
+                                      additional={})

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<ul class="nav nav-pills nav-pills-info">
+<ul class="nav nav-pills nav-pills-warning">
   {% for tab in profile_tabs %}
   {% if tab.0 == next %}
   <li class="active"><a href="#">
@@ -12,7 +12,9 @@
   {% endfor %}
 </ul>
 
-{% block tabcontent %}
+<div class="uk-container">
+  {% block tabcontent %}
+</div>
 {% endblock %}
 
 {% endblock %}

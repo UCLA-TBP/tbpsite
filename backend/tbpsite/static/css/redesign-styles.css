@@ -1,0 +1,237 @@
+/* redesign styles */
+.bg {
+  background: url('../img/background.gif');
+  box-shadow: inset 0 5em 10em 0.25em #000;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: 25%;
+}
+
+.navfont > li > a {
+  font-size: 120%;
+}
+
+.p_big {
+  font-size: 125%;
+}
+
+.p_content {
+  font-size: 125%;
+}
+
+.stats {
+  margin: 0;
+  font-size: 24px;
+  text-transform: none;
+  text-align: center;
+  color: #eec807;
+  font-weight: bold;
+}
+
+.login-wrapper {
+  width: 300px;
+}
+
+/* top bar */
+.uk-navbar-container:not(.uk-navbar-transparent) {
+  background-color: rgba(0, 0, 0, 0.80);
+}
+
+.uk-navbar-nav>li.uk-active>a {
+  color: white;
+}
+
+.big-text {
+  font-size: 48px;
+}
+
+/* uk-card override styles */
+.uk-card-media-top {
+  max-height: 230px;
+  overflow: hidden;
+}
+
+.uk-card-body {
+  border-bottom: : 2px solid grey;
+  border-left: : 2px solid grey;
+  border-right: : 2px solid grey;
+}
+
+.uk-card-secondary {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.logo-bent {
+  height: 25px;
+  width: 25px;
+}
+
+/* uk general overrides */
+.uk-navbar-dropdown {
+  background: black;
+  color: white;
+}
+
+.uk-padding-large-bottom {
+  padding-bottom: 6em;
+}
+
+.landing-middle {
+  top: 40%;
+}
+
+.landing-title {
+  color: white;
+  font-size: 72px;
+  font-weight: bold;
+  font-size: 410%;
+}
+
+.landing-text {
+  position: absolute;
+  width: 80%;
+  color: white;
+}
+
+.uk-text-middle {
+  vertical-align: middle!important;
+}
+
+.uk-text-right {
+  text-align: right!important;
+}
+
+.uk-button-secondary {
+  background-color: #222 !important;
+  color: #fff !important;
+}
+
+.white {
+  color: white !important;
+}
+
+tg-highlight {
+  color: #eec807;
+}
+
+html {
+  background: #F8F8F8;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+}
+
+/* misc */
+.nav-pills.nav-pills-warning > li.active > a, .nav-pills.nav-pills-warning > li.active > a:focus, .nav-pills.nav-pills-warning > li.active > a:hover {
+  background-color: black;
+  box-shadow: 0 2px 10px grey;
+}
+
+/* animation */
+#scroll_down a {
+  padding-top: 60px;
+}
+
+#scroll_down a span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  border: 1px solid #fff;
+  border-radius: 100%;
+  box-sizing: border-box;
+}
+
+#scroll_down a span::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: '';
+  width: 16px;
+  height: 16px;
+  margin: -12px 0 0 -8px;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+
+#scroll_down a span::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  content: '';
+  width: 44px;
+  height: 44px;
+  box-shadow: 0 0 0 0 rgba(255,255,255,.1);
+  border-radius: 100%;
+  opacity: 0;
+  -webkit-animation: scroll_down_animation 3s infinite;
+  animation: scroll_down_animation 3s infinite;
+  box-sizing: border-box;
+}
+
+@-webkit-keyframes scroll_down_animation {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    box-shadow: 0 0 0 60px rgba(255,255,255,.1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll_down_animation {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    box-shadow: 0 0 0 60px rgba(255,255,255,.1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.scroll-down a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 2;
+  display: inline-block;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  color: #fff;
+  font : normal 400 20px/1 'Josefin Sans', sans-serif;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: opacity .3s;
+}
+.scroll-down a:hover {
+  opacity: .5;
+}
+
+@media only screen and (max-width: 640px) {
+  .landing-middle {
+    top: 20%;
+  }
+
+  .landing-text {
+    width: 100%;
+    padding: 2em;
+  }
+}

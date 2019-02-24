@@ -6,9 +6,6 @@
 
 {% load extras %}
 
-<div class="panel-group">
-<div class="panel panel-default">
-<div class="panel-body">
 <h1 class="test-bank">TBP Test Bank</h1>
  <a align="left" href="/upload" class="btn btn-large btn-warning upload-button">Upload <i class="fa fa-upload upload-icon"></i></a>
 <div class="row" style="margin-bottom: 10px">
@@ -50,7 +47,7 @@
             {% for test in tests %}
               <tr>
                 <td>{{ test.professor }}</td>
-		<td>{{ test.test_type }}</td> 
+		<td>{{ test.test_type }}</td>
                 <td>{{ test.origin_term }}</td>
                 <td>
                   <a target="_blank" href="/testbank/file/{{ test.id }}/{{ test.test_upload.name }}">Download</a>
@@ -67,8 +64,5 @@
         </tbody>
       </table>
   </div>
-</div>
-</div>
-</div>
 </div>
 {% endblock %}

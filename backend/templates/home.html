@@ -1,86 +1,170 @@
-	{% extends "base.html" %}
+{% extends "base_home.html" %}
 
+{% load static %}
 {% load cache %}
 {% cache 600 home %}
 {% block content %}
-  <style>
-    .carousel-caption
-    {
-      padding-bottom:30px;
-    }
-  </style>
-    <div class="row">
-    <div class="col-md-12 cover">
-      <div id="carousel" class="carousel card-carousel carousel slide carousel-custom">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-          <li data-target="#carousel" data-slide-to="0" class="active"></li>
-          <li data-target="#carousel" data-slide-to="1"></li>
-          <li data-target="#carousel" data-slide-to="2"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner carousel-inner-custom">
-          <div class="item active">
-            <a href="{% url 'web.views.about' %}">
-              <img src="https://tbp.seas.ucla.edu/static/img/about.jpg" alt="" class="img-rounded img-responsive img-raised" />
-            </a>
-          </div>
-          <div class="item">
-            <a href="{% url 'web.views.tutoring' %}">
-              <img src="https://tbp.seas.ucla.edu/static/img/tutoring.jpg" alt="" class="img-rounded img-responsive img-raised" />
-            </a>
-          </div>
-          <div class="item">
-            <a href="{% url 'event.views.events' %}">
-              <img src="https://tbp.seas.ucla.edu/static/img/events.jpg" alt="" class="img-rounded img-responsive img-raised" />
-            </a>
-          </div>
-        </div>
-
-        <!-- Controls -->
-        <a class="left carousel-control" href="#carousel" data-slide="prev">
-          <span class="icon-prev"></span>
-        </a>
-        <a class="right carousel-control" href="#carousel" data-slide="next">
-          <span class="icon-next"></span>
-        </a>
-      </div>
-
-	
-
-
-
-      </div>
-      <div
- 	class="col-md-10 text-align:center col-md-offset-1 visible-xs visible-sm visible-md visible-lg home-buttons">
-      <!--
-      <h2>TBP California Epsilon Chapter</h2>
-      <hr>
-      -->
-      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
-	<a href="{% url 'event.views.events' %}" class="btn btn-large btn-warning home-button">Upcoming Events</a>
+<div class="uk-container" id="intro">
+  <h1 class="uk-margin-large-top">Who We Are</h1>
+  <p class="uk-text-lead">Tau Beta Pi is the only honor society representing the entire
+    engineering profession, and the California Epsilon chapter has served the
+    UCLA community since 1952. By recognizing professional achievement as well
+    'as service, Tau Beta Pi strives to uphold its creed of “Integrity and
+    Excellence in Engineering.”</p>
+</div>
+<hr class="uk-divider-icon uk-margin-large-top" id="member">
+<div class="uk-container">
+  <h1 class="uk-margin-top">Becoming a Member</h1>
+  <p class="p_big">Invitations for membership are extended to undergraduate
+    engineering majors who are at least in their second year at UCLA with
+    ____ completed units, and in the top:</p>
+  <div class="uk-grid-divider uk-padding" uk-grid>
+    <div class="uk-width-1-2">
+      <p class="stats big-text uk-padding-remove">1/5</p>
+      <p class="stats uk-padding-remove">of Senior Class</p>
     </div>
-	 {% if user.is_authenticated %}
-      <div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
-	<a href="{% url 'tutoring.views.tutoring_logging' %}" class="btn btn-large btn-warning home-button">Log Tutoring Hours</a>
+    <div class="uk-width-1-2">
+      <p class="stats big-text uk-padding-remove">1/8</p>
+      <p class="stats uk-padding-remove">of Junior Class</p>
+    </div>
+  </div>
+  <p class="p_big">
+    Once eligible and candidacy is confirmed, initiates must
+    demonstrate their commitment to TBP’s values. This is done through weekly
+    volunteering, service, and several TBP traditions like polishing the Bent
+    outside Boelter Hall.
+  </p>
+
+  <p class="p_big">After officially initiating, members have the option to
+    continue their involvement by either joining the officer board or becoming
+    a distinguished active member. Both receive discounts on TBP graduation
+    regalia. Please follow links below for more details on induction, requirements,
+    and officership.
+  </p>
+
+  <p uk-margin>
+    <a class="uk-button uk-button-default" href="{{candidatePacketURL}}">Candidate Packet</a>
+    <a class="uk-button uk-button-default" href="{% url 'web.views.requirements' %}">Requirements</a>
+    <a class="uk-button uk-button-default" href="{{orientationPresentationURL}}">Orientation Presentation</a>
+    <a class="uk-button uk-button-default" href="../media/files/Officer-Positions.pdf">Officer Positions</a>
+  </p>
+</div>
+<hr class="uk-divider-icon uk-margin-large-top" id="activities">
+<div class="uk-container">
+  <h1 class="uk-margin-top">Activities</h1>
+  <div class="uk-grid-match uk-child-width-expand@s" uk-grid>
+    <div class="uk-width-1-2@s">
+      <div class="uk-card uk-card-secondary">
+        <div class="uk-card-media-top">
+            <img src="{% static "img/career_guidance.jpg" %}" alt="">
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title">Career Guidance</h3>
+          <p>
+            With so many accomplished members, TBP is dedicated to assisting
+            the next generation of engineers reach their professional goals.
+            Every year, we host Internship Insider Night featuring a panel of
+            students sharing their summer internship experience and job hunting
+            advice. We also helped plan the 2018 Dean’s Student Showcase, an
+            exclusive networking event for honor society and Dean’s diversity
+            group members.
+          </p>
+        </div>
       </div>
-	{% endif %}
-      {% if display %}
-	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">
-	<a href="{% url 'tutoring.views.schedule' %}" class="btn btn-large btn-warning home-button">Tutoring Schedule</a>
-	</div>
-	{% endif %}
-	<div class="{% if user.is_authenticated %} col-md-3 {% else %} col-md-4 {% endif %}">	
-	<a href="{% url 'main.views.reviewsheetbank' %}" class="btn btn-large btn-warning home-button">Review Sheets</a>
-   </div>
-	 </div>
+    </div>
+    <div class="uk-width-1-2@s">
+      <div class="uk-card uk-card-secondary">
+        <div class="uk-card-media-top">
+            <img src="{% static "img/academic_guidance1.jpg" %}" alt="">
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title">Academic Outreach</h3>
+          <p>
+            In addition to TBP’s drop-in tutoring program, we also host larger
+            review sessions for Math and Physics courses in preparation for
+            midterms and finals.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="uk-width-1-2@s">
+      <div class="uk-card uk-card-secondary">
+        <div class="uk-card-media-top">
+            <img src="{% static "img/emcc.png" %}" alt="">
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title">EMCC</h3>
+          <p>
+            Engineering Minds Cultivating Creativity (EMCC) is
+            a weekly science program catered to students at Nora
+            Sterry Elementary School. The main goal of this program
+            is to cultivate a love of math and science in young schoolchildren,
+            preparing them for careers in STEM fields. We have centered the EMCC
+            curriculum on higher level
+            math and science concepts paired with hands-on projects.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="uk-width-1-2@s">
+      <div class="uk-card uk-card-secondary">
+        <div class="uk-card-media-top">
+            <img src="{% static "img/competition1.jpg" %}" alt="">
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title">Competitions</h3>
+          <p>
+            Every year, TBP hosts competitions that exercise on-the-fly thinking
+            and creativity. Our biggest event is our annual Rube Goldberg
+            Competition in the winter, which challenges teams to construct
+            a machine out of seemingly random collection of materials to perform
+            a simple task in the most complicated way possible. We also host other
+            events throughout the year like the Cardboard Boat Race.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<script>
-  $( document ).ready(function() {
-    $("#main").addClass('flex-container').removeClass('container');
-  });
-</script>
+<hr class="uk-divider-icon uk-margin-large-top" id="tutoring">
+<div class="uk-container">
+  <h1 class="uk-margin-medium-top">Tutoring</h1>
+  <p class="p_big">
+    We offer free drop-in tutoring in all STEM courses at
+    our office (Boelter 6266). Feel free to stop by for homework help or
+    pre-exam practice. Please check the schedule below for course availability.
+  </p>
+
+  <p class="p_big">
+    Hours: Mon-Fri, 10 am - 4 pm, Weeks 3 - 9
+  </p>
+
+  <p uk-margin>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.schedule' %}">Schedule</a>
+    <a class="uk-button uk-button-default" href="/reviewsheets">Review Sheets</a>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.feedback' %}">Feedback</a>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a>
+  </p>
+</div>
+<hr class="uk-divider-icon uk-margin-large-top" id="contact">
+<div class="uk-container uk-padding-large-bottom">
+  <div uk-grid>
+    <div class="uk-width-1-1">
+      <h1 class="uk-margin-medium-top">Contact</h1>
+    </div>
+    <div class="uk-width-1-2">
+      <p class="p_big">
+        Location: 6266 Boelter Hall<br>
+      </p>
+      <p class="p_big">
+        Email: <a href="mailto:taubetapi@tbp.seas.ucla.edu">taubetapi@tbp.seas.ucla.edu</a>
+      </p>
+    </div>
+  </div>
+  <p uk-margin>
+    <a class="uk-button uk-button-default" href="{% url 'web.views.officers' %}">Officers</a>
+    <a class="uk-button uk-button-default" href="{% url 'web.views.faculty' %}">Advisors and Faculty</a>
+  </p>
+</div>
 {% endblock %}
 {% endcache %}
