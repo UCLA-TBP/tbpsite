@@ -16,8 +16,7 @@
 <div class="uk-container">
   <h1 class="uk-margin-top">Becoming a Member</h1>
   <p class="p_big">
-    Invitations for membership are extended to undergraduate
-    engineering majors with at least 28 completed units and in the top:
+    Invitations for membership may be extended to undergraduate engineering majors who are in the top:
   </p>
   <div class="uk-grid-divider uk-padding" uk-grid>
     <div class="uk-width-1-2">
@@ -29,6 +28,14 @@
       <p class="stats uk-padding-remove">of Junior Class</p>
     </div>
   </div>
+  <p class="p_big">
+    Candidates must also have completed at least 28 units from UCLA to be invited in
+    the Fall or Spring. Junior and senior class designation are based on units
+    completed per the <a href="https://www.registrar.ucla.edu/Registration-Classes/Enrollment-Policies/Class-Levels">UCLA Registrar's Office</a>.
+    For Fall invitations, grades and units obtained up until the end of Summer Session A - 6
+    Weeks will be considered.
+  </p>
+
   <p class="p_big">
     Once eligible and candidacy is confirmed, initiates must
     demonstrate their commitment to TBP’s values. This is done through weekly
@@ -45,9 +52,29 @@
 
   <p uk-margin>
     <a class="uk-button uk-button-default" href="{{candidatePacketURL}}">Candidate Packet</a>
-    <a class="uk-button uk-button-default" href="{% url 'web.views.requirements' %}">Requirements</a>
+    <a class="uk-button uk-button-default" href="{% url 'web.views.requirements' %}">Induction Requirements</a>
     <a class="uk-button uk-button-default" href="{{orientationPresentationURL}}">Orientation Presentation</a>
     <a class="uk-button uk-button-default" href="../media/files/Officer-Positions.pdf">Officer Positions</a>
+  </p>
+</div>
+<hr class="uk-divider-icon uk-margin-large-top" id="tutoring">
+<div class="uk-container">
+  <h1 class="uk-margin-medium-top">Tutoring</h1>
+  <p class="p_big">
+    We offer free drop-in tutoring in all STEM courses at
+    our office (Boelter 6266). Feel free to stop by for homework help or
+    pre-exam practice. Please check the schedule below for course availability.
+  </p>
+
+  <p class="p_big">
+    Hours: Mon-Fri, 10 am - 4 pm, Weeks 3 - 9
+  </p>
+
+  <p uk-margin>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.schedule' %}">Schedule</a>
+    <a class="uk-button uk-button-default" href="/reviewsheets">Review Sheets</a>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.feedback' %}">Feedback</a>
+    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a>
   </p>
 </div>
 <hr class="uk-divider-icon uk-margin-large-top" id="activities">
@@ -126,26 +153,6 @@
       </div>
     </div>
   </div>
-</div>
-<hr class="uk-divider-icon uk-margin-large-top" id="tutoring">
-<div class="uk-container">
-  <h1 class="uk-margin-medium-top">Tutoring</h1>
-  <p class="p_big">
-    We offer free drop-in tutoring in all STEM courses at
-    our office (Boelter 6266). Feel free to stop by for homework help or
-    pre-exam practice. Please check the schedule below for course availability.
-  </p>
-
-  <p class="p_big">
-    Hours: Mon-Fri, 10 am - 4 pm, Weeks 3 - 9
-  </p>
-
-  <p uk-margin>
-    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.schedule' %}">Schedule</a>
-    <a class="uk-button uk-button-default" href="/reviewsheets">Review Sheets</a>
-    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.feedback' %}">Feedback</a>
-    <a class="uk-button uk-button-default" href="{% url 'tutoring.views.tutoring_logging' %}">Log Hours</a>
-  </p>
 </div>
 <hr class="uk-divider-icon uk-margin-large-top" id="contact">
 <div class="uk-container uk-padding-large-bottom">
