@@ -225,6 +225,15 @@ html {
   opacity: .5;
 }
 
+.view-container-border {
+  background-color: #222;
+}
+
+.my-event-container {
+  border-bottom: none;
+  
+}
+
 @media only screen and (max-width: 1475px) {
   .landing-title {
     font-size: 375%;
