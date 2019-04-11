@@ -30,7 +30,6 @@ def get_faculty_by_dept():
         ('William R. Goodin', 'CA E', "'75 (Chief Advisor)", ''),
         ('Ann Karagozian', 'CA E', "'78 (Faculty Advisor)", ''),
         ('Stephanie Yang', 'CA E', "'07 (Alumni Advisor)", ''),
-        ('Stacey Ross', 'CA K', "'06 (District 16 Director)", ''),
         ('Neal Bussett', 'CA X', "'09 (District 16 Director)", ''),
         ('Sam Rokni', 'CA C', "'05 (District 16 Director)", ''),
         ('Hani Freudenberger', 'CA E', "'07 (Alumni Advisor)", ''),
