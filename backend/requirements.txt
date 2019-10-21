@@ -1,4 +1,4 @@
-Django==1.5.4
+Django==1.11.23
 django-sendfile==0.3.11
 Jinja2==2.7.1
 MarkupSafe==0.18
