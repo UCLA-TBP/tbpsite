@@ -26,13 +26,13 @@
                 <th>{{ position.0 }}{% if position.1 %} (<a
                     href="mailto:{{ position.1 }}@tbp.seas.ucla.edu">{{ position.1 }}@tbp.seas.ucla.edu</a>){% endif %}
                 </th>
-                <td><img width="300px" height="300px" src="/static/img/officer_headshots/{{position.2.0.split|join:"_"}}.jpg" onerror="this.error=null; this.src='/static/img/officer_headshots/logo.png'"></td>
+                <td><img style="width:300px" src="/static/img/officer_headshots/{{position.2.0.split|join:"_"}}.jpg" onerror="this.error=null; this.src='/static/img/officer_headshots/logo.png'"></td>
                 <td>{{ position.2.0 }}</td>
               </tr>
               {% for officer in position.2|slice:"1:" %}
               <tr>
                 <td></td>
-                <td><img width="300px" height="300px" src="/static/img/officer_headshots/{{officer.split|join:"_"}}.jpg" onerror="this.error=null; this.src='/static/img/officer_headshots/logo.png'"></td>
+                <td><img style="width:300px" src="/static/img/officer_headshots/{{officer.split|join:"_"}}.jpg" onerror="this.error=null; this.src='/static/img/officer_headshots/logo.png'"></td>
                 <td>{{ officer }}</td>
               </tr>
               {% endfor %}
