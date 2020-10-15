@@ -1,7 +1,7 @@
 default: build
 
 build: 
-				docker-compose build
+				docker-compose build 
 
 run-dev: 
 				-docker-compose down
@@ -21,7 +21,7 @@ clean_db:
 				-docker-compose exec db mysql -uroot -pCAEpsilon -e "DROP DATABASE tbpsite;"
 
 collect_static:
-				docker-compose exec backend /app/manage.py collectstatic --noinput
+				docker-compose exec backend /app/manage.py collectstatic --noinput 
 
 init_db: clean_db 
 				docker cp init_db.sql "$(shell docker-compose ps -q db)":/init_db.sql
