@@ -27,18 +27,13 @@ def get_faculty_by_dept():
     for f in faculty:
         faculty_by_dept.setdefault(str(f.get_dept_display()), []).append((f.name, f.chapter, f.graduation, f.link))
     faculty_by_dept['Advisors'] = [
+        ('Neal Bussett', 'CA X', "'09 (District 16 Director)", ''),
+        ('Carissa Eisler', 'CA E', "'10 (Faculty Advisor)", ''),
         ('William R. Goodin', 'CA E', "'75 (Chief Advisor)", ''),
         ('Ann Karagozian', 'CA E', "'78 (Faculty Advisor)", ''),
-        ('Stephanie Yang', 'CA E', "'07 (Alumni Advisor)", ''),
-        ('Neal Bussett', 'CA X', "'09 (District 16 Director)", ''),
-        ('Sam Rokni', 'CA C', "'05 (District 16 Director)", ''),
-        ('Hani Freudenberger', 'CA E', "'07 (Alumni Advisor)", ''),
-        ('Caitlin Gomez', 'CA E', "'06 (Alumni Advisor)", ''),
-        ('Ronald Hickling', 'CA E', "'80 (Alumni Advisor)", ''),
-        ('Marshall Lew', 'CA E', "'71 (Alumni Advisor)", ''),
-        ('Christine Tran', 'CA E', "'11 (Alumni Advisor)", ''),
-        ('Yvonne Chen', 'CA G', "'04 (Faculty Advisor)", ''),
-        ('Frank Kuo', 'CA E', "'07 (Alumni Advisor)", '')
+        ('Aaron Meyer', 'CA E', "'09 (Faculty Advisor)", ''),
+        ('Melissa Morris', 'WV A', "'06 (District Director)", ''),
+        ('Sam Rokni', 'CA C', "'05 (District 16 Director)", '')
     ]
     return [(dept, sorted(faculty_by_dept[dept], key=lambda x: x[0].rsplit(None, 1)[-1])) for dept in sorted(faculty_by_dept)]
 
@@ -57,7 +52,7 @@ def get_officers():
         else:
             positions.append((position.position, position.mail_alias, [str(officer) for officer in position.profile.all()]))
 
-    positions.append(('Faculty Advisor', None, ['Bill Goodin']))
+    # positions.append(('Faculty Advisor', None, ['Bill Goodin']))
     return positions
 
 faculty = MyTemplateView.as_view(template_name='faculty.html',
