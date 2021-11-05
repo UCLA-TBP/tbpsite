@@ -2,7 +2,7 @@
 import os
 
 SERVER_EMAIL = 'webmaster@tbp.seas.ucla.edu'
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
