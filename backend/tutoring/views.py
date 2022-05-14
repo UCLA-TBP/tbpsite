@@ -25,8 +25,6 @@ numbers = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine
 
 def get_classes():
     """
-
-
     :return:
     """
     classes = []
@@ -45,8 +43,6 @@ def get_classes():
 
 def get_tutors():
     """
-
-
     :return:
     """
     tutors = []
@@ -64,7 +60,6 @@ def get_tutors():
 
 def schedule(request):
     """
-
     :param request:
     :return:
     """
@@ -166,7 +161,6 @@ def update_schedule(request):
 @login_required()
 def classes(request):
     """
-
     :param request:
     :return:
     """
@@ -189,7 +183,6 @@ def classes(request):
 @login_required()
 def expanded_schedule(request):
     """
-
     :param request:
     :return:
     """
@@ -229,7 +222,6 @@ def feedback(request):
 @login_required(login_url='/login')
 def tutoring_logging(request):
     """
-
     :param request:
     :return:
     """
