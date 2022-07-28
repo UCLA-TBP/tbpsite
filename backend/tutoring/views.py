@@ -4,6 +4,7 @@ import datetime
 import random, math, copy
 import pdb
 import csv
+import os
 
 from django.contrib.auth.decorators import login_required
 from django.template import TemplateDoesNotExist
@@ -119,6 +120,15 @@ def schedule(request):
 
     # the cached template always displays the schedule
     try:
+        # MODIFIED IN 2022 BY JAKE SAGER
+        if not os.path.exists('cached_templates/cached_schedule_snippet.html'):
+            # save cache
+            tutors = get_tutors()
+            classes = get_classes()
+            content = render_to_string('schedule_snippet.html', {'tutors':tutors,'classes':classes})
+            with open('cached_templates/cached_schedule_snippet.html', 'w') as static_file:
+                static_file.write(content)
+                
         return render(
             request,
             'schedule.html',
