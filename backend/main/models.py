@@ -318,7 +318,7 @@ class Profile(models.Model):
         """
         return ','.join(field for field in [self.user.first_name, self.middle_name, self.user.last_name,
                                             self.user.email, self.nickname,
-                                            self.house.__unicode__() if self.house else '', self.gender,
+                                            self.house.__unicode__() if self.house else '',
                                             self.birthday.strftime('%x') if self.birthday else '', self.phone_number,
                                             self.get_major_display(),
                                             self.initiation_term.__unicode__() if self.initiation_term else '',

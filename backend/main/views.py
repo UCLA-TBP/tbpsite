@@ -292,7 +292,7 @@ def profile_view(request):
         ('Middle Name', profile.middle_name),
         ('Last Name', user.last_name),
         ('Nickname', profile.nickname),
-        ('Gender', profile.get_gender_display()),
+#        ('Gender', profile.get_gender_display()),
         ('Birthday', profile.birthday),
         ('Phone Number', profile.phone_number),
         ('University ID', profile.uid),

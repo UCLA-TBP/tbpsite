@@ -15,10 +15,10 @@
  */
 
 body {
-  background-color: #CCCCCC;
+    background-color: green;
 }
 body.inverse {
-  background: #333333;
+    background-color: green;
 }
 body.inverse, body.inverse .form-control {
   color: #ffffff;

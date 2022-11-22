@@ -30,9 +30,8 @@ def get_faculty_by_dept():
         ('Neal Bussett', 'CA X', "'09 (District 16 Director)", ''),
         ('Carissa Eisler', 'CA E', "'10 (Faculty Advisor)", ''),
         ('William R. Goodin', 'CA E', "'75 (Chief Advisor)", ''),
-        ('Ann Karagozian', 'CA E', "'78 (Faculty Advisor)", ''),
+        ('Ann R. Karagozian', 'CA E', "'78 (Faculty Advisor)", ''),
         ('Aaron Meyer', 'CA E', "'09 (Faculty Advisor)", ''),
-        ('Melissa Morris', 'WV A', "'06 (District 16 Director)", ''),
         ('Sam Rokni', 'CA C', "'05 (District 16 Director)", '')
     ]
     return [(dept, sorted(faculty_by_dept[dept], key=lambda x: x[0].rsplit(None, 1)[-1])) for dept in sorted(faculty_by_dept)]
